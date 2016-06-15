@@ -27,7 +27,7 @@ prompt APPLICATION 100710 - ATAF (New Theme)
 -- Application Export:
 --   Application:     100710
 --   Name:            ATAF (New Theme)
---   Date and Time:   15:12 Monday June 13, 2016
+--   Date and Time:   14:08 Wednesday June 15, 2016
 --   Exported By:     S.C.HUNT@CRANFIELD.AC.UK
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -94,12 +94,12 @@ wwv_flow_api.create_flow(
 ,p_display_id=>nvl(wwv_flow_application_install.get_application_id,100710)
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ATAF')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF (New Theme)')
-,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'F_104111')
+,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160503072515'
+,p_checksum_salt_last_reset=>'20160615140340'
 ,p_bookmark_checksum_function=>'MD5'
-,p_compatibility_mode=>'4.2'
+,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
 ,p_flow_language_derived_from=>'FLOW_PRIMARY_LANGUAGE'
 ,p_allow_feedback_yn=>'Y'
@@ -112,7 +112,7 @@ wwv_flow_api.create_flow(
 ,p_logo_image=>'TEXT:ATAF &PROJECT_NAME.'
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=> nvl(wwv_flow_application_install.get_proxy,'')
-,p_flow_version=>'release 1.0'
+,p_flow_version=>'v0.1-alpha.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -124,8 +124,8 @@ wwv_flow_api.create_flow(
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
-,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160503072515'
+,p_last_updated_by=>'S.C.HUNT@CRANFIELD.AC.UK'
+,p_last_upd_yyyymmddhh24miss=>'20160615140340'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
