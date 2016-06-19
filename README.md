@@ -17,4 +17,7 @@ Installation
         Schema         = ATAF
         Size           = 10Mb)
 2.  Run BuildScrip.sql
-3.  Install Application
+    Note.  If running on apex.oracle.com, comment out the line 
+           "APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');"
+           and create this step manually using the user manager.
+3.  Install Apex Application
