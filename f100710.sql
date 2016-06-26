@@ -22,12 +22,12 @@ end;
 /
 prompt --application/set_environment
  
-prompt APPLICATION 100710 - ATAF (New Theme)
+prompt APPLICATION 100710 - ATAF
 --
 -- Application Export:
 --   Application:     100710
---   Name:            ATAF (New Theme)
---   Date and Time:   14:27 Sunday June 26, 2016
+--   Name:            ATAF
+--   Date and Time:   19:05 Sunday June 26, 2016
 --   Exported By:     S.C.HUNT@CRANFIELD.AC.UK
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -93,11 +93,11 @@ wwv_flow_api.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_display_id=>nvl(wwv_flow_application_install.get_application_id,100710)
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'ATAF')
-,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF (New Theme)')
+,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160626142221'
+,p_checksum_salt_last_reset=>'20160626190527'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
@@ -125,7 +125,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'S.C.HUNT@CRANFIELD.AC.UK'
-,p_last_upd_yyyymmddhh24miss=>'20160626142221'
+,p_last_upd_yyyymmddhh24miss=>'20160626190527'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -16048,8 +16048,8 @@ wwv_flow_api.create_page(
 ,p_page_is_public_y_n=>'N'
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20160415083527'
+,p_last_updated_by=>'S.C.HUNT@CRANFIELD.AC.UK'
+,p_last_upd_yyyymmddhh24miss=>'20160626190527'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(31491735475824864094)
@@ -16184,6 +16184,7 @@ wwv_flow_api.create_page_item(
 ,p_is_required=>true
 ,p_item_sequence=>50
 ,p_item_plug_id=>wwv_flow_api.id(31491735475824864094)
+,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Module'
 ,p_source=>'MODULE_ID'
 ,p_source_type=>'DB_COLUMN'
@@ -16288,6 +16289,7 @@ wwv_flow_api.create_page_item(
 ,p_name=>'P13_SORT_ORDER'
 ,p_item_sequence=>70
 ,p_item_plug_id=>wwv_flow_api.id(31491735475824864094)
+,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Order'
 ,p_source=>'SORT_ORDER'
 ,p_source_type=>'DB_COLUMN'
