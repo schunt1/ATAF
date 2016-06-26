@@ -12,12 +12,8 @@ Min Firefox Selenium IDE Plugin v2.9.1.1
 
 Installation
 ------------
-1.  Create a new Apex Worksace
-    (EG workspace_name = ATAF
-        Schema         = ATAF
-        Size           = 10Mb)
-2.  Run BuildScrip.sql
-    Note.  If running on apex.oracle.com, comment out the line 
-           "APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');"
-           and create this step manually using the user manager.
-3.  Install Apex Application
+1.  Run the BuildScrip.sql ideally into its own schema e.g. schema_name = ATAF.
+2.  Install the apex application into the same workspace as the application(s) to be tested.
+3.  Ensure the ATAF Application is pointed to the ATAF Schema.
+4.  Create a Workspace User Group called 'ataf_administrator'.
+5.  Grant 'ataf_administrator' to any users that require it.
