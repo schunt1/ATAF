@@ -1522,7 +1522,7 @@ FROM
 WHERE
   collection_name = 'APEX_PAGE_ITEMS'
 /
-CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION") AS 
+CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
   SELECT 
 --
 --+============================================================================
@@ -1543,10 +1543,12 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
+--| S. Hunt         26-Jun-16 2       New display column added                  |
+--|                                   ATAF_WORSPACE WHERE Clause added          |
 --+=============================================================================+   
-   /*--------------
+   ----------------
    -- List Items --
-   ----------------*/
+   ----------------
           ent.application_id,
           reg.page_id,
           nvl2(to_char(ent.list_entry_parent_id),'- ',null)||ent.entry_text label,
@@ -1561,17 +1563,17 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           to_char(reg.region_id),
           reg.region_name,
-          reg.display_position
+          reg.display_position,
+          decode (ent.condition_type, 'Never','N','Y') display
      FROM apex_application_list_entries ent
-          join apex_application_lists lis ON ent.list_id = lis.list_id and lis.workspace = (select sys_context('userenv','current_schema') x from dual)
-          join apex_application_page_regions reg ON lis.list_id = reg.list_id and reg.workspace = (select sys_context('userenv','current_schema') x from dual)
-          left outer join apex_application_list_entries ent2 on ent.list_entry_parent_id = ent2.list_entry_id and ent2.workspace = sys_context('userenv','current_schema')
-    WHERE ent.condition_type != 'Never' OR ent.condition_type IS NULL
-      AND ent.workspace = (select sys_context('userenv','current_schema') x from dual)
+          join apex_application_lists lis ON ent.list_id = lis.list_id and ent.workspace = lis.workspace
+          join apex_application_page_regions reg ON lis.list_id = reg.list_id and lis.workspace = reg.workspace
+          left outer join apex_application_list_entries ent2 on ent.list_entry_parent_id = ent2.list_entry_id and ent.workspace = ent2.workspace
+    WHERE ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)    
    UNION ALL
-   /*----------------------
+   ------------------------
    -- Sidebar Navigation --
-   ------------------------*/
+   ------------------------
    SELECT 
           ent.application_id,
           0 page_id,
@@ -1587,17 +1589,18 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           null,
           null,
           'Sidebar Navigation',
-          null 
+          null,
+          'Y' display
      FROM apex_application_list_entries ent
      JOIN APEX_APPL_USER_INTERFACES ui ON ent.application_id = ui.application_id
                                       AND ent.list_id = ui.navigation_list_id
-                                      and ui.workspace = (select sys_context('userenv','current_schema') x from dual)
-     where ent.workspace = (select sys_context('userenv','current_schema') x from dual)                                
+                                      and ent.workspace = ui.workspace
+     where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)                                
      UNION ALL
-   /*---------------------------------
+   -----------------------------------
    -- Parent List Items Stores Only --
-   -----------------------------------*/
-   SELECT reg.application_id,
+   -----------------------------------
+     SELECT reg.application_id,
           reg.page_id,
           reg.region_name label,
           'Parent List Item' TYPE,
@@ -1611,16 +1614,17 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           to_char(reg.region_id) region_id,
           reg.region_name,
-          reg.display_position
+          reg.display_position,
+          'Y' display
      FROM apex_application_lists lis,
           apex_application_page_regions reg
     WHERE reg.list_id = lis.list_id
-      and lis.workspace = (select sys_context('userenv','current_schema') x from dual)
-      and reg.workspace = (select sys_context('userenv','current_schema') x from dual)
+      and reg.workspace = lis.workspace
+      and reg.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*----------------
+   ------------------
    -- Custom Items --
-   ----------------*/
+   ------------------
    SELECT application_id,
           page_id,
           item_label label,
@@ -1635,12 +1639,13 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           null region_name,
-          null region_position
+          null region_position,
+          'Y' display
    FROM ataf_item
    UNION ALL
-   /*-----------
+   -------------
    -- Nav Bar --
-   -----------*/
+   -------------
    SELECT 
           ent.application_id,
           0 page_id,
@@ -1656,39 +1661,42 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           'Nav Bar' region_name,
-          'Nav Bar' region_position
+          'Nav Bar' region_position,
+          'Y' display
      FROM apex_application_list_entries ent
      JOIN APEX_APPL_USER_INTERFACES ui ON ent.application_id = ui.application_id
                                       AND ent.list_id = ui.nav_bar_list_id
-                                      and ui.workspace = (select sys_context('userenv','current_schema') x from dual)
-    where ent.workspace = (select sys_context('userenv','current_schema') x from dual)
+                                      and ent.workspace = ui.workspace
+    where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*---------------
+   -----------------
    -- Apex Items  --
-   ---------------*/
-   SELECT application_id,
-          page_id,
-          NVL (label, item_name),
-          decode(display_as,'Text Field with autocomplete','Text Field',display_as) display_as,
-          TO_CHAR (item_id) r,
-          item_name,
-          display_sequence,
+   -----------------
+   SELECT aapi.application_id,
+          aapi.page_id,
+          NVL (aapi.label, aapi.item_name),
+          decode(aapi.display_as,'Text Field with autocomplete','Text Field',aapi.display_as) display_as,
+          TO_CHAR (aapi.item_id) r,
+          aapi.item_name,
+          aapi.display_sequence,
           null display_sequence1,
           null display_sequence2,
-          item_id,
+          aapi.item_id,
           NULL,
           NULL page_alias,
           NULL region_id,
-          region region_name,
-          null region_position
-     FROM apex_application_page_items
-    WHERE (condition_type != 'Never' OR condition_type IS NULL)
-      AND display_as != 'Hidden'
-      and workspace = (select sys_context('userenv','current_schema') x from dual)
+          aapi.region region_name,
+          null region_position,
+          case when aapi.display_as = 'Hidden' then 'N'
+               when aapi.condition_type = 'Never' then 'N'
+               else 'Y' end disply
+     FROM apex_application_page_items aapi
+    WHERE 
+          aapi.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*-----------------
+   -------------------
    -- Apex Buttons  --
-   -----------------*/
+   -------------------
    SELECT application_id,
           page_id,
           NVL (label, button_name),
@@ -1706,14 +1714,14 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           region region_name,
-          null region_position
+          null region_position,
+          decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_buttons
-    WHERE (condition_type != 'Never' OR condition_type IS NULL)
-      and workspace = (select sys_context('userenv','current_schema') x from dual)
+    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*-------------
+   ---------------
    -- Apex Tabs --
-   -------------*/
+   ---------------
    SELECT a.application_id,
           0 page_id,
           tab_label,
@@ -1728,14 +1736,14 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           'Tab Region' region_name,
-          null region_position
+          null region_position,
+          decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_tabs a
-    WHERE condition_type != 'Never' OR condition_type IS NULL
-      and a.workspace = (select sys_context('userenv','current_schema') x from dual)
+    WHERE a.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*---------------
+   -----------------
    -- IR Columns  --
-   ---------------*/
+   -----------------
    SELECT application_id,
           page_id,
           report_label,
@@ -1750,14 +1758,14 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           to_char(interactive_report_id) region_id,
           'Interactive Report' region_name,
-          null region_position
+          null region_position,
+          decode(display_condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_ir_col
-    WHERE (display_condition_type != 'Never' OR display_condition_type IS NULL)
-      and workspace = (select sys_context('userenv','current_schema') x from dual)
+    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*------------------
+   --------------------
    -- Report Columns --
-   ------------------*/
+   --------------------
    SELECT application_id,
           page_id,
           NVL (heading, column_alias) label,
@@ -1772,15 +1780,15 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           'datatable_R' || region_id region_id,
           region_name,
-          null region_position
+          null region_position,
+          decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_rpt_cols
     WHERE column_is_hidden = 'No'
-      AND (condition_type != 'Never' OR condition_type IS NULL)
-      and workspace = (select sys_context('userenv','current_schema') x from dual)
+      and workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*-----------------
+   -------------------
    -- IR Components --
-   -----------------*/
+   -------------------
    SELECT aa.application_id,
           aa.page_id,
           ir.label,
@@ -1795,7 +1803,8 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           to_char(aa.region_id) region_id,
           'Interactive Report' region_name,
-          null region_position
+          null region_position,
+          'Y' display
      FROM (SELECT 'IR Search' label,
                   'IR Search' TYPE,
                   'apexir_SEARCH' dom_id,
@@ -1804,13 +1813,13 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
                   NULL
              FROM DUAL
            UNION ALL
-           /*select
-             'IR Go Button' label,
-             'IR Go Button' type,
-             'apexir_btn_SEARCH' dom_id,
-             20 display_sequence,
-             2 id    --from dual
-           union all*/
+           --select
+           --  'IR Go Button' label,
+           --  'IR Go Button' type,
+           --  'apexir_btn_SEARCH' dom_id,
+           --  20 display_sequence,
+           --  2 id    --from dual
+           --union all
            SELECT 'IR Reset' label,
                   'IR Reset' TYPE,
                   'apexir_ACTIONSMENUROOT' dom_id,
@@ -1835,11 +1844,11 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
                   NULL
              FROM DUAL) ir,
           apex_application_page_ir aa
-          where aa.workspace = (select sys_context('userenv','current_schema') x from dual)
+          where aa.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   /*------------
+   --------------
    -- Outcomes --
-   ------------*/
+   --------------
    SELECT NULL application_id,
           0 page_id,
           'Outcome' label,
@@ -1854,12 +1863,13 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           null region_name,
-          null region_position
+          null region_position,
+          'Y' display
      FROM DUAL
    UNION ALL
-   /*---------------
+   -----------------
    -- Global Item --
-   ---------------*/
+   -----------------
    SELECT NULL application_id,
           0 page_id,
           'Global Item' label,
@@ -1874,7 +1884,8 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_
           NULL page_alias,
           NULL region_id,
           null region_name,
-          null region_position
+          null region_position,
+          'Y' dislpay
      FROM DUAL
 /
 CREATE OR REPLACE FORCE VIEW  "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
@@ -2138,7 +2149,7 @@ select
 WHERE outcome_id IS NOT NULL
 /
 
-APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+--APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
 
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (38916469500064392731477121354893922978, 'Text Field', q'!Click Image Post Element Text!', 'AB7R', q'!Click the image at the end of the text field #LABEL#!', '', q'!Useful for custom popups, this action clicks an image in the post element text of a text field. An outcome is normally required for this action.!', '');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (51649116603185119863522322475078673144, 'Outcome', q'!Tabular Form New Row Added!', 'AFQD', q'!New Blank Row is Added to the Bottom of the Tabular Form!', '', q'!New Blank Row is Added to the Bottom of the Tabular Form!', '');
@@ -2219,7 +2230,7 @@ INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, lo
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023678967221528142068418928387, q'!runScript!', 23858542572661238488593397655260920308, 'N', '', q'!$("##REGION ID#_ir").data("apex-interactiveReport")._reset();!', '', 'AIDQ', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023682593998986985955943046915, q'!type!', 23858542572669700969330700059483863540, 'Y', 'id', q'!R#REGION ID#_search_field!', '', 'AIDT', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023683802924806600585117753091, q'!click!', 23858542572669700969330700059483863540, 'N', 'id', q'!R#REGION ID#_search_button!', '', 'AIDU', 2, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023685011850626215214292459267, q'!waitForElementPresent!', 23858542572669700969330700059483863540, 'N', 'xpath', q'!//span[contains(@id, 'control_text_') and contains(text(),'#DATA#')]!', '', 'AIDV', 3, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023685011850626215214292459267, q'!waitForElementPresent!', 23858542572669700969330700059483863540, 'N', 'xpath', q'!//span[contains(@id, 'control_text_') and contains(text(),'#DATA#')]!', '', 'AIDV', 4, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023686220776445829843467165443, q'!click!', 23877022567472650396167610481455932572, 'N', '', q'!css=img.uPopupLOVIcon!', '', 'AIDW', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023687429702265444472641871619, q'!waitForPopUp!', 23877022567472650396167610481455932572, 'N', '', q'!winLovList!', '', 'AIDX', 1, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023688638628085059101816577795, q'!selectWindow!', 23877022567472650396167610481455932572, 'N', '', q'!!', '', 'AIDY', 2, 2, 42);
@@ -2277,7 +2288,7 @@ INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, lo
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023790188396932687952491896579, q'!pause!', 39024396043902260365281875927588938329, 'N', '', q'!3000!', '', 'AIGA', 10, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (188090821211444064858435637325204302822, q'!echo!', 245412815083420034421939206446694980736, 'N', '', q'!Value store = ${#DATA#}!', '', 'AF4S', 1, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (172969237437108205287451038452660127544, q'!storeValue!', 245412815083420034421939206446694980736, 'Y', 'id', q'!#NAME#!', 'Target', 'AF4T', 0, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (198668999864156430131316113336043894720, q'!pause!', 23858542572669700969330700059483863540, 'N', '', q'!2000!', '', 'AF5N', 1, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (198668999864156430131316113336043894720, q'!pause!', 23858542572669700969330700059483863540, 'N', '', q'!2000!', '', 'AF5N', 3, 3, 42);
 
 INSERT INTO ataf_test_data (test_data_id, data_name, row_key) VALUES (309094072575201609256564956716457800122, 'LOVs', 'AFZI');
 INSERT INTO ataf_test_data (test_data_id, data_name, row_key) VALUES (143077473429591767533937954441856082488, 'Numbers', 'AF3O');

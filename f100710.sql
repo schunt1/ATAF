@@ -13,7 +13,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_api.import_begin (
  p_version_yyyy_mm_dd=>'2013.01.01'
-,p_release=>'5.0.3.00.03'
+,p_release=>'5.0.4.00.11'
 ,p_default_workspace_id=>31176304051081778433
 ,p_default_application_id=>100710
 ,p_default_owner=>'ATAF'
@@ -27,11 +27,11 @@ prompt APPLICATION 100710 - ATAF (New Theme)
 -- Application Export:
 --   Application:     100710
 --   Name:            ATAF (New Theme)
---   Date and Time:   14:08 Wednesday June 15, 2016
+--   Date and Time:   14:27 Sunday June 26, 2016
 --   Exported By:     S.C.HUNT@CRANFIELD.AC.UK
 --   Flashback:       0
 --   Export Type:     Application Export
---   Version:         5.0.3.00.03
+--   Version:         5.0.4.00.11
 --   Instance ID:     63113759365424
 --
 
@@ -46,7 +46,7 @@ prompt APPLICATION 100710 - ATAF (New Theme)
 --     Dynamic Actions:         37
 --   Shared Components:
 --     Logic:
---       Items:                 14
+--       Items:                 15
 --       Processes:              2
 --       Data Loading:           1
 --     Navigation:
@@ -97,7 +97,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160615140340'
+,p_checksum_salt_last_reset=>'20160626142221'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
@@ -125,7 +125,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'S.C.HUNT@CRANFIELD.AC.UK'
-,p_last_upd_yyyymmddhh24miss=>'20160615140340'
+,p_last_upd_yyyymmddhh24miss=>'20160626142221'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -583,11 +583,23 @@ wwv_flow_api.create_flow_process(
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Create apex_page_items collection'
 ,p_process_sql_clob=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'DECLARE',
+'',
+'  lv_workspace VARCHAR2(60);',
+'  ',
+'BEGIN',
+'',
 'IF APEX_COLLECTION.COLLECTION_EXISTS (''ATAF_APEX_PAGE_ITEMS_V'') = false THEN',
+'',
+'select WORKSPACE INTO lv_workspace from APEX_APPLICATIONS where application_id = :app_id;',
+'',
+'APEX_UTIL.set_session_state(''ATAF_WORKSPACE'',lv_workspace);',
+'',
+'',
 '',
 '  apex_collection.create_collection_from_query( ',
 '    p_collection_name => ''APEX_PAGE_ITEMS'',',
-'    p_query => ''select ',
+'    p_query => q''!select ',
 '                   APPLICATION_ID,',
 '                   PAGE_ID,',
 '                   LABEL,',
@@ -601,9 +613,12 @@ wwv_flow_api.create_flow_process(
 '                   REGION_NAME,',
 '                   DISPLAY_SEQUENCE1,',
 '                   DISPLAY_SEQUENCE2',
-'                 from ATAF_APEX_PAGE_ITEMS_V'');',
+'                 from ATAF_APEX_PAGE_ITEMS_V',
+'                 where display = ''Y'' !'');',
 '',
-'END IF;'))
+'END IF;',
+'',
+'END;'))
 ,p_process_error_message=>'There was a problem creating the APEX_PAGE_ITEMS collection.'
 );
 end;
@@ -614,6 +629,11 @@ wwv_flow_api.create_flow_item(
  p_id=>wwv_flow_api.id(31491781475237481103)
 ,p_name=>'APPLICATION_ID'
 ,p_protection_level=>'N'
+);
+wwv_flow_api.create_flow_item(
+ p_id=>wwv_flow_api.id(36115335133050238110)
+,p_name=>'ATAF_WORKSPACE'
+,p_protection_level=>'I'
 );
 wwv_flow_api.create_flow_item(
  p_id=>wwv_flow_api.id(31476999665119874138)
