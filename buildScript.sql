@@ -1500,7 +1500,7 @@ CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_APPLICATION_PAGES_V" ("WORKS
     "DEEP_LINKING"
   FROM apex_application_pages
   WHERE application_id = (SELECT nv('APPLICATION_ID') FROM dual)
-  AND workspace = (select sys_context('userenv','current_schema') x from dual)
+  AND workspace = (select v('ATAF_WORKSPACE') x from dual)
 /
 CREATE OR REPLACE FORCE EDITIONABLE VIEW "ATAF_APEX_PAGE_ITEMS" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "ID", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2") AS 
 SELECT
@@ -2026,7 +2026,7 @@ FROM
 --  LEFT OUTER JOIN ataf_test_data td                ON tc.test_data_id = td.test_data_id
   JOIN ataf_project pr                             ON tc.project_id = pr.project_id
   LEFT OUTER JOIN apex_application_themes aa       ON pr.application_id = aa.application_id and ui_type_NAME = 'DESKTOP'
-                                                      and aa.workspace = sys_context('userenv','current_schema')
+                                                      and aa.workspace = v('ATAF_WORKSPACE')
   JOIN ataf_action ac                              ON con.action_id = ac.action_id
   LEFT OUTER JOIN ataf_action ac1                  ON con.outcome_id = ac1.action_id
   -- For prod change to ataf_apex_page_items for dev use ataf_apex_page_items_v
@@ -2036,9 +2036,9 @@ FROM
                                                   AND con.data_id = di.data_id
 ---------------------------------------------------------------------------------------------
   LEFT OUTER JOIN apex_application_pages pv        ON con.page_id = pv.page_id and pr.application_id = pv.application_id
-                                                      and pv.workspace = sys_context('userenv','current_schema')
+                                                      and pv.workspace = v('ATAF_WORKSPACE')
   LEFT OUTER JOIN apex_application_pages pv2       ON con.outcome_page_id = pv2.page_id and pr.application_id = pv2.application_id
-                                                      and pv2.workspace = sys_context('userenv','current_schema')
+                                                      and pv2.workspace = v('ATAF_WORKSPACE')
 --WHERE di.data_group_id = td.default_data_group_id
 --    OR td.default_data_group_id IS NULL
 /
@@ -2085,7 +2085,7 @@ FROM
   LEFT OUTER JOIN ataf_test_case tc                ON con.test_case_id = tc.test_case_id
   JOIN ataf_project pr                             ON tc.project_id = pr.project_id
   JOIN apex_applications aa                        ON pr.application_id = aa.application_id
-                                                      AND aa.workspace = (select sys_context('userenv','current_schema') x from dual)
+                                                      AND aa.workspace = (select v('ATAF_WORKSPACE') x from dual)
   JOIN ataf_action ac                              ON con.action_id = ac.action_id
   -- For prod change to ataf_apex_page_items for dev use ataf_apex_page_items_v
   LEFT OUTER JOIN ataf_apex_page_items iv          ON (con.apex_item_id = iv.id AND con.page_id = decode(iv.page_id,0,con.page_id,iv.page_id))
@@ -2100,9 +2100,9 @@ FROM
 --    
   LEFT OUTER JOIN ataf_action ac1                  ON con.outcome_id = ac1.action_id
   LEFT OUTER JOIN apex_application_pages pv        ON con.page_id = pv.page_id and pr.application_id = pv.application_id
-                                                      AND pv.workspace = sys_context('userenv','current_schema')
+                                                      AND pv.workspace = v('ATAF_WORKSPACE')
   LEFT OUTER JOIN apex_application_pages pv2       ON con.outcome_page_id = pv2.page_id and pr.application_id = pv2.application_id
-                                                      AND pv2.workspace = sys_context('userenv','current_schema')
+                                                      AND pv2.workspace = v('ATAF_WORKSPACE')
 /
 CREATE OR REPLACE FORCE VIEW  "ATAF_TEST_COND_FULL_V" ("DATA_ID", "TEST_COND_ID", "TEST_CASE_ID", "DATA_ITEM_ID", "ACTION_ID", "OUTCOME_PAGE_ID", "APEX_ITEM_ID", "SORT_ORDER", "PAGE_ID", "ROW_NUMBER", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ROW_KEY", "ROW_VERSION_NUMBER", "DATA_ATTRIBUTE", "DATA_GROUP_ID", "TYPE", "OUTCOME_ID") AS 
   select
