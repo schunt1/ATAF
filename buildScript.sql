@@ -1545,14 +1545,20 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         26-Jun-16 2       New display column added                  |
 --|                                   ATAF_WORSPACE WHERE Clause added          |
+--| S.Hunt          02-Jul-16 3       Changed Nav Bar to list item              |
 --+=============================================================================+   
    ----------------
    -- List Items --
    ----------------
           ent.application_id,
           reg.page_id,
-          nvl2(to_char(ent.list_entry_parent_id),'- ',null)||ent.entry_text label,
-          'List Item' TYPE,
+
+          case
+            when reg.region_name = 'Header Quick Navigation' then ent.entry_text
+            when ent.list_entry_parent_id is not null then '- '||ent.entry_text
+            else ent.entry_text end label,
+    
+          decode(reg.region_name,'Header Quick Navigation','Nav Bar','List Item') TYPE,
           'L' || ent.list_entry_id dom_id,
           ent.entry_text name,
           ent.display_sequence,
@@ -1646,6 +1652,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
    -------------
    -- Nav Bar --
    -------------
+/* Removed because navbar is now a list item
    SELECT 
           ent.application_id,
           0 page_id,
@@ -1669,6 +1676,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                                       and ent.workspace = ui.workspace
     where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
+*/
    -----------------
    -- Apex Items  --
    -----------------
