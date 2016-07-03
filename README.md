@@ -17,3 +17,7 @@ Installation
 3.  Ensure the ATAF Application is pointed to the ATAF Schema.
 4.  Create a Workspace User Group called 'ataf_administrator'.
 5.  Grant 'ataf_administrator' to any users that require it.
+6.  Using the Worspace Data Workshop, Load the Global Data into the ATAF_DATA table.
+    Values: 
+	  Separated by: , 
+	  Optionally Separated by: "

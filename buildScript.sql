@@ -480,7 +480,7 @@ IS
     RETURN ret_val_t PIPELINED;
 END;
 /
-CREATE OR REPLACE PACKAGE BODY  "ATAF_PKG" 
+create or replace PACKAGE BODY  "ATAF_PKG" 
 IS
 --
 --+============================================================================
@@ -501,6 +501,7 @@ IS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
+--| S. Hunt         02-Jul-16 2       Update to Test procedure                  |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -639,6 +640,7 @@ END TEST_FUNC;
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
+--| S. Hunt         02-Jul-16 2       ClickAt added to AndWait commands         |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id IN NUMBER,
@@ -762,6 +764,7 @@ SELECT
     -------------
     CASE
       WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'click' THEN 'clickAndWait'
+      WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'clickAt' THEN 'clickAtAndWait'
       WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'type' THEN 'typeAndWait'
       WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'select' THEN 'selectAndWait'
       ELSE sel.selenium_command
@@ -2168,6 +2171,7 @@ INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn,
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23858542572669700969330700059483863540, 'IR Search', q'!IR Search!', 'AAA1', q'!Type '#DATA#' into the interactive Report search field and click the 'Go' button!', 'Y', q'!Performs a global search of the Interactive Report using the associated data item. In effect, typing the data into the search field and clicking "Go". There is no need for an Outcome.!', '');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23877022567472650396167610481455932572, 'List Manager', q'!Add to List Manager!', 'AAA3', q'!Add value '#DATA# ' to the '#LABEL#' List Manager!', 'Y', q'!Adds the associated data vale to the list manager item. No outcome is required.!', '');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23877022567484739654363756773202994332, 'Nav Bar', q'!Click Nav Bar Item!', 'AAA4', q'!Click the '#LABEL#' link in the Nav Bar!', '', q'!Clicks a link in the navigation bar. This should be followed by an Outcome except for perhaps the Log Out link.!', '');
+INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (72669278025794961974934882451665034125, 'Nav Bar', q'!Click Nav Bar Child!', 'AG1Z', q'!In the Navbar drop down menu click on '#NAME#'!', '', q'!Clicks the child of a Navbar menu item.!', '');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23877022567487157506002986031552406684, 'Number Field', q'!Type into Number Field!', 'AAA5', q'!In the region '#REGION NAME#' type #DATA# into the '#LABEL#' Number Field!', 'Y', q'!Types a number into the number field using the associated data.!', '');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23877022567489575357642215289901819036, 'Outcome', q'!Branch to Page!', 'AAA6', q'!Branch to Page #OUTCOME PAGE ID# titled '#OUTCOME PAGE TITLE# '!', '', q'!Branches to another page and adds a "wait for page load" to the action. The action also verifies that the destination page title is correct.!', 'Y');
 INSERT INTO ataf_action (action_id, item_type, action, row_key, script, data_yn, notes, and_wait) VALUES (23877022567494411060920673806600643740, 'Outcome', q'!Branch to Page with Confirmation!', 'AAA8', q'!Branch to Page #OUTCOME PAGE ID# titled '#OUTCOME PAGE TITLE# ' and display success message!', '', q'!The same as 'Branch to Page' but verifies that a success message is displayed.!', 'Y');
@@ -2248,7 +2252,8 @@ INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, lo
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023693474331363517618515402499, q'!assertElementNotPresent!', 23877022567472650396167610481455932572, 'N', '', q'!winLovList!', '', 'AID2', 6, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023694683257183132247690108675, q'!selectWindow!', 23877022567472650396167610481455932572, 'N', '', q'!!', '', 'AID3', 7, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023695892183002746876864814851, q'!click!', 23877022567472650396167610481455932572, 'N', '', q'!css=input[type="button"]!', '', 'AID4', 8, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023697101108822361506039521027, q'!click!', 23877022567484739654363756773202994332, 'N', 'link', q'!!', 'Label', 'AID5', 0, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023697101108822361506039521027, q'!click!', 23877022567484739654363756773202994332, 'N', 'id', q'!!', 'DOM ID', 'AID5', 0, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (72669278025796170900754497080839740301, q'!clickAt!', 72669278025794961974934882451665034125, 'N', 'xpath', q'!//a[contains(text(),'#LABEL#')]!', 'Target', 'AG10', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023698310034641976135214227203, q'!type!', 23877022567487157506002986031552406684, 'Y', 'id', q'!!', 'Name', 'AID6', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023699518960461590764388933379, q'!verifyTitle!', 23877022567489575357642215289901819036, 'N', '', q'!#OUTCOME PAGE TITLE#!', 'Target', 'AID7', 1, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023700727886281205393563639555, q'!verifyElementPresent!', 23877022567494411060920673806600643740, 'N', 'id', q'!t_Alert_Success!', 'Target', 'AID8', 1, 2, 42);
