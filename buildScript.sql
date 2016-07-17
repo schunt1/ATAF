@@ -1549,6 +1549,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S. Hunt         26-Jun-16 2       New display column added                  |
 --|                                   ATAF_WORSPACE WHERE Clause added          |
 --| S.Hunt          02-Jul-16 3       Changed Nav Bar to list item              |
+--| S.Hunt          06-Jul-16 4       Interactive report use Region Name        |
+--| S.Hunt          17-Jul-16 5       IR Static Region ID Added to DOM_ID       |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -1804,7 +1806,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           aa.page_id,
           ir.label,
           ir.TYPE,
-          ir.dom_id dom_id,
+          nvl(aa.static_id,'R'||to_char(aa.region_id)) dom_id,
           ir.dom_id name,
           ir.display_sequence,
           null display_sequence1,
@@ -1813,7 +1815,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           NULL,
           NULL page_alias,
           to_char(aa.region_id) region_id,
-          'Interactive Report' region_name,
+          lower(aa.region_name) region_name,
           null region_position,
           'Y' display
      FROM (SELECT 'IR Search' label,
@@ -1854,7 +1856,18 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                   4 id,
                   NULL
              FROM DUAL) ir,
-          apex_application_page_ir aa
+          --apex_application_page_ir aa
+          (select 
+             ir.workspace,
+             ir.application_id, 
+             ir.page_id,
+             ir.interactive_report_id,
+             ir.region_name,
+             ir.region_id,
+             pr.static_id
+           from 
+             apex_application_page_ir ir 
+           join APEX_APPLICATION_PAGE_REGIONS pr on ir.region_id = pr.region_id) aa
           where aa.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    --------------
@@ -2239,9 +2252,9 @@ INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, lo
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023674131518249683551720103683, q'!pause!', 23858542572661238488593397655260920308, 'N', '', q'!2000!', '', 'AIDM', 1, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023675340444069298180894809859, q'!waitForElementNotPresent!', 23858542572661238488593397655260920308, 'N', 'id', q'!apex_wait_popup!', '', 'AIDN', 2, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023677758295708527439244222211, q'!type!', 23858542572657611711134553767736801780, 'Y', 'id', q'!!', 'Name', 'AIDP', 0, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023678967221528142068418928387, q'!runScript!', 23858542572661238488593397655260920308, 'N', '', q'!$("##REGION ID#_ir").data("apex-interactiveReport")._reset();!', '', 'AIDQ', 0, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023682593998986985955943046915, q'!type!', 23858542572669700969330700059483863540, 'Y', 'id', q'!R#REGION ID#_search_field!', '', 'AIDT', 0, 2, 42);
-INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023683802924806600585117753091, q'!click!', 23858542572669700969330700059483863540, 'N', 'id', q'!R#REGION ID#_search_button!', '', 'AIDU', 2, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023678967221528142068418928387, q'!runScript!', 23858542572661238488593397655260920308, 'N', '', q'!$("##DOM_ID#_ir").data("apex-interactiveReport")._reset();!', '', 'AIDQ', 0, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023682593998986985955943046915, q'!type!', 23858542572669700969330700059483863540, 'Y', 'id', q'!#DOM ID#_search_field!', '', 'AIDT', 0, 2, 42);
+INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023683802924806600585117753091, q'!click!', 23858542572669700969330700059483863540, 'N', 'id', q'!#DOM ID#_search_button!', '', 'AIDU', 2, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023685011850626215214292459267, q'!waitForElementPresent!', 23858542572669700969330700059483863540, 'N', 'xpath', q'!//span[contains(@id, 'control_text_') and contains(text(),'#DATA#')]!', '', 'AIDV', 4, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023686220776445829843467165443, q'!click!', 23877022567472650396167610481455932572, 'N', '', q'!css=img.uPopupLOVIcon!', '', 'AIDW', 0, 2, 42);
 INSERT INTO ataf_selenium (selenium_id, selenium_command, action_id, data_yn, location, target, item_attribute, row_key, sort_order, row_version_number, theme_number) VALUES (57605729023687429702265444472641871619, q'!waitForPopUp!', 23877022567472650396167610481455932572, 'N', '', q'!winLovList!', '', 'AIDX', 1, 2, 42);
