@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   18:54 Sunday July 3, 2016
+--   Date and Time:   16:51 Tuesday July 19, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -74,7 +74,8 @@ prompt APPLICATION 108 - ATAF
 --       Plug-ins:               1
 --     Globalization:
 --     Reports:
---   Supporting Objects:  Excluded
+--   Supporting Objects:  Included
+--     Install scripts:          1
 
 prompt --application/delete_application
 begin
@@ -25546,6 +25547,35 @@ wwv_flow_api.create_page_process(
 ,p_process_name=>'Close Window'
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 );
+end;
+/
+prompt --application/deployment/definition
+begin
+wwv_flow_api.create_install(
+ p_id=>wwv_flow_api.id(67704840369823363420)
+);
+end;
+/
+prompt --application/deployment/install
+begin
+wwv_flow_api.create_install_script(
+ p_id=>wwv_flow_api.id(67706992850754217126)
+,p_install_id=>wwv_flow_api.id(67704840369823363420)
+,p_name=>'Test'
+,p_sequence=>10
+,p_script_type=>'INSTALL'
+,p_script_clob=>'null;'
+);
+end;
+/
+prompt --application/deployment/checks
+begin
+null;
+end;
+/
+prompt --application/deployment/buildoptions
+begin
+null;
 end;
 /
 prompt --application/end_environment
