@@ -502,6 +502,7 @@ IS
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         02-Jul-16 2       Update to Test procedure                  |
+--| S. Hunt         19-Jul-16 3       Data groups in Test Procedure             |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -641,6 +642,7 @@ END TEST_FUNC;
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         02-Jul-16 2       ClickAt added to AndWait commands         |
+--| S. Hunt         19-Jul-16 3       Filter case groups to data groups         |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id IN NUMBER,
@@ -673,7 +675,7 @@ BEGIN
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
-  ELSE                       -- if a test case is provided
+  ELSE                      -- if a test case is provided
     SELECT tc.test_case,
       p.application_id,
       aat.theme_number
@@ -696,72 +698,59 @@ BEGIN
     htp.p('<thead>');
     htp.p('<tr><td rowspan="1" colspan="3">'||apex_escape.html(l_test_name)||'</td></tr>');
     htp.p('</thead><tbody>');
-      FOR i IN
-  (
-      ---------------------------------------------------------------
+    
+    
+FOR i IN (
+
       WITH x AS
- -- 0 = cycle through data set
+    
+------------------------------------
+-- Called from Test Specification --
+------------------------------------
 (
-/***************************************************************
-** Joins back to the test data table to get the defaul Group ID
-** which is used if looping through the datasets    
-***************************************************************/
-SELECT
-  x.test_case_id,
-  x.sort_order,
-  x.data_id,
-  nvl(x.data_group_id,td.default_data_group_id) data_group_id
-FROM
-(
-SELECT sc.test_case_id,
-       sc.sort_order,
-       sc.test_spec_id,
-       ----------------------------------------------------------------
-       -- If no data group is assigned in the Spec or the Case it being
-       -- in isolation then use the default data group
-       ----------------------------------------------------------------
-       decode(sc.data_id,0,ad.data_id,sc.data_id) data_id,
-       sc.data_group_id,
-       tc.test_Data_id
-  FROM ataf_spec_case sc
-  JOIN ataf_test_case tc ON sc.test_case_id = tc.test_case_id
-  LEFT OUTER JOIN ataf_data ad ON tc.test_data_id = ad.test_data_id
-                            -- AND sc.data_group_id = ad.data_group_id
-                               AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)
-                               AND (sc.data_id = ad.data_id or sc.data_id = 0)
-) x
-  LEFT OUTER JOIN ataf_test_data td ON x.test_data_id = td.test_data_id
-WHERE
-  x.test_spec_id = p_spec_id    
-/***************************************************************
-** Below it the old code that does not filter test conditions **     
-****************************************************************
  SELECT sc.test_case_id,
         sc.sort_order,
         decode(sc.data_id,0,ad.data_id,sc.data_id)  data_id,
-        nvl(sc.data_group_id,0) data_group_id
+        ad.data_group_id data_group_id,
+        sc.data_group_id spec_group_id
   FROM ataf_spec_case sc
   JOIN ataf_test_case tc ON sc.test_case_id = tc.test_case_id
   LEFT OUTER JOIN ataf_data ad ON tc.test_data_id = ad.test_data_id
-                              AND sc.data_group_id = ad.data_group_id
-                              AND sc.data_id = 0
+                               AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)
+                               AND (sc.data_id = ad.data_id or sc.data_id = 0)
   WHERE sc.test_spec_id = p_spec_id
-*****************************************************************/
+----------------------------
+-- Called from Test Case  --
+----------------------------
   UNION ALL
   SELECT
         cas.test_case_id,
         0 sort_order,
         null data_id,
+        null,
         dat.default_data_group_id data_group_id
   FROM
   ataf_test_case cas
   LEFT OUTER JOIN ataf_test_data dat ON cas.test_data_id = dat.test_data_id
-  WHERE cas.test_case_id = p_case_id)
+  WHERE cas.test_case_id = p_case_id
+)
+      
+-----------------
+-- MAIN CURSOR --
+-----------------
 SELECT
+    
+    -----------------
+    -- Data Groups --
+    -----------------
+    x.spec_group_id    spec_group_id,
+    x.data_group_id    case_group_id,
+    tcv.data_group_id  cond_group_id,
+    tdv.data_group_id  data_group_id,
+
+    -----------------
     tcv.test_case,
-    -------------
     -- Command --
-    -------------
     CASE
       WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'click' THEN 'clickAndWait'
       WHEN tcv.and_wait = 'Y' AND sel.selenium_command = 'clickAt' THEN 'clickAtAndWait'
@@ -775,7 +764,7 @@ SELECT
     CASE
         -- Custom
         -- e.g.WHEN se.row_key = 'AACO' THEN XYZ
-        --Standard
+        -- Standard
       WHEN sel.item_attribute = 'DOM ID'
       THEN nvl2(sel.location,sel.location
         ||'=',NULL)
@@ -803,7 +792,6 @@ SELECT
       WHEN sel.data_yn = 'Y' THEN nvl(tcv.data_item_value,tdv.data_item_value) -- when selenium command is expecting data
       WHEN sel.data_yn = 'L' THEN 'label='||nvl(tcv.data_item_value,tdv.data_item_value) -- Prefix data with Label=
       WHEN sel.data_yn = 'A' THEN 'label='||tcv.label -- Prefix data with Label=
---      WHEN sel.data_yn = 'S' THEN '${'||nvl(tcv.data_item_value,tdv.data_item_value)||'}' -- Stored value
       ELSE NULL
     END value
     ----------
@@ -815,30 +803,46 @@ FROM
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
                                            AND nvl(tdv.data_id,0) = nvl(x.data_id,0)
+
 ---------------------------------------------------------------
--- This sets the conditional display for the Test Conditions --    
----------------------------------------------------------------
-WHERE
-  tcv.data_group_id = x.data_group_id or tcv.data_group_id IS NULL
----------------------------------------------------------------
-      
-      
+            
 ORDER BY
   x.sort_order,
   x.data_id,
   tcv.con_sort_order,
   sel.sort_order
-      ---------------------------------------------------------------
-  )
+    
+---------------------------------------------------------------
+)
   LOOP
     IF l_test_case_old IS NULL OR l_test_case_old != i.test_case THEN
       htp.p('<!--Test Case: '||i.test_case||'-->');
     END IF;
-    htp.p('<tr>');
-    htp.p('<td>'||apex_escape.html(i.command)||'</td>');
-    htp.p('<td>'||apex_escape.html(i.target)||'</td>');
-    htp.p('<td>'||apex_escape.html(i.value)||'</td>');
-    htp.p('</tr>');
+    
+    -----------------------------------------------
+    -- Group Logic that ensure cond gp = data gp --
+    -----------------------------------------------
+    
+    IF i.case_group_id + i.cond_group_id IS NULL 
+      OR (NVL(i.case_group_id,0) = NVL(i.cond_group_id,0)) THEN
+      
+      htp.p('<tr>');
+      htp.p('<td>'||apex_escape.html(i.command)||'</td>');
+      htp.p('<td>'||apex_escape.html(i.target)||'</td>');
+      htp.p('<td>'||apex_escape.html(i.value)||'</td>');
+
+      ----------------------------------------------------------
+      --   Debug to display group values - view in Sel Spec   --
+      ----------------------------------------------------------
+    --htp.p('<td>'||apex_escape.html(i.spec_group_id)||'</td>');
+    --htp.p('<td>'||apex_escape.html(i.case_group_id)||'</td>');
+    --htp.p('<td>'||apex_escape.html(i.cond_group_id)||'</td>');
+    --htp.p('<td>'||apex_escape.html(i.data_group_id)||'</td>');
+      
+      htp.p('</tr>');
+    
+    END IF;
+    
     l_test_case_old := i.test_case;
   END LOOP;
   htp.p('</tbody></table>');
@@ -1912,8 +1916,29 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           'Y' dislpay
      FROM DUAL
 /
-CREATE OR REPLACE FORCE VIEW  "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
+CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
   SELECT 
+--
+--+============================================================================
+--|                     Apex Test Automation Framework
+--|                                Andover
+--+=============================================================================+
+--|                                                                             |
+--| $Author: $                                                                  |
+--| $Date: $                                                                    |
+--| $Revision: $                                                                |
+--| $HeadURL: $                                                                 |
+--|                                                                             |
+--| Description : View of default data and bulk data                            |
+--|                                                                             |
+--| Modification History :                                                      |
+--| ----------------------                                                      |
+--|                                                                             |
+--| Author          Date      Version Remarks                                   |
+--| --------------- --------- ------- ------------------------------------------
+--| S. Hunt         19-Jul-16 1       Initial Version                           |
+--| S. Hunt         19-Jul-16 2       Include NULLS in UNPIVOT                  |
+--+=============================================================================+   
   x.data_id,
   di.data_item_id,
   x.row_name,
@@ -1940,7 +1965,8 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID"
                  else x.data_item_value end
     when 12 then nvl(ataf_pkg.random_data(di.data_attribute,di.test_data_id),x.data_item_value)
     when 13 then to_char(trunc(DBMS_RANDOM.VALUE(di.parameter1,x.data_item_value)),di.parameter2)
-    when 14 then ataf_data_generator.string_generator(x.data_item_value,NVL(di.parameter1,'/'))
+    -- this needs looking at, it dont handle nulls
+    when 14 then ataf_data_generator.string_generator(nvl(x.data_item_value,' '),NVL(di.parameter1,'/'))
     when 15 then ataf_data_generator.nhs_number()
     when 16 then ataf_data_generator.ni_number()
     else x.data_item_value
@@ -1982,7 +2008,7 @@ SELECT
   row_name,
   nvl(data_group_id, 0) data_group_id
 FROM   ATAF_DATA
-UNPIVOT (data_item_value FOR attribute IN (
+UNPIVOT INCLUDE NULLS (data_item_value FOR attribute IN (
   ATTRIBUTE_1 AS 0,
   ATTRIBUTE_2 AS 1,
   ATTRIBUTE_3 AS 2,
