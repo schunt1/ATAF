@@ -8,6 +8,7 @@ Min Oracle XE/SE 10g
 Min Apex v5.03 
 Min Firefox v47.0
 Min Firefox Selenium IDE Plugin v2.9.1.1
+ATAF Schema must have "GRANT EXECUTE ON DBMS_RANDOM"
 
 
 Installation
