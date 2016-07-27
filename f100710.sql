@@ -14,9 +14,9 @@ begin
 wwv_flow_api.import_begin (
  p_version_yyyy_mm_dd=>'2013.01.01'
 ,p_release=>'5.0.3.00.03'
-,p_default_workspace_id=>44984712792917604
+,p_default_workspace_id=>7348400917538735
 ,p_default_application_id=>108
-,p_default_owner=>'SHUNT'
+,p_default_owner=>'ATAF2'
 );
 end;
 /
@@ -27,12 +27,12 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   16:51 Tuesday July 19, 2016
---   Exported By:     SHUNT
+--   Date and Time:   17:59 Wednesday July 27, 2016
+--   Exported By:     HUNTS
 --   Flashback:       0
 --   Export Type:     Application Export
 --   Version:         5.0.3.00.03
---   Instance ID:     69320554783092
+--   Instance ID:     63119159687698
 --
 
 -- Application Statistics:
@@ -75,7 +75,6 @@ prompt APPLICATION 108 - ATAF
 --     Globalization:
 --     Reports:
 --   Supporting Objects:  Included
---     Install scripts:          1
 
 prompt --application/delete_application
 begin
@@ -92,12 +91,12 @@ begin
 wwv_flow_api.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_display_id=>nvl(wwv_flow_application_install.get_application_id,108)
-,p_owner=>nvl(wwv_flow_application_install.get_schema,'AUTOTEST')
+,p_owner=>nvl(wwv_flow_application_install.get_schema,'SHUNT')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160703185422'
+,p_checksum_salt_last_reset=>'20160727113833'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
@@ -124,8 +123,8 @@ wwv_flow_api.create_flow(
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
-,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160703185422'
+,p_last_updated_by=>'HUNTS'
+,p_last_upd_yyyymmddhh24miss=>'20160727113833'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -1355,10 +1354,9 @@ wwv_flow_api.create_template(
 '<?xml version="1.0" encoding="UTF-8"?>',
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
 '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">',
-'<head profile="http://selenium-ide.openqa.org/profiles/test-case">',
+'<head #HEAD#>',
 '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
 '<link rel="selenium.base" href="&DOMAIN." />',
-'#HEAD#',
 '<title>&TEST_CASE_NAME.</title>',
 '</head>'))
 ,p_box=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
@@ -1374,7 +1372,6 @@ wwv_flow_api.create_template(
 ,p_grid_always_emit=>true
 ,p_grid_emit_empty_leading_cols=>true
 ,p_grid_emit_empty_trail_cols=>false
-,p_translate_this_template=>'N'
 );
 wwv_flow_api.create_template(
  p_id=>wwv_flow_api.id(67686516847452521312)
@@ -15166,15 +15163,15 @@ wwv_flow_api.create_page(
 ,p_step_sub_title_type=>'TEXT_WITH_SUBSTITUTIONS'
 ,p_first_item=>'NO_FIRST_ITEM'
 ,p_group_id=>wwv_flow_api.id(67683104437123403717)
+,p_html_page_header=>'profile="http://selenium-ide.openqa.org/profiles/test-case"'
 ,p_step_template=>wwv_flow_api.id(67682338162118386818)
 ,p_page_template_options=>'#DEFAULT#'
-,p_dialog_chained=>'Y'
 ,p_overwrite_navigation_list=>'N'
 ,p_page_is_public_y_n=>'Y'
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20160418221659'
+,p_last_updated_by=>'HUNTS'
+,p_last_upd_yyyymmddhh24miss=>'20160727113833'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703693973236995207)
@@ -15227,6 +15224,8 @@ wwv_flow_api.create_page_process(
 'SELECT domain INTO :domain ',
 'FROM ataf_project',
 'WHERE project_id = :project_id;'))
+,p_process_when=>':SELENIUM_KEY IS NULL'
+,p_process_when_type=>'PLSQL_EXPRESSION'
 );
 end;
 /
@@ -15241,17 +15240,14 @@ wwv_flow_api.create_page(
 ,p_step_sub_title_type=>'TEXT_WITH_SUBSTITUTIONS'
 ,p_first_item=>'NO_FIRST_ITEM'
 ,p_group_id=>wwv_flow_api.id(67683104437123403717)
-,p_step_template=>wwv_flow_api.id(67686516847452521312)
+,p_step_template=>wwv_flow_api.id(67682338162118386818)
 ,p_page_template_options=>'#DEFAULT#'
-,p_dialog_chained=>'Y'
 ,p_overwrite_navigation_list=>'N'
-,p_nav_list_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_cache_mode=>'NOCACHE'
-,p_cache_timeout_seconds=>21600
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20160415083429'
+,p_last_updated_by=>'HUNTS'
+,p_last_upd_yyyymmddhh24miss=>'20160727080334'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703704269445845778)
@@ -25551,21 +25547,12 @@ end;
 /
 prompt --application/deployment/definition
 begin
-wwv_flow_api.create_install(
- p_id=>wwv_flow_api.id(67704840369823363420)
-);
+null;
 end;
 /
 prompt --application/deployment/install
 begin
-wwv_flow_api.create_install_script(
- p_id=>wwv_flow_api.id(67706992850754217126)
-,p_install_id=>wwv_flow_api.id(67704840369823363420)
-,p_name=>'Test'
-,p_sequence=>10
-,p_script_type=>'INSTALL'
-,p_script_clob=>'null;'
-);
+null;
 end;
 /
 prompt --application/deployment/checks
