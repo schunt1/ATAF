@@ -18,10 +18,10 @@ foreach($obj in $specObject.items)
  $theSpecURL = "https://apex1uk.revion.com/pls/apex/f?p=108:10:::NO:10:TEST_SPEC_ID,SELENIUM_KEY:" + $testSpecId + ",58703752098d7092a5a986709t34D8h764f510"
  
  #Download the html Case file containing all the cases in the single specification  
- $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:TEST_SPEC_ID,DOMAIN,SELENIUM_KEY:" + $testSpecId + ",ci.westminster.mod.uk,58703752098d7092a5a986709t34D8h764f510"
+ $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:TEST_SPEC_ID,DOMAIN,SELENIUM_KEY:" + $testSpecId + ",apex1uk.revion.com,58703752098d7092a5a986709t34D8h764f510"
  
  wget $theSpecURL -OutFile $specFileName
  wget $theCaseURL -OutFile $caseFileName
  
- java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite "*firefox C:\Program Files (x86)\Mozilla Firefox\firefox.exe" "https://ci.westminster.mod.uk/app/" $specFileName $resultFileName
+ java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite "*firefox C:\Program Files (x86)\Mozilla Firefox\firefox.exe" "https://apex1uk.revion.com/pls/apex/" $specFileName $resultFileName
 }
