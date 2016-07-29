@@ -14,9 +14,9 @@ begin
 wwv_flow_api.import_begin (
  p_version_yyyy_mm_dd=>'2013.01.01'
 ,p_release=>'5.0.3.00.03'
-,p_default_workspace_id=>7348400917538735
+,p_default_workspace_id=>44984712792917604
 ,p_default_application_id=>108
-,p_default_owner=>'ATAF2'
+,p_default_owner=>'SHUNT'
 );
 end;
 /
@@ -27,12 +27,12 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   17:59 Wednesday July 27, 2016
---   Exported By:     HUNTS
+--   Date and Time:   08:33 Friday July 29, 2016
+--   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
 --   Version:         5.0.3.00.03
---   Instance ID:     63119159687698
+--   Instance ID:     69320554783092
 --
 
 -- Application Statistics:
@@ -60,7 +60,7 @@ prompt APPLICATION 108 - ATAF
 --     User Interface:
 --       Themes:                 1
 --       Templates:
---         Page:                10
+--         Page:                11
 --         Region:              13
 --         Label:                5
 --         List:                11
@@ -91,12 +91,12 @@ begin
 wwv_flow_api.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_display_id=>nvl(wwv_flow_application_install.get_application_id,108)
-,p_owner=>nvl(wwv_flow_application_install.get_schema,'SHUNT')
+,p_owner=>nvl(wwv_flow_application_install.get_schema,'ATAF2')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160727113833'
+,p_checksum_salt_last_reset=>'20160728215145'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
@@ -123,8 +123,8 @@ wwv_flow_api.create_flow(
 ,p_auto_time_zone=>'N'
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
-,p_last_updated_by=>'HUNTS'
-,p_last_upd_yyyymmddhh24miss=>'20160727113833'
+,p_last_updated_by=>'SHUNT'
+,p_last_upd_yyyymmddhh24miss=>'20160728215145'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -1346,19 +1346,49 @@ end;
 prompt --application/shared_components/user_interface/templates/page
 begin
 wwv_flow_api.create_template(
- p_id=>wwv_flow_api.id(67682338162118386818)
+ p_id=>wwv_flow_api.id(88648359260382482)
 ,p_theme_id=>42
-,p_name=>'Selenium'
+,p_name=>'Selenium Case'
 ,p_is_popup=>false
 ,p_header_template=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
 '<?xml version="1.0" encoding="UTF-8"?>',
 '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
 '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">',
-'<head #HEAD#>',
+'<head profile="http://selenium-ide.openqa.org/profiles/test-case">',
 '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
 '<link rel="selenium.base" href="&DOMAIN." />',
 '<title>&TEST_CASE_NAME.</title>',
-'</head>'))
+'</head>',
+'  #HEAD#'))
+,p_box=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'<body>',
+'  #BODY#'))
+,p_footer_template=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'</body>',
+'</html>'))
+,p_theme_class_id=>8
+,p_grid_type=>'TABLE'
+,p_grid_always_use_max_columns=>false
+,p_grid_has_column_span=>true
+,p_grid_always_emit=>true
+,p_grid_emit_empty_leading_cols=>true
+,p_grid_emit_empty_trail_cols=>false
+);
+wwv_flow_api.create_template(
+ p_id=>wwv_flow_api.id(67682338162118386818)
+,p_theme_id=>42
+,p_name=>'Selenium Spec'
+,p_is_popup=>false
+,p_header_template=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'<?xml version="1.0" encoding="UTF-8"?>',
+'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
+'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">',
+'<head>',
+'<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />',
+'<link rel="selenium.base" href="&DOMAIN." />',
+'<title>&TEST_CASE_NAME.</title>',
+'</head>',
+'    #HEAD#'))
 ,p_box=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
 '<body>',
 '  #BODY#'))
@@ -15163,15 +15193,14 @@ wwv_flow_api.create_page(
 ,p_step_sub_title_type=>'TEXT_WITH_SUBSTITUTIONS'
 ,p_first_item=>'NO_FIRST_ITEM'
 ,p_group_id=>wwv_flow_api.id(67683104437123403717)
-,p_html_page_header=>'profile="http://selenium-ide.openqa.org/profiles/test-case"'
-,p_step_template=>wwv_flow_api.id(67682338162118386818)
+,p_step_template=>wwv_flow_api.id(88648359260382482)
 ,p_page_template_options=>'#DEFAULT#'
 ,p_overwrite_navigation_list=>'N'
 ,p_page_is_public_y_n=>'Y'
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'HUNTS'
-,p_last_upd_yyyymmddhh24miss=>'20160727113833'
+,p_last_updated_by=>'SHUNT'
+,p_last_upd_yyyymmddhh24miss=>'20160728215145'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703693973236995207)
@@ -15242,6 +15271,7 @@ wwv_flow_api.create_page(
 ,p_group_id=>wwv_flow_api.id(67683104437123403717)
 ,p_step_template=>wwv_flow_api.id(67682338162118386818)
 ,p_page_template_options=>'#DEFAULT#'
+,p_dialog_chained=>'Y'
 ,p_overwrite_navigation_list=>'N'
 ,p_page_is_public_y_n=>'Y'
 ,p_cache_mode=>'NOCACHE'
