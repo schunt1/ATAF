@@ -9,6 +9,9 @@ CREATE TABLE  "ATAF_PROJECT"
 	"LAST_UPDATED_BY" VARCHAR2(32) NOT NULL ENABLE, 
 	"ACCESS_RESTRICTIONS" VARCHAR2(16), 
 	"OWNER" VARCHAR2(32), 
+	"PRE_UPLOAD_SCRIPT" VARCHAR2(4000),
+	"POST_UPLOAD_SCRIPT" VARCHAR2(4000),
+	"SELENIUM_KEY" VARCHAR2(32),
 	 CONSTRAINT "PROJECT_PK" PRIMARY KEY ("PROJECT_ID") ENABLE
    )
 /
@@ -297,6 +300,104 @@ ALTER TABLE  "ATAF_USER_RESTRICTIONS" ADD CONSTRAINT "USER_ACCESS_FK" FOREIGN KE
 /
 CREATE UNIQUE INDEX  "ATAF_SYSTEM_PARAMETERS_UK1" ON  "ATAF_SYSTEM_PARAMETERS" ("NAME")
 /
+CREATE TABLE  "ATAF_RESULT" 
+   (	"RESULT_ID" NUMBER, 
+	"BUILD_NUMBER" NUMBER, 
+	"DATE_LOADED" DATE, 
+	"CURRENT_YN" VARCHAR2(1), 
+	"ROW_KEY" VARCHAR2(16), 
+	 CONSTRAINT "ATAF_RESULT_PK1" PRIMARY KEY ("RESULT_ID")
+  USING INDEX  ENABLE
+   )
+/
+CREATE OR REPLACE TRIGGER  "ATAF_BI_RESULT" 
+  before insert on "ATAF_RESULT"               
+  for each row  
+begin   
+  IF inserting THEN
+    IF :NEW."RESULT_ID" IS NULL THEN
+      SELECT to_number(sys_guid(),'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+      INTO :NEW."RESULT_ID"
+      FROM sys.dual;
+      SELECT ataf_pkg.compress_int(ATAF_SEQ.NEXTVAL)
+      INTO :new.row_key
+      FROM dual;
+    END IF;
+  END IF;
+  :NEW.DATE_LOADED := SYSDATE;
+end;
+/
+ALTER TRIGGER  "ATAF_BI_RESULT" ENABLE
+/
+CREATE TABLE  "ATAF_SPEC_RESULT" 
+   (	"RESULT_SPEC_ID" NUMBER, 
+	"TEST_SPEC_ID" NUMBER, 
+	"HTML_REPORT" BLOB, 
+	"RESULT" VARCHAR2(256), 
+	"NUM_TEST_TOTAL" NUMBER, 
+	"NUM_TEST_PASSED" NUMBER, 
+	"NUM_TEST_FAILURE" NUMBER, 
+	"SELENIUM_VERSION" NUMBER, 
+	"TOTAL_TIME" NUMBER, 
+	"DATE_LOADED" DATE, 
+	"MIME_TYPE" VARCHAR2(256), 
+	"FILENAME" VARCHAR2(256), 
+	"HTML_REPORT_CLOB" CLOB, 
+	"NUM_TEST_ERROR" NUMBER, 
+	"RESULT_ID" NUMBER, 
+	 CONSTRAINT "ATAF_RESULT_PK" PRIMARY KEY ("RESULT_SPEC_ID")
+  USING INDEX  ENABLE
+   )
+/
+ALTER TABLE  "ATAF_SPEC_RESULT" ADD CONSTRAINT "ATAF_RESULT_FK" FOREIGN KEY ("TEST_SPEC_ID")
+	  REFERENCES  "ATAF_TEST_SPEC" ("TEST_SPEC_ID") ENABLE
+/
+ALTER TABLE  "ATAF_SPEC_RESULT" ADD CONSTRAINT "ATAF_SPEC_RESULT_FK" FOREIGN KEY ("RESULT_ID")
+	  REFERENCES  "ATAF_RESULT" ("RESULT_ID") ON DELETE CASCADE ENABLE
+/
+CREATE OR REPLACE TRIGGER  "BI_ATAF_SEPC_RESULT" 
+  before insert on "ATAF_SPEC_RESULT"               
+  for each row  
+begin   
+  if :NEW."RESULT_SPEC_ID" is null then 
+    select "ATAF_SEQ".nextval into :NEW."RESULT_SPEC_ID" from sys.dual;
+    :NEW.DATE_LOADED := SYSDATE;
+  end if; 
+end;
+/
+ALTER TRIGGER  "BI_ATAF_SEPC_RESULT" ENABLE
+/
+CREATE TABLE  "ATAF_CASE_RESULT" 
+   (	"CASE_RESULT_ID" NUMBER, 
+	"RESULT" VARCHAR2(255), 
+	"RESULT_HTML" CLOB, 
+	"ERROR_MSG" VARCHAR2(255), 
+	"TEST_CASE_ID" NUMBER, 
+	"RESULT_SPEC_ID" NUMBER, 
+	 CONSTRAINT "ATAF_CASE_RESULT_PK" PRIMARY KEY ("CASE_RESULT_ID")
+  USING INDEX  ENABLE
+   )
+/
+ALTER TABLE  "ATAF_CASE_RESULT" ADD CONSTRAINT "ATAF_CASE_RESULT_FK" FOREIGN KEY ("TEST_CASE_ID")
+	  REFERENCES  "ATAF_TEST_CASE" ("TEST_CASE_ID") ENABLE
+/
+ALTER TABLE  "ATAF_CASE_RESULT" ADD CONSTRAINT "ATAF_CASE_RESULT_FK2" FOREIGN KEY ("RESULT_SPEC_ID")
+	  REFERENCES  "ATAF_SPEC_RESULT" ("RESULT_SPEC_ID") ON DELETE CASCADE ENABLE
+/
+CREATE OR REPLACE TRIGGER  "BI_ATAF_CASE_RESULT" 
+  before insert on "ATAF_CASE_RESULT"               
+  for each row  
+begin   
+  if :NEW."CASE_RESULT_ID" is null then 
+    select "ATAF_SEQ".nextval into :NEW."CASE_RESULT_ID" from sys.dual; 
+  end if; 
+end; 
+/
+ALTER TRIGGER  "BI_ATAF_CASE_RESULT" ENABLE
+/
+alter table "ATAF_PROJECT" add ("UPLOAD_RESULTS_SCRIPT" VARCHAR2(4000)) 
+/ 
+
 CREATE OR REPLACE PACKAGE  "ATAF_PKG" 
 AS
 --
@@ -503,6 +604,9 @@ IS
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         02-Jul-16 2       Update to Test procedure                  |
 --| S. Hunt         19-Jul-16 3       Data groups in Test Procedure             |
+--| S. Hunt         09-Aug-16 4       Update to Test Procedure                  |
+--| S. Hunt         09-Aug-16 5       Update to Test Procedure                  |
+--| S. Hunt         11-Aug-16 6       Load Result File Added                    |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -643,6 +747,9 @@ END TEST_FUNC;
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         02-Jul-16 2       ClickAt added to AndWait commands         |
 --| S. Hunt         19-Jul-16 3       Filter case groups to data groups         |
+--| S. Hunt         09-Aug-16 4       Test Spec in its entirity                 |
+--| S. Hunt         09-Aug-16 5       Test Spec & Name added to data            |
+--| S. Hunt         11-Aug-16 6       Load Results File added                   |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id IN NUMBER,
@@ -654,19 +761,30 @@ IS
   l_test_name ataf_project.project_name%TYPE;
   l_test_case_old ataf_test_case.test_case%TYPE;
   l_theme_number NUMBER;
+  l_upload_results_script VARCHAR2(4000);
+  results_load_only EXCEPTION;
 BEGIN
+
+  IF p_case_id = 0 THEN
+    
+    RAISE results_load_only;
+    
+  END IF;
+  
   -----------------------------------------
   -- Get project name and application id --
   -- as this might be called from a WS   --  
-  -----------------------------------------
-  IF p_spec_id IS NOT NULL  -- if a test spec is provided
+  -----------------------------------------    
+  IF p_case_id IS NULL  -- if a test spec in its entirety
     THEN
     SELECT tp.test_spec,
       p.application_id,
-      aat.theme_number
+      aat.theme_number,
+      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
     INTO l_test_name,
       l_application_id,
-      l_theme_number
+      l_theme_number,
+      l_upload_results_script
     FROM ataf_test_spec tp,
       ataf_project p,
       apex_application_themes aat
@@ -719,6 +837,7 @@ FOR i IN (
                                AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)
                                AND (sc.data_id = ad.data_id or sc.data_id = 0)
   WHERE sc.test_spec_id = p_spec_id
+    AND sc.test_case_id = nvl(p_case_id,sc.test_case_id) -- added to return case for a spec
 ----------------------------
 -- Called from Test Case  --
 ----------------------------
@@ -733,6 +852,7 @@ FOR i IN (
   ataf_test_case cas
   LEFT OUTER JOIN ataf_test_data dat ON cas.test_data_id = dat.test_data_id
   WHERE cas.test_case_id = p_case_id
+    AND p_spec_id IS NULL  -- added to return case for a spec
 )
       
 -----------------
@@ -789,9 +909,11 @@ SELECT
     -- Value --
     -----------
     CASE
+      WHEN sel.data_yn = 'X' THEN tcv.name
       WHEN sel.data_yn = 'Y' THEN nvl(tcv.data_item_value,tdv.data_item_value) -- when selenium command is expecting data
       WHEN sel.data_yn = 'L' THEN 'label='||nvl(tcv.data_item_value,tdv.data_item_value) -- Prefix data with Label=
       WHEN sel.data_yn = 'A' THEN 'label='||tcv.label -- Prefix data with Label=
+      WHEN sel.data_yn = 'S' THEN to_char(p_spec_id)
       ELSE NULL
     END value
     ----------
@@ -842,10 +964,26 @@ ORDER BY
       htp.p('</tr>');
     
     END IF;
-    
+   
     l_test_case_old := i.test_case;
+    
   END LOOP;
   htp.p('</tbody></table>');
+  
+EXCEPTION WHEN results_load_only THEN
+
+    SELECT 
+      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
+    INTO 
+      l_upload_results_script
+    FROM ataf_test_spec tp,
+      ataf_project p
+    WHERE tp.project_id = p.project_id
+    AND tp.test_spec_id = p_spec_id;
+    
+    htp.p(l_upload_results_script);
+
+      
 END TEST;
 --
 --+=============================================================================+
@@ -1178,10 +1316,9 @@ CREATE OR REPLACE TRIGGER  "BI_ATAF_DATA_GROUPS"
   for each row  
 begin   
   if :NEW."DATA_GROUP_ID" is null then 
-    select "ATAF_DATA_GROUPS_SEQ".nextval into :NEW."DATA_GROUP_ID" from sys.dual; 
+    select "ATAF_SEQ".nextval into :NEW."DATA_GROUP_ID" from sys.dual; 
   end if; 
 end; 
-
 /
 ALTER TRIGGER  "BI_ATAF_DATA_GROUPS" ENABLE
 /
@@ -1510,24 +1647,59 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_APPLICATION_PAGES_V" ("WORKSPACE", "WORK
   AND workspace = (select v('ATAF_WORKSPACE') x from dual)
 /
 CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "ID", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2") AS 
-SELECT
- c001 APPLICATION_ID,
- c002 PAGE_ID,
- c003 LABEL,
- c004 TYPE,
- c005 DOM_ID,
- c006 NAME,
- c007 DISPLAY_SEQUENCE,
- c008 ID,
- c009 ELEMENT_TYPE,
- c010 REGION_ID,
- c011 REGION_NAME,
- c012 DISPLAY_SEQUENCE1,
- c013 DISPLAY_SEQUENCE2
+  SELECT
+--
+--+============================================================================
+--|                     Apex Test Automation Framework
+--|                                Andover
+--+=============================================================================+
+--|                                                                             |
+--| $Author: $                                                                  |
+--| $Date: $                                                                    |
+--| $Revision: $                                                                |
+--| $HeadURL: $                                                                 |
+--|                                                                             |
+--| Description : View of all apex and custom items drawn from apex views       |
+--|                                                                             |
+--| Modification History :                                                      |
+--| ----------------------                                                      |
+--|                                                                             |
+--| Author          Date      Version Remarks                                   |
+--| --------------- --------- ------- ------------------------------------------
+--| S. Hunt         09-Aug-16 1       Initial Version                           |
+--| S. Hunt         02-Sep-16 2       Ataf Items added                          |
+--+=============================================================================+   
+ APPLICATION_ID,
+ PAGE_ID,
+ LABEL,
+ TYPE,
+ DOM_ID,
+ NAME,
+ DISPLAY_SEQUENCE,
+ ID,
+ ELEMENT_TYPE,
+ REGION_ID,
+ REGION_NAME,
+ DISPLAY_SEQUENCE1,
+ DISPLAY_SEQUENCE2
 FROM
-  apex_collections
-WHERE
-  collection_name = 'APEX_PAGE_ITEMS'
+  ataf_apex_page_items_mv
+UNION ALL
+SELECT 
+  application_id,
+  page_id,
+  item_label label,
+  item_type TYPE,
+  item_dom_id,
+  item_name name,
+  display_sequence,
+  item_id id,
+  NULL element_type,
+  NULL region_id,
+  null region_name,
+  null display_sequence1,
+  null display_sequence2
+FROM ataf_item
 /
 CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
   SELECT 
@@ -1555,6 +1727,9 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          02-Jul-16 3       Changed Nav Bar to list item              |
 --| S.Hunt          06-Jul-16 4       Interactive report use Region Name        |
 --| S.Hunt          17-Jul-16 5       IR Static Region ID Added to DOM_ID       |
+--| S.Hunt          30-Jul-16 6       ataf_workspace removed                    |
+--| S.Hunt          31-Jul-16 7       Reports type added                        |
+--| S.Hunt          03-Sep-16 8       Custom Items Removed                      |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -1584,8 +1759,32 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           join apex_application_lists lis ON ent.list_id = lis.list_id and ent.workspace = lis.workspace
           join apex_application_page_regions reg ON lis.list_id = reg.list_id and lis.workspace = reg.workspace
           left outer join apex_application_list_entries ent2 on ent.list_entry_parent_id = ent2.list_entry_id and ent.workspace = ent2.workspace
-    WHERE ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)    
+    --WHERE ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)    
    UNION ALL
+   ------------------------
+   -- Application Region --
+   ------------------------     
+   SELECT
+     reg.application_id "APPLICATION_ID", 
+     reg.page_id "PAGE_ID", 
+     reg.region_name "LABEL", 
+     reg.source_type "TYPE", 
+     'R'||reg.region_id "DOM_ID", 
+     reg.region_name "NAME", 
+     reg.display_sequence "DISPLAY_SEQUENCE", 
+     null "DISPLAY_SEQUENCE1", 
+     null "DISPLAY_SEQUENCE2", 
+     to_number(reg.region_id) "ID", 
+     'div' "ELEMENT_TYPE", 
+     aap.page_alias "PAGE_ALIAS", 
+     to_char(reg.region_id) "REGION_ID", 
+     reg.region_name "REGION_NAME", 
+     reg.display_position "REGION_POSITION", 
+     decode(reg.condition_type, 'Never', 'N', 'Y') "DISPLAY"
+   FROM apex_application_page_regions reg
+   LEFT JOIN apex_application_pages aap ON reg.page_id = aap.page_id
+   WHERE reg.source_type = 'Report'
+   UNION ALL   
    ------------------------
    -- Sidebar Navigation --
    ------------------------
@@ -1610,7 +1809,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
      JOIN APEX_APPL_USER_INTERFACES ui ON ent.application_id = ui.application_id
                                       AND ent.list_id = ui.navigation_list_id
                                       and ent.workspace = ui.workspace
-     where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)                                
+     --where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)                                
      UNION ALL
    -----------------------------------
    -- Parent List Items Stores Only --
@@ -1635,12 +1834,12 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           apex_application_page_regions reg
     WHERE reg.list_id = lis.list_id
       and reg.workspace = lis.workspace
-      and reg.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+      --and reg.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    ------------------
    -- Custom Items --
    ------------------
-   SELECT application_id,
+/*   SELECT application_id,
           page_id,
           item_label label,
           item_type TYPE,
@@ -1657,11 +1856,11 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           'Y' display
    FROM ataf_item
-   UNION ALL
+   UNION ALL*/
    -------------
    -- Nav Bar --
    -------------
-/* Removed because navbar is now a list item
+
    SELECT 
           ent.application_id,
           0 page_id,
@@ -1685,7 +1884,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                                       and ent.workspace = ui.workspace
     where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-*/
+
    -----------------
    -- Apex Items  --
    -----------------
@@ -1708,8 +1907,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                when aapi.condition_type = 'Never' then 'N'
                else 'Y' end disply
      FROM apex_application_page_items aapi
-    WHERE 
-          aapi.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+   -- WHERE aapi.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    -------------------
    -- Apex Buttons  --
@@ -1734,7 +1932,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_buttons
-    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+--    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    ---------------
    -- Apex Tabs --
@@ -1756,7 +1954,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_tabs a
-    WHERE a.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+--    WHERE a.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    -----------------
    -- IR Columns  --
@@ -1778,7 +1976,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(display_condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_ir_col
-    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+--    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    --------------------
    -- Report Columns --
@@ -1801,7 +1999,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_rpt_cols
     WHERE column_is_hidden = 'No'
-      and workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+--      and workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    -------------------
    -- IR Components --
@@ -1872,7 +2070,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
            from 
              apex_application_page_ir ir 
            join APEX_APPLICATION_PAGE_REGIONS pr on ir.region_id = pr.region_id) aa
-          where aa.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+--          where aa.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    --------------
    -- Outcomes --
@@ -1916,6 +2114,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           'Y' dislpay
      FROM DUAL
 /
+
 CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
   SELECT 
 --
@@ -2197,6 +2396,56 @@ select
   null
  from ATAF_TEST_COND
 WHERE outcome_id IS NOT NULL
+/
+
+CREATE MATERIALIZED VIEW  "ATAF_APEX_PAGE_ITEMS_MV" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "ID", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2")
+  ORGANIZATION HEAP PCTFREE 5 PCTUSED 60 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  STORAGE(INITIAL 57344 NEXT 57344 MINEXTENTS 1 MAXEXTENTS 2147483645
+  PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1
+  BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
+  BUILD IMMEDIATE
+  USING INDEX 
+  REFRESH COMPLETE ON DEMAND START WITH sysdate+0 NEXT TRUNC(SYSDATE+1)
+  USING DEFAULT LOCAL ROLLBACK SEGMENT
+  USING ENFORCED CONSTRAINTS DISABLE QUERY REWRITE
+  AS select 
+  APPLICATION_ID,
+  PAGE_ID,
+  LABEL,
+  TYPE,
+  DOM_ID,
+  NAME,
+  DISPLAY_SEQUENCE,
+  ID,
+  ELEMENT_TYPE,
+  REGION_ID,
+  REGION_NAME,
+  DISPLAY_SEQUENCE1,
+  DISPLAY_SEQUENCE2
+from ATAF_APEX_PAGE_ITEMS_V
+  where display = 'Y'
+/
+
+CREATE OR REPLACE FORCE VIEW  "ATAF_RESULT_V" ("TEST_SPEC_ID", "HTML_REPORT", "RESULT", "NUM_TEST_TOTAL", "NUM_TEST_PASSED", "NUM_TEST_FAILURE", "SELENIUM_VERSION", "TOTAL_TIME", "MIME_TYPE", "FILENAME", "NUM_TEST_ERROR", "RESULT_ID", "DATE_LOADED", "BUILD_NUMBER") AS 
+  select 
+ asr.TEST_SPEC_ID,
+ asr.HTML_REPORT,
+ initcap(asr.RESULT) result,
+ asr.NUM_TEST_TOTAL,
+ asr.NUM_TEST_PASSED,
+ asr.NUM_TEST_FAILURE,
+ asr.SELENIUM_VERSION,
+ asr.TOTAL_TIME,
+ asr.MIME_TYPE,
+ asr.FILENAME,
+ asr.NUM_TEST_ERROR,
+ asr.RESULT_ID,
+ res.DATE_LOADED,
+ DECODE(res.BUILD_NUMBER,0,'Manual',to_char(res.build_number)) build_number
+ from ATAF_SPEC_RESULT asr
+join ATAF_RESULT res ON asr.result_id = res.result_id
+                    AND CURRENT_YN = 'Y'
 /
 
 --APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
