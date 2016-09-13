@@ -67,3 +67,7 @@ PROMPT 'Installing Application'
 PROMPT 'Running Web Services'
 -----------------------------
 @WEB_SERVICES/SELENIUM_WEB_SERVICES
+
+PROMPT 'Create Test Users'
+--------------------------
+@SQL/CREATE_USERS
