@@ -9,16 +9,13 @@ PROMPT 'Running Tables'
 -----------------------
 @TABLES/TABLES
 
-PROMPT 'Running Views'
-----------------------
+PROMPT 'Running Base Views'
+---------------------------
 @VIEWS/ATAF_APEX_PAGE_ITEMS_V
 @MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
 @VIEWS/ATAF_APEX_PAGE_ITEMS
-@VIEWS/ATAF_FULL_TEST_DATA_V
 @VIEWS/ATAF_RESULT_V
 @VIEWS/ATAF_TEST_COND_FULL_V
-@VIEWS/ATAF_TEST_CONDITION_FULL_V
-@VIEWS/ATAF_TEST_CONDITION_V
 
 PROMPT 'Running Packages'
 -------------------------
@@ -27,6 +24,12 @@ PROMPT 'Running Packages'
 @PACKAGES/ATAF_PKS
 @PACKAGES/ATAF_PKB
 
+PROMPT 'Running Views with functions'
+-------------------------------------
+@VIEWS/ATAF_FULL_TEST_DATA_V
+@VIEWS/ATAF_TEST_CONDITION_FULL_V
+@VIEWS/ATAF_TEST_CONDITION_V
+
 PROMPT 'Running Triggers'
 -------------------------
 @TRIGGERS/TRIGGERS
@@ -34,9 +37,9 @@ PROMPT 'Running Triggers'
 PROMPT 'Import Data'
 --------------------
 @ATAF_DATA/ATAF_ACTION_DATA
-@ATAF_DATA/ATAF_DATA_ITEM_DATA
 @ATAF_DATA/ATAF_SELENIUM_DATA
 @ATAF_DATA/ATAF_TEST_DATA
+@ATAF_DATA/ATAF_DATA_ITEM_DATA
 
 PROMPT 'Change User to ATAF Workspace'
 --------------------------------------
