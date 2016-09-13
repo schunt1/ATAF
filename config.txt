@@ -1,4 +1,0 @@
-baseurl: https://apex1uk.revion.com 
-screenshot-on-fail: C:\Selenium\Results\ScreenShot 
-html-result: C:\Selenium\Results\HTML 
-xml-result: C:\Selenium\Results\XML 

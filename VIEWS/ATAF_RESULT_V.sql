@@ -1,0 +1,20 @@
+CREATE OR REPLACE FORCE VIEW  "ATAF_RESULT_V" ("TEST_SPEC_ID", "HTML_REPORT", "RESULT", "NUM_TEST_TOTAL", "NUM_TEST_PASSED", "NUM_TEST_FAILURE", "SELENIUM_VERSION", "TOTAL_TIME", "MIME_TYPE", "FILENAME", "NUM_TEST_ERROR", "RESULT_ID", "DATE_LOADED", "BUILD_NUMBER") AS 
+  select 
+ asr.TEST_SPEC_ID,
+ asr.HTML_REPORT,
+ initcap(asr.RESULT) result,
+ asr.NUM_TEST_TOTAL,
+ asr.NUM_TEST_PASSED,
+ asr.NUM_TEST_FAILURE,
+ asr.SELENIUM_VERSION,
+ asr.TOTAL_TIME,
+ asr.MIME_TYPE,
+ asr.FILENAME,
+ asr.NUM_TEST_ERROR,
+ asr.RESULT_ID,
+ res.DATE_LOADED,
+ DECODE(res.BUILD_NUMBER,0,'Manual',to_char(res.build_number)) build_number
+ from ATAF_SPEC_RESULT asr
+join ATAF_RESULT res ON asr.result_id = res.result_id
+                    AND CURRENT_YN = 'Y'
+/

@@ -5,23 +5,65 @@ SET TIMING ON
 
 spool install.log
 
-PROMPT 'Running Build File'
-@buildScript.sql
+PROMPT 'Running Tables'
+-----------------------
+@TABLES/TABLES
 
-declare
-    l_workspace_id number;
-begin
-    select workspace_id into l_workspace_id
-      from apex_workspaces
-     where workspace = 'ATAF';
+PROMPT 'Running Views'
+----------------------
+@VIEWS/ATAF_APEX_PAGE_ITEMS
+@VIEWS/ATAF_APEX_PAGE_ITEMS_V
+@VIEWS/ATAF_FULL_TEST_DATA_V
+@VIEWS/ATAF_RESULT_V
+
+PROMPT 'Running Materialized Views'
+-----------------------------------
+@MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
+
+PROMPT 'Running Packages'
+-------------------------
+@PACKAGES/ATAF_DATA_GENERATOR_PKS
+@PACKAGES/ATAF_DATA_GENERATOR_PKB
+@PACKAGES/ATAF_PKS
+@PACKAGES/ATAF_PKB
+
+PROMPT 'Running Triggers'
+-------------------------
+@TRIGGERS/TRIGGERS
+
+PROMPT 'Import Data'
+--------------------
+@ATAF_DATA/ATAF_ACTION_DATA
+@ATAF_DATA/ATAF_DATA_ITEM_DATA
+@ATAF_DATA/ATAF_SELENIUM_DATA
+@ATAF_DATA/ATAF_TEST_DATA
+
+PROMPT 'Change User to ATAF Workspace'
+--------------------------------------
+DECLARE
+    l_workspace_id NUMBER;
+BEGIN
+    SELECT workspace_id INTO l_workspace_id
+      FROM apex_workspaces
+     WHERE workspace = 'ATAF';
     --
     apex_application_install.set_workspace_id( l_workspace_id );
     apex_application_install.set_application_id(108);
     apex_application_install.generate_offset;
     apex_application_install.set_schema( 'ATAF' );
     apex_application_install.set_application_alias( 'F' || apex_application.get_application_id );
-end;
+END;
 /
 
+PROMPT 'Creating ATAF Admin Group'
+---------------------------------_
+APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+
+PROMPT 'Insatlling ATAF Apex Application'
+-----------------------------------------
 PROMPT 'Installing Application'
-@F100710.SQL
+@APPLICATION_EXPORTS/ATAF_APPLICATION
+
+PROMPT 'Running Web Services'
+-----------------------------
+@WEB_SERVICES/SELENIUM_WEB_SERVICES
