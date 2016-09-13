@@ -16,6 +16,9 @@ PROMPT 'Running Base Views'
 @VIEWS/ATAF_APEX_PAGE_ITEMS
 @VIEWS/ATAF_RESULT_V
 @VIEWS/ATAF_TEST_COND_FULL_V
+@VIEWS/ATAF_FULL_TEST_DATA_V
+@VIEWS/ATAF_TEST_CONDITION_FULL_V
+@VIEWS/ATAF_TEST_CONDITION_V
 
 PROMPT 'Running Packages'
 -------------------------
@@ -23,12 +26,6 @@ PROMPT 'Running Packages'
 @PACKAGES/ATAF_DATA_GENERATOR_PKB
 @PACKAGES/ATAF_PKS
 @PACKAGES/ATAF_PKB
-
-PROMPT 'Running Views with functions'
--------------------------------------
-@VIEWS/ATAF_FULL_TEST_DATA_V
-@VIEWS/ATAF_TEST_CONDITION_FULL_V
-@VIEWS/ATAF_TEST_CONDITION_V
 
 PROMPT 'Running Triggers'
 -------------------------
@@ -49,19 +46,15 @@ BEGIN
     SELECT workspace_id INTO l_workspace_id
       FROM apex_workspaces
      WHERE workspace = 'ATAF';
-    --
     apex_application_install.set_workspace_id( l_workspace_id );
     apex_application_install.set_application_id(108);
     apex_application_install.generate_offset;
     apex_application_install.set_schema( 'ATAF' );
     apex_application_install.set_application_alias( 'F' || apex_application.get_application_id );
-END;
-/
-
-PROMPT 'Creating ATAF Admin Group'
-----------------------------------
-BEGIN
-  APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+    PROMPT 'Create Application Group'
+    ---------------------------------
+    APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
+    APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
 END;
 /
 
