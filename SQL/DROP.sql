@@ -30,11 +30,11 @@ drop TABLE ATAF_TEST_SPEC cascade constraints
 /
 drop TABLE ATAF_USER_RESTRICTIONS cascade constraints 
 /
+drop TABLE ATAF_CASE_RESULT
+/
 drop TABLE ATAF_SPEC_RESULT 
 /
 drop TABLE ATAF_RESULT
-/
-drop TABLE ATAF_CASE_RESULT
 /
 drop VIEW ATAF_APEX_APPLICATION_PAGES_V cascade constraints 
 /
@@ -49,8 +49,6 @@ drop VIEW ATAF_TEST_CONDITION_FULL_V cascade constraints
 drop VIEW ATAF_TEST_CONDITION_V cascade constraints 
 /
 drop VIEW ATAF_TEST_COND_FULL_V cascade constraints 
-/
-drop sequence ATAF_DATA_GROUPS_SEQ 
 / 
 drop sequence ATAF_SEQ 
 /
