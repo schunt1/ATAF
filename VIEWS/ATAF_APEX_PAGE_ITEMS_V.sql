@@ -27,18 +27,17 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          30-Jul-16 6       ataf_workspace removed                    |
 --| S.Hunt          31-Jul-16 7       Reports type added                        |
 --| S.Hunt          03-Sep-16 8       Custom Items Removed                      |
+--| S.Hunt          13-Sep-16 9       Carriage Returns removed                  |
 --+=============================================================================+   
    ----------------
    -- List Items --
    ----------------
           ent.application_id,
           reg.page_id,
-
           case
             when reg.region_name = 'Header Quick Navigation' then ent.entry_text
             when ent.list_entry_parent_id is not null then '- '||ent.entry_text
             else ent.entry_text end label,
-    
           decode(reg.region_name,'Header Quick Navigation','Nav Bar','List Item') TYPE,
           'L' || ent.list_entry_id dom_id,
           ent.entry_text name,
@@ -157,7 +156,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
    -------------
    -- Nav Bar --
    -------------
-
    SELECT 
           ent.application_id,
           0 page_id,
@@ -181,7 +179,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                                       and ent.workspace = ui.workspace
     where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-
    -----------------
    -- Apex Items  --
    -----------------
