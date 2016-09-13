@@ -51,8 +51,9 @@ BEGIN
     apex_application_install.generate_offset;
     apex_application_install.set_schema( 'ATAF' );
     apex_application_install.set_application_alias( 'F' || apex_application.get_application_id );
-    PROMPT 'Create Application Group'
-    ---------------------------------
+    ------------------------------------
+    -- Create Application Admin Group --
+	------------------------------------
     APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
     APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
 END;
