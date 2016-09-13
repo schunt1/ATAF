@@ -63,6 +63,7 @@ PROMPT 'Creating ATAF Admin Group'
 BEGIN
   APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
 END;
+/
 
 PROMPT 'Insatlling ATAF Apex Application'
 -----------------------------------------
