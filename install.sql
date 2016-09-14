@@ -38,18 +38,24 @@ PROMPT 'Import Data'
 @ATAF_DATA/ATAF_TEST_DATA
 @ATAF_DATA/ATAF_DATA_ITEM_DATA
 
+SET DEFINE ON
+
 PROMPT 'Change User to ATAF Workspace'
 --------------------------------------
 DECLARE
     l_workspace_id NUMBER;
+	l_schema       VARCHAR(64);
 BEGIN
     SELECT workspace_id INTO l_workspace_id
       FROM apex_workspaces
-     WHERE workspace = 'ATAF';
+     WHERE workspace = '&1';
+	SELECT sys_context('USERENV','SESSION_USER')
+	  INTO l_schema
+    FROM dual;
     apex_application_install.set_workspace_id( l_workspace_id );
-    apex_application_install.set_application_id(108);
+    apex_application_install.set_application_id(&2);
     apex_application_install.generate_offset;
-    apex_application_install.set_schema( 'ATAF' );
+    apex_application_install.set_schema( l_schema );
     apex_application_install.set_application_alias( 'F' || apex_application.get_application_id );
     ------------------------------------
     -- Create Application Admin Group --
@@ -58,6 +64,8 @@ BEGIN
     APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
 END;
 /
+
+SET DEFINE OFF
 
 PROMPT 'Insatlling ATAF Apex Application'
 -----------------------------------------
