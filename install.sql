@@ -12,7 +12,6 @@ PROMPT 'Running Tables'
 PROMPT 'Running Base Views'
 ---------------------------
 @VIEWS/ATAF_APEX_PAGE_ITEMS_V
-@MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
 @VIEWS/ATAF_APEX_PAGE_ITEMS
 @VIEWS/ATAF_RESULT_V
 @VIEWS/ATAF_TEST_COND_FULL_V
@@ -26,6 +25,10 @@ PROMPT 'Running Packages'
 @PACKAGES/ATAF_DATA_GENERATOR_PKB
 @PACKAGES/ATAF_PKS
 @PACKAGES/ATAF_PKB
+
+PROMPT 'Running Materialized Views'
+-----------------------------------
+@MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
 
 PROMPT 'Running Triggers'
 -------------------------
@@ -44,28 +47,22 @@ PROMPT 'Change User to ATAF Workspace'
 --------------------------------------
 DECLARE
     l_workspace_id NUMBER;
-	l_schema       VARCHAR(64);
+    l_schema       VARCHAR(64);
 BEGIN
     SELECT workspace_id INTO l_workspace_id
       FROM apex_workspaces
-     WHERE workspace = '&1';
-	SELECT sys_context('USERENV','SESSION_USER')
+     WHERE workspace = '&&WORKSPACE';
+     SELECT sys_context('USERENV','SESSION_USER')
 	  INTO l_schema
     FROM dual;
-    apex_application_install.set_workspace_id( l_workspace_id );
-    apex_application_install.set_application_id(&2);
-    apex_application_install.generate_offset;
-    apex_application_install.set_schema( l_schema );
-    apex_application_install.set_application_alias( 'F' || apex_application.get_application_id );
-    ------------------------------------
-    -- Create Application Admin Group --
-	------------------------------------
-    APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
-    APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+	APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
+    APEX_APPLICATION_INSTALL.set_workspace_id( l_workspace_id );
+    APEX_APPLICATION_INSTALL.set_application_id(&APP_ID);
+    APEX_APPLICATION_INSTALL.generate_offset;
+    APEX_APPLICATION_INSTALL.set_schema( l_schema );
+    APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
 END;
 /
-
-SET DEFINE OFF
 
 PROMPT 'Insatlling ATAF Apex Application'
 -----------------------------------------
@@ -78,4 +75,4 @@ PROMPT 'Running Web Services'
 
 PROMPT 'Create Test Users'
 --------------------------
-@SQL/CREATE_USERS
+@SQL/CREATE_USERS &WORKSPACE
