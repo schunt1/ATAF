@@ -4,7 +4,7 @@ DECLARE
 BEGIN
   SELECT workspace_id INTO lv_workspace_id
   FROM apex_workspaces
-  WHERE workspace = '&WORKSPACE';
+  WHERE workspace = '&1';
   APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>lv_workspace_id);
   APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
   lv_group_id := APEX_UTIL.GET_GROUP_ID(p_group_name => 'ataf_administrator');
