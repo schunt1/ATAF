@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   16:56 Saturday September 3, 2016
+--   Date and Time:   08:06 Saturday September 17, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -37,10 +37,10 @@ prompt APPLICATION 108 - ATAF
 
 -- Application Statistics:
 --   Pages:                     39
---     Items:                  140
+--     Items:                  141
 --     Computations:             7
 --     Validations:             12
---     Processes:               84
+--     Processes:               85
 --     Regions:                 84
 --     Buttons:                100
 --     Dynamic Actions:         37
@@ -91,12 +91,12 @@ begin
 wwv_flow_api.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_display_id=>nvl(wwv_flow_application_install.get_application_id,108)
-,p_owner=>nvl(wwv_flow_application_install.get_schema,'SHUNT')
+,p_owner=>nvl(wwv_flow_application_install.get_schema,'ATAF2')
 ,p_name=>nvl(wwv_flow_application_install.get_application_name,'ATAF')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160830190549'
+,p_checksum_salt_last_reset=>'20160916194425'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_compatibility_mode=>'5.0'
 ,p_flow_language=>'en'
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160830190549'
+,p_last_upd_yyyymmddhh24miss=>'20160916194425'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -240,7 +240,7 @@ wwv_flow_api.create_list_item(
  p_id=>wwv_flow_api.id(67687550838208494310)
 ,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Edit Project'
-,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:2:P2_PROJECT_ID:&PROJECT_ID.:'
+,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:2:P2_PROJECT_ID,P2_LAST_PAGE:&PROJECT_ID.,&APP_PAGE_ID.:'
 ,p_list_item_icon=>'fa-cog'
 ,p_list_item_disp_cond_type=>'PLSQL_EXPRESSION'
 ,p_list_item_disp_condition=>':project_id IS NOT NULL AND (:IS_OWNER = ''Yes'')'
@@ -11017,7 +11017,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160810083503'
+,p_last_upd_yyyymmddhh24miss=>'20160916194425'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67684313764022854434)
@@ -11058,7 +11058,8 @@ wwv_flow_api.create_page_plug(
 '       access_restrictions,',
 '       ataf_pkg.CURRENT_USER_IN_GROUP(''ataf_administrator'') admin,',
 '       write_access,',
-'       decode(owner,:app_user,''Yes'',''No'') IS_OWNER',
+'       decode(owner,:app_user,''Yes'',''No'') IS_OWNER,',
+'       selenium_key',
 '      ',
 'FROM',
 '(',
@@ -11074,6 +11075,7 @@ wwv_flow_api.create_page_plug(
 '   ap.last_updated_by,',
 '   aat.theme_number,',
 '   ap.access_restrictions,',
+'   ap.selenium_key,',
 '   case',
 '     when ur.access_level = ''Write'' then ''Yes''',
 '     -- when ap.access_restrictions IS NULL THEN ''Yes''',
@@ -11113,7 +11115,8 @@ wwv_flow_api.create_worksheet(
 ,p_show_calendar=>'N'
 ,p_show_flashback=>'N'
 ,p_download_formats=>'CSV:HTML:EMAIL'
-,p_detail_link=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.:RP:PROJECT_ID,P3_THEME_NUMBER,PROJECT_NAME,THEME_NUMBER,WRITE_ACCESS,APPLICATION_ID,IS_OWNER:#PROJECT_ID#,,#PROJECT_NAME#,#THEME_NUMBER#,#WRITE_ACCESS_P_ID#,#APPLICATION_ID#,#WRITE_ACCESS#'
+,p_detail_link=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.:RP:PROJECT_ID,P3_THEME_NUMBER,PROJECT_NAME,THEME_NUMBER,WRITE_ACCESS,APPLICATION_ID,IS_OWNER,SELENIUM_KEY:#PROJECT_ID#,,#PROJECT_NAME#,#THEME_NUMBER#,#WRITE_ACCESS_P_ID#,#APPLICATION_ID#,#WRITE_ACCESS#,#SELENIUM_KEY'
+||'#'
 ,p_detail_link_text=>'<img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">'
 ,p_owner=>'SHUNT'
 ,p_internal_uid=>16586227731719174
@@ -11283,6 +11286,15 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_label=>'Owner'
 ,p_column_type=>'STRING'
 );
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(30548644349819007)
+,p_db_column_name=>'SELENIUM_KEY'
+,p_display_order=>36
+,p_column_identifier=>'S'
+,p_column_label=>'Selenium key'
+,p_column_type=>'STRING'
+,p_display_text_as=>'HIDDEN'
+);
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(67720209380292693991)
 ,p_application_user=>'APXWS_DEFAULT'
@@ -11291,7 +11303,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>15
-,p_report_columns=>'PROJECT_ID:PROJECT_NAME:APPLICATION_ID:VERSION:IS_OWNER'
+,p_report_columns=>'PROJECT_ID:PROJECT_NAME:APPLICATION_ID:VERSION:IS_OWNER:SELENIUM_KEY'
 ,p_flashback_enabled=>'N'
 );
 wwv_flow_api.create_page_button(
@@ -11317,8 +11329,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(67686597633898521506)
 ,p_button_image_alt=>'Create New Project'
 ,p_button_position=>'REGION_TEMPLATE_CREATE'
-,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:2::'
-,p_grid_new_grid=>false
+,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:2:P2_LAST_PAGE:&APP_PAGE_ID.'
 );
 end;
 /
@@ -11345,7 +11356,7 @@ wwv_flow_api.create_page(
 ,p_cache_timeout_seconds=>21600
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160820134429'
+,p_last_upd_yyyymmddhh24miss=>'20160916194207'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(90483388527823013)
@@ -11566,8 +11577,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(67686597633898521506)
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'REGION_TEMPLATE_CLOSE'
-,p_button_redirect_url=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::'
-,p_grid_new_grid=>false
+,p_button_redirect_url=>'f?p=&APP_ID.:&P2_LAST_PAGE.:&SESSION.::&DEBUG.:::'
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(67720196789031583427)
@@ -11632,7 +11642,8 @@ wwv_flow_api.create_page_branch(
 );
 wwv_flow_api.create_page_branch(
  p_id=>wwv_flow_api.id(67720203881538583514)
-,p_branch_action=>'f?p=&APP_ID.:2:&SESSION.&success_msg=#SUCCESS_MSG#'
+,p_branch_name=>'Go To Page 2'
+,p_branch_action=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:::&success_msg=#SUCCESS_MSG#'
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_sequence=>40
@@ -11715,6 +11726,14 @@ wwv_flow_api.create_page_item(
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
 ,p_attribute_05=>'BOTH'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(93631172067308604)
+,p_name=>'P2_LAST_PAGE'
+,p_item_sequence=>130
+,p_item_plug_id=>wwv_flow_api.id(67720196471149583426)
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attribute_01=>'Y'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67706966450666065911)
@@ -11986,6 +12005,18 @@ wwv_flow_api.create_page_process(
 ,p_attribute_02=>'ATAF_PROJECT'
 ,p_attribute_03=>'P2_PROJECT_ID'
 ,p_attribute_04=>'PROJECT_ID'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(93631264858308605)
+,p_process_sequence=>20
+,p_process_point=>'AFTER_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Set Items'
+,p_process_sql_clob=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'IF :P2_LAST_PAGE IS NULL THEN',
+'  :P2_LAST_PAGE := ''2'';',
+'END IF;'))
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67720200881472583483)
@@ -15857,7 +15888,7 @@ wwv_flow_api.create_page(
 ,p_cache_timeout_seconds=>21600
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160819113259'
+,p_last_upd_yyyymmddhh24miss=>'20160916171714'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624007852573693)
@@ -15884,7 +15915,7 @@ wwv_flow_api.create_page_plug(
 ,p_include_in_reg_disp_sel_yn=>'N'
 ,p_plug_display_point=>'BODY_3'
 ,p_plug_source=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
-'  SELECT ts.test_spec_id,',
+'SELECT ts.test_spec_id,',
 '         ts.test_spec,',
 '         ts.test_type,',
 '         DECODE (ts.automate, ''Y'', ''Yes'', ''No'') automate,',
@@ -15899,8 +15930,8 @@ wwv_flow_api.create_page_plug(
 '    FROM ataf_test_spec ts, ataf_spec_case pc, ataf_test_case tc, ataf_result_v arv',
 '   WHERE ts.test_spec_id = pc.test_spec_id(+)',
 '         AND pc.test_case_id = tc.test_case_id(+)',
-'         AND ts.project_id = :project_id',
 '         AND ts.test_spec_id = arv.test_spec_id(+)',
+'         AND ts.project_id = :project_id',
 'GROUP BY ts.test_spec_id,',
 '         ts.test_spec,',
 '         ts.test_type,',
@@ -16018,7 +16049,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_identifier=>'G'
 ,p_column_label=>'Download'
 ,p_column_html_expression=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
-'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID,SELENIUM_KEY:#TEST_SPEC_ID#,,58703752098d7092a5a986709t34D8h764f510''));">',
+'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID:#TEST_SPEC_ID#,''));">',
 '<i class="fa fa-download"></i>&nbsp;Selenium</a>'))
 ,p_allow_pivot=>'N'
 ,p_column_type=>'STRING'
@@ -16087,7 +16118,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>50
-,p_report_columns=>'SORT_ORDER:TEST_SPEC_ID:MODULE:TEST_SPEC:STATUS:TEST_TYPE:AUTOMATE:RESULT:SCRIPT:TEST_SCRIPT:'
+,p_report_columns=>'SORT_ORDER:TEST_SPEC_ID:MODULE:TEST_SPEC:STATUS:TEST_TYPE:AUTOMATE:RESULT:SCRIPT:TEST_SCRIPT'
 ,p_sort_column_1=>'SORT_ORDER'
 ,p_sort_direction_1=>'ASC'
 ,p_sort_column_2=>'0'
@@ -16172,8 +16203,9 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(67686597633898521506)
 ,p_button_image_alt=>'Selenium Suite XML'
 ,p_button_position=>'REGION_TEMPLATE_EDIT'
-,p_button_redirect_url=>'javascript:void(window.open(''f?p=&APP_ID.:10:&SESSION.::::SELENIUM_KEY,MODULE_ID:58703752098d7092a5a986709t34D8h764f510''));'
+,p_button_redirect_url=>'javascript:void(window.open(''f?p=&APP_ID.:10:&SESSION.::::TEST_SPEC_ID:0''));'
 ,p_button_execute_validations=>'N'
+,p_button_condition_type=>'NEVER'
 ,p_grid_new_grid=>false
 );
 wwv_flow_api.create_page_button(
@@ -16391,7 +16423,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160811204849'
+,p_last_upd_yyyymmddhh24miss=>'20160916181054'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67720614972157361568)
@@ -16632,6 +16664,21 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>70
 ,p_item_plug_id=>wwv_flow_api.id(67720614972157361568)
 ,p_use_cache_before_default=>'NO'
+,p_item_default=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'DECLARE',
+'',
+'  lv_sort_order NUMBER;',
+'',
+'BEGIN',
+' ',
+' SELECT nvl(max(sort_order),0) + 10 INTO lv_sort_order',
+' FROM ataf_test_spec',
+' WHERE project_id = :PROJECT_ID;',
+'',
+' RETURN lv_sort_order;',
+' ',
+'END;'))
+,p_item_default_type=>'PLSQL_FUNCTION_BODY'
 ,p_prompt=>'Order'
 ,p_source=>'SORT_ORDER'
 ,p_source_type=>'DB_COLUMN'
@@ -17258,8 +17305,8 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'SIMON@APEXTESTAUTOMATION.CO.UK'
-,p_last_upd_yyyymmddhh24miss=>'20160628162604'
+,p_last_updated_by=>'SHUNT'
+,p_last_upd_yyyymmddhh24miss=>'20160916182215'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67687430307626315024)
@@ -17468,6 +17515,21 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>50
 ,p_item_plug_id=>wwv_flow_api.id(67687430307626315024)
 ,p_use_cache_before_default=>'NO'
+,p_item_default=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'DECLARE',
+'',
+'  lv_sort_order NUMBER;',
+'',
+'BEGIN',
+' ',
+' SELECT nvl(max(sort_order),-1) + 1 INTO lv_sort_order',
+' FROM ataf_spec_case',
+' WHERE test_spec_id = :P15_TEST_SPEC_ID;',
+'',
+' RETURN lv_sort_order;',
+' ',
+'END;'))
+,p_item_default_type=>'PLSQL_FUNCTION_BODY'
 ,p_prompt=>'Sort Order'
 ,p_source=>'SORT_ORDER'
 ,p_source_type=>'DB_COLUMN'
@@ -17852,8 +17914,8 @@ wwv_flow_api.create_page(
 ,p_page_is_public_y_n=>'N'
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
-,p_last_updated_by=>'ADMIN'
-,p_last_upd_yyyymmddhh24miss=>'20160422080013'
+,p_last_updated_by=>'SHUNT'
+,p_last_upd_yyyymmddhh24miss=>'20160916180426'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624975316573703)
@@ -17904,12 +17966,11 @@ wwv_flow_api.create_page_plug(
 'FROM ataf_test_case tc',
 'LEFT OUTER JOIN ataf_spec_case   sc ON tc.test_case_id  = sc.test_case_id',
 'LEFT OUTER JOIN ataf_test_spec   ts ON sc.test_spec_id  = ts.test_spec_id',
-'LEFT OUTER JOIN ataf_test_data   td ON tc.test_data_id       = td.test_data_id',
+'LEFT OUTER JOIN ataf_test_data   td ON tc.test_data_id  = td.test_data_id',
 'LEFT OUTER JOIN ataf_data        da ON sc.data_id       = da.data_id',
 'LEFT OUTER JOIN ataf_data_groups dg ON sc.data_group_id = dg.data_group_id',
 'WHERE    ',
-'     sc.test_spec_id = :p16_test_specification_id',
-''))
+'     sc.test_spec_id = :p16_test_specification_id'))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_ajax_items_to_submit=>'P16_TEST_SPECIFICATION'
 ,p_plug_query_row_template=>1
@@ -18070,7 +18131,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_display_order=>10
 ,p_column_identifier=>'J'
 ,p_column_label=>'Download'
-,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID,SELENIUM_KEY:,#TEST_CASE_ID#,58703752098d7092a5a986709t34D8h764f510''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
+,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID:,#TEST_CASE_ID#''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
 ,p_allow_pivot=>'N'
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
@@ -18197,7 +18258,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>50
-,p_report_columns=>'SORT_ORDER:TEST_CASE:STATUS:DATA_NAME:MODULE:DATA_ROW:DATA_GROUP:SCRIPT:TEST_SCRIPT:ADD_LINK:'
+,p_report_columns=>'SORT_ORDER:TEST_CASE:STATUS:DATA_NAME:MODULE:DATA_ROW:DATA_GROUP:SCRIPT:TEST_SCRIPT:ADD_LINK'
 ,p_sort_column_1=>'SORT_ORDER'
 ,p_sort_direction_1=>'ASC'
 ,p_sort_column_2=>'0'
@@ -18335,7 +18396,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160819103657'
+,p_last_upd_yyyymmddhh24miss=>'20160916173223'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(90483231037823012)
@@ -18571,7 +18632,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_display_order=>120
 ,p_column_identifier=>'L'
 ,p_column_label=>'&nbsp;'
-,p_column_link=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.:RP,18:P18_SORT_ORDER,P18_TEST_CASE_ID,P18_DEFAULT_PAGE_ID:#SEQUENCE#,&P17_TEST_CASE_ID.,#PAGE_ID#'
+,p_column_link=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.:RP,18:P18_DEFAULT_SORT_ORDER,P18_TEST_CASE_ID,P18_DEFAULT_PAGE_ID:#SEQUENCE#,&P17_TEST_CASE_ID.,#PAGE_ID#'
 ,p_column_linktext=>'<i class="fa fa-plus-square-o" />'
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
@@ -19404,7 +19465,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160703185422'
+,p_last_upd_yyyymmddhh24miss=>'20160916181826'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67720645586470650925)
