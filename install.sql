@@ -5,8 +5,8 @@ SET TIMING ON
 
 spool install.log
 
-PROMPT 'Running Tables'
------------------------
+PROMPT 'Running Tables and Sequence'
+------------------------------------
 @TABLES/TABLES
 
 PROMPT 'Running Base Views'
@@ -29,11 +29,6 @@ PROMPT 'Running Packages'
 PROMPT 'Running Materialized Views'
 -----------------------------------
 @MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
-
-PROMPT 'Create Trigger'
------------------------
-CREATE SEQUENCE   "ATAF_SEQ"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1000000 CACHE 20 NOORDER  NOCYCLE
-/
 
 PROMPT 'Running Triggers'
 -------------------------
