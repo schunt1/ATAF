@@ -50,7 +50,7 @@ drop VIEW ATAF_TEST_CONDITION_V cascade constraints
 /
 drop VIEW ATAF_TEST_COND_FULL_V cascade constraints 
 / 
-drop sequence ATAF_SEQ 
+drop SEQUENCE ATAF_SEQ 
 /
 drop PACKAGE ATAF_DATA_GENERATOR 
 /
