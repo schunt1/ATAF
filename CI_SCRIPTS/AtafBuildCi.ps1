@@ -3,8 +3,13 @@ param($build = 0)
 #Constants
 $seleniumKey = "3CA148C6E6472DC5E053F2EE0D55870C"
 $devServer = "https://apex1uk.revion.com/pls/apex/"
-$ciServer = "http://127.0.0.1:8080/apex/"
+$ciServer = "http://localhost:8080/apex/"
+#Fastest
 $browserAgent = "*firefox C:\Program Files (x86)\Mozilla Firefox\firefox.exe"
+#$browserAgent = "*iexplore"
+#Use FF Crome Agent
+#$browserAgent = "*chrome"
+#$browserAgent = "*googlechrome C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
 $appId = "108"
 $projectId = "9714"
 

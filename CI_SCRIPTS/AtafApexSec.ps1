@@ -1,0 +1,1 @@
+java -jar c:\ApexSec\apexsec-win64.jar --file C:\agent\vsts-agent-win7-x64-2.105.4\_work\1\s\APPLICATION_EXPORTS\ATAF_APPLICATION.sql --junit c:\ApexSec\atafApexSec
