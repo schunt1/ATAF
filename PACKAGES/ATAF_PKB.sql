@@ -183,7 +183,7 @@ IS
   l_upload_results_script VARCHAR2(4000);
   results_load_only EXCEPTION;
 BEGIN
-
+ 
   IF p_case_id = 0 THEN
     
     RAISE results_load_only;
@@ -238,7 +238,7 @@ BEGIN
     
     
 FOR i IN (
-
+ 
       WITH x AS
     
 ------------------------------------
@@ -286,7 +286,7 @@ SELECT
     x.data_group_id    case_group_id,
     tcv.data_group_id  cond_group_id,
     tdv.data_group_id  data_group_id,
-
+ 
     -----------------
     tcv.test_case,
     -- Command --
@@ -344,7 +344,7 @@ FROM
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
                                            AND nvl(tdv.data_id,0) = nvl(x.data_id,0)
-
+ 
 ---------------------------------------------------------------
             
 ORDER BY
@@ -371,7 +371,7 @@ ORDER BY
       htp.p('<td>'||apex_escape.html(i.command)||'</td>');
       htp.p('<td>'||apex_escape.html(i.target)||'</td>');
       htp.p('<td>'||apex_escape.html(i.value)||'</td>');
-
+ 
       ----------------------------------------------------------
       --   Debug to display group values - view in Sel Spec   --
       ----------------------------------------------------------
@@ -390,7 +390,7 @@ ORDER BY
   htp.p('</tbody></table>');
   
 EXCEPTION WHEN results_load_only THEN
-
+ 
     SELECT 
       replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
     INTO 
@@ -400,8 +400,8 @@ EXCEPTION WHEN results_load_only THEN
     WHERE tp.project_id = p.project_id
     AND tp.test_spec_id = p_spec_id;
     
-    htp.p(l_upload_results_script);
-
+    htp.p(apex_escape.html(l_upload_results_script));
+ 
       
 END TEST;
 --
