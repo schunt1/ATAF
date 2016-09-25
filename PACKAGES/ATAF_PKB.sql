@@ -400,7 +400,7 @@ EXCEPTION WHEN results_load_only THEN
     WHERE tp.project_id = p.project_id
     AND tp.test_spec_id = p_spec_id;
     
-    htp.p(apex_escape.html(l_upload_results_script));
+    htp.p(l_upload_results_script);
  
       
 END TEST;

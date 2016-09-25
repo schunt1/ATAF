@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   20:57 Sunday September 25, 2016
+--   Date and Time:   21:40 Sunday September 25, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160925205426'
+,p_checksum_salt_last_reset=>'20160925214000'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925205426'
+,p_last_upd_yyyymmddhh24miss=>'20160925214000'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -11937,7 +11937,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925170321'
+,p_last_upd_yyyymmddhh24miss=>'20160925214000'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67687699416554602395)
@@ -12468,7 +12468,6 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67711927964454684041)
 ,p_name=>'P4_AND_WAIT'
-,p_is_required=>true
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_api.id(67720519465902690202)
 ,p_use_cache_before_default=>'NO'
@@ -12616,7 +12615,7 @@ wwv_flow_api.create_page_item(
 );
 wwv_flow_api.create_page_validation(
  p_id=>wwv_flow_api.id(93631397760308606)
-,p_validation_name=>'New'
+,p_validation_name=>'Project Not Null for Non Admins'
 ,p_validation_sequence=>10
 ,p_validation=>'P4_PROJECT_ID'
 ,p_validation_type=>'ITEM_NOT_NULL'
