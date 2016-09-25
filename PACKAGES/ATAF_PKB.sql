@@ -24,6 +24,7 @@ IS
 --| S. Hunt         09-Aug-16 4       Update to Test Procedure                  |
 --| S. Hunt         09-Aug-16 5       Update to Test Procedure                  |
 --| S. Hunt         11-Aug-16 6       Load Result File Added                    |
+--| S. Hunt         25-Sep-16 7       apex_escape.html                          |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -167,6 +168,7 @@ END TEST_FUNC;
 --| S. Hunt         09-Aug-16 4       Test Spec in its entirity                 |
 --| S. Hunt         09-Aug-16 5       Test Spec & Name added to data            |
 --| S. Hunt         11-Aug-16 6       Load Results File added                   |
+--| S. Hunt         25-Sep-16 7       apex_escape.html                          |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id IN NUMBER,
@@ -355,7 +357,7 @@ ORDER BY
 )
   LOOP
     IF l_test_case_old IS NULL OR l_test_case_old != i.test_case THEN
-      htp.p('<!--Test Case: '||i.test_case||'-->');
+      htp.p('<!--Test Case: '||apex_escape.html(i.test_case)||'-->');
     END IF;
     
     -----------------------------------------------
@@ -398,7 +400,7 @@ EXCEPTION WHEN results_load_only THEN
     WHERE tp.project_id = p.project_id
     AND tp.test_spec_id = p_spec_id;
     
-    htp.p(l_upload_results_script);
+    htp.p(apex_escape.html(l_upload_results_script));
 
       
 END TEST;
@@ -538,4 +540,3 @@ PIPE ROW(l_vc_arr2(z));
 END LOOP;
 END ret_table;
 END "ATAF_PKG";
-/
