@@ -20,6 +20,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID",
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         19-Jul-16 1       Initial Version                           |
 --| S. Hunt         19-Jul-16 2       Include NULLS in UNPIVOT                  |
+--| S. Hunt         09-Oct-16 3       Data function null p1 error fix           |
 --+=============================================================================+   
   x.data_id,
   di.data_item_id,
@@ -30,7 +31,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID",
     when 1 then trim((case substr(di.parameter2,1,1) 
                     when 'D' THEN to_char(sysdate + x.data_item_value, di.parameter1)
                     when 'M' THEN to_char(add_months(sysdate,x.data_item_value), di.parameter1)
-                    else to_char(add_months(sysdate,x.data_item_value*12), di.parameter1)
+                    when 'Y' THEN to_char(add_months(sysdate,x.data_item_value*12), di.parameter1)
+                    else null
                 END))
     --
     when 5 then to_char(ataf_pkg.return_fy_start(sysdate)+ x.data_item_value,di.parameter1)
