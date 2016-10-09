@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   09:56 Monday September 26, 2016
+--   Date and Time:   12:09 Sunday October 9, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -43,7 +43,7 @@ prompt APPLICATION 108 - ATAF
 --     Processes:               85
 --     Regions:                 84
 --     Buttons:                100
---     Dynamic Actions:         36
+--     Dynamic Actions:         37
 --   Shared Components:
 --     Logic:
 --       Items:                 17
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20160926094759'
+,p_checksum_salt_last_reset=>'20161009115225'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160926094759'
+,p_last_upd_yyyymmddhh24miss=>'20161009115225'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -16603,7 +16603,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160926094138'
+,p_last_upd_yyyymmddhh24miss=>'20161009115225'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67687430307626315024)
@@ -16807,9 +16807,8 @@ wwv_flow_api.create_page_item(
 ,p_source=>'TEST_CASE_ID'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_HIDDEN'
-,p_protection_level=>'S'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'Y'
+,p_attribute_01=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67687434976962315035)
@@ -17220,7 +17219,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925202456'
+,p_last_upd_yyyymmddhh24miss=>'20161009113334'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624975316573703)
@@ -17635,7 +17634,7 @@ wwv_flow_api.create_page_computation(
 );
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(67703705764521938958)
-,p_name=>'Refresh IR'
+,p_name=>'Refresh Create'
 ,p_event_sequence=>10
 ,p_triggering_element_type=>'BUTTON'
 ,p_triggering_button_id=>wwv_flow_api.id(67720634382874650872)
@@ -17652,6 +17651,25 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements_type=>'REGION'
 ,p_affected_region_id=>wwv_flow_api.id(67720705585804073367)
 ,p_stop_execution_on_error=>'Y'
+);
+wwv_flow_api.create_page_da_event(
+ p_id=>wwv_flow_api.id(93631855872308611)
+,p_name=>'Refresh Edit'
+,p_event_sequence=>20
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_api.id(67720705585804073367)
+,p_bind_type=>'bind'
+,p_bind_event_type=>'apexafterclosedialog'
+);
+wwv_flow_api.create_page_da_action(
+ p_id=>wwv_flow_api.id(93631971661308612)
+,p_event_id=>wwv_flow_api.id(93631855872308611)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_api.id(67720705585804073367)
 );
 end;
 /

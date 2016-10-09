@@ -29,6 +29,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          03-Sep-16 8       Custom Items Removed                      |
 --| S.Hunt          16-Sep-16 9       ataf_workspace removed from Nav Bar       |
 --| S.Hunt          23-Sep-16 10      Carriage Returns removed                  |
+--| S.Hunt          09-Oct-16 11      Sidebar menu adjusted with nvl            |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -88,7 +89,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
    SELECT 
           ent.application_id,
           0 page_id,
-          SUBSTR(ent.entry_text,1,INSTR(ent.entry_text,'&')-2) label,
+          nvl(SUBSTR(ent.entry_text,1,INSTR(ent.entry_text,'&')-2),ent.entry_text) label,
           'List Item' TYPE,
           'L' || ent.list_entry_id dom_id,
           ent.entry_text name,
