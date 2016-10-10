@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   08:14 Monday October 10, 2016
+--   Date and Time:   18:32 Monday October 10, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20161010081351'
+,p_checksum_salt_last_reset=>'20161010183218'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20161010081351'
+,p_last_upd_yyyymmddhh24miss=>'20161010183218'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -14752,7 +14752,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20161009221013'
+,p_last_upd_yyyymmddhh24miss=>'20161010183218'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703693973236995207)
@@ -14801,7 +14801,7 @@ wwv_flow_api.create_page_process(
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Set Case Name'
 ,p_process_sql_clob=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
-'IF :test_case_id = 0 THEN',
+'IF :spec_case_id = 0 THEN',
 '',
 '  :test_case_name := ''Upload Results Script'';',
 ' ',

@@ -220,7 +220,7 @@ BEGIN
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
-/*  ELSIF p_spec_id IS NOT NULL  -- Spec in its entirety
+  ELSIF p_spec_id IS NOT NULL  -- Spec in its entirety
     THEN
     SELECT tp.test_spec,
       p.application_id,
@@ -253,7 +253,7 @@ BEGIN
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
-*/
+
   END IF;
   ----------------------
   -- Initialise table --
