@@ -26,6 +26,7 @@ IS
 --| S. Hunt         11-Aug-16 6       Load Result File Added                    |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
 --| S. Hunt         10-Oct-15 8       Test pkg updated                          |
+--| S. Hunt         10-Oct-15 9       Test pkg bug fix                          |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -171,6 +172,7 @@ END TEST_FUNC;
 --| S. Hunt         11-Aug-16 6       Load Results File added                   |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
 --| S. Hunt         10-Oct-15 8       specCase added                            |
+--| S. Hunt         10-Oct-15 9       specCase used for results file            |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
@@ -187,7 +189,7 @@ IS
   results_load_only EXCEPTION;
 BEGIN
 
-  IF p_case_id = 0 THEN
+  IF p_spec_case_id = 0 THEN
     
     RAISE results_load_only;
     
@@ -429,7 +431,7 @@ ORDER BY
 EXCEPTION WHEN results_load_only THEN
 
     SELECT 
-      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
+      replace(p.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
     INTO 
       l_upload_results_script
     FROM ataf_test_spec tp,
