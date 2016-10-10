@@ -41,7 +41,7 @@ foreach($obj1 in $specObject.items)
    foreach($obj2 in $caseObject.items)
    {
      $specCaseId = $obj2.spec_case_id
-     $caseFileName = "C:\Selenium\Scripts\" + $obj2.spec_case + ".htm"
+     $caseFileName = "C:\Selenium\Scripts\" + $obj2.test_case + ".htm"
      
      #Download the html Case file containing all the cases in the single specification  
      $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:PROJECT_ID,SPEC_CASE_ID,DOMAIN,SELENIUM_KEY:" + $projectId + ","+ $specCaseId + ",dev.westminster.mod.uk," + $seleniumKey
