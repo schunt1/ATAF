@@ -40,7 +40,7 @@ wwv_flow_api.create_restful_module(
 ,p_parsing_schema=>'SHUNT'
 ,p_items_per_page=>100000
 ,p_status=>'PUBLISHED'
-,p_row_version_number=>73
+,p_row_version_number=>74
 );
 wwv_flow_api.create_restful_template(
  p_id=>wwv_flow_api.id(88930788888843007)
@@ -133,7 +133,8 @@ wwv_flow_api.create_restful_handler(
 ,p_require_https=>'NO'
 ,p_source=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
 'SELECT * FROM (',
-'    SELECT sc.test_spec_id,',
+'    SELECT null test_spec_id,',
+'         --sc.test_spec_id,',
 '         sc.spec_case_id,',
 '         --tc.test_case',
 '         ''Case_''||sc.spec_case_id test_case',
