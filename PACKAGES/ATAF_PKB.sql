@@ -199,25 +199,7 @@ BEGIN
   -- Get project name and application id --
   -- as this might be called from a WS   --  
   -----------------------------------------    
-  IF p_spec_id IS NOT NULL
-    THEN
-    SELECT tp.test_spec,
-      p.application_id,
-      aat.theme_number,
-      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
-    INTO l_test_name,
-      l_application_id,
-      l_theme_number,
-      l_upload_results_script
-    FROM ataf_test_spec tp,
-      ataf_project p,
-      apex_application_themes aat
-    WHERE tp.project_id = p.project_id
-    AND tp.test_spec_id = p_spec_id
-    AND p.application_id = aat.application_id
-    AND aat.is_current = 'Yes'
-    AND aat.ui_type_name = 'DESKTOP';
-  ELSIF p_spec_case_id IS NOT NULL  -- if a test case for a spec is provided
+  IF p_spec_case_id IS NOT NULL  -- if a test case for a spec is provided
     THEN
     SELECT tc.test_case,
       p.application_id,
@@ -233,6 +215,24 @@ BEGIN
         tc.test_case_id = sc.test_case_id
     AND sc.spec_case_id = p_spec_case_id    
     AND tc.project_id = p.project_id
+    AND p.application_id = aat.application_id
+    AND aat.is_current = 'Yes'
+    AND aat.ui_type_name = 'DESKTOP';
+  ELSIF p_spec_id IS NOT NULL  -- Spec in its entirety
+    THEN
+    SELECT tp.test_spec,
+      p.application_id,
+      aat.theme_number,
+      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
+    INTO l_test_name,
+      l_application_id,
+      l_theme_number,
+      l_upload_results_script
+    FROM ataf_test_spec tp,
+      ataf_project p,
+      apex_application_themes aat
+    WHERE tp.project_id = p.project_id
+    AND tp.test_spec_id = p_spec_id
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
