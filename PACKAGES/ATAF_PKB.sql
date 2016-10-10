@@ -25,6 +25,7 @@ IS
 --| S. Hunt         09-Aug-16 5       Update to Test Procedure                  |
 --| S. Hunt         11-Aug-16 6       Load Result File Added                    |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
+--| S. Hunt         10-Oct-15 8       Test pkg updated                          |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -169,11 +170,13 @@ END TEST_FUNC;
 --| S. Hunt         09-Aug-16 5       Test Spec & Name added to data            |
 --| S. Hunt         11-Aug-16 6       Load Results File added                   |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
+--| S. Hunt         10-Oct-15 8       specCase added                            |
 --+=============================================================================+
 PROCEDURE TEST(
-      p_spec_id IN NUMBER,
-      p_case_id IN NUMBER,
-      p_domain  IN VARCHAR2
+      p_spec_id      IN NUMBER,
+      p_case_id      IN NUMBER,
+      p_spec_case_id IN NUMBER,
+      p_domain       IN VARCHAR2
   )
 IS
   l_application_id NUMBER;
@@ -183,7 +186,7 @@ IS
   l_upload_results_script VARCHAR2(4000);
   results_load_only EXCEPTION;
 BEGIN
- 
+
   IF p_case_id = 0 THEN
     
     RAISE results_load_only;
@@ -194,7 +197,7 @@ BEGIN
   -- Get project name and application id --
   -- as this might be called from a WS   --  
   -----------------------------------------    
-  IF p_case_id IS NULL  -- if a test spec in its entirety
+  IF p_spec_id IS NOT NULL  -- if a test spec in its entirety
     THEN
     SELECT tp.test_spec,
       p.application_id,
@@ -209,6 +212,25 @@ BEGIN
       apex_application_themes aat
     WHERE tp.project_id = p.project_id
     AND tp.test_spec_id = p_spec_id
+    AND p.application_id = aat.application_id
+    AND aat.is_current = 'Yes'
+    AND aat.ui_type_name = 'DESKTOP';
+  ELSIF p_spec_case_id IS NOT NULL  -- if a test case for a spec is provided
+    THEN
+    SELECT tc.test_case,
+      p.application_id,
+      aat.theme_number
+    INTO l_test_name,
+      l_application_id,
+      l_theme_number
+    FROM ataf_test_case tc,
+      ataf_spec_case sc,
+      ataf_project p,
+      apex_application_themes aat
+    WHERE 
+        tc.test_case_id = sc.test_case_id
+    AND sc.spec_case_id = p_spec_case_id    
+    AND tc.project_id = p.project_id
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
@@ -238,13 +260,13 @@ BEGIN
     
     
 FOR i IN (
- 
+
       WITH x AS
     
-------------------------------------
--- Called from Test Specification --
-------------------------------------
 (
+----------------------------
+-- Complete Specification --
+----------------------------
  SELECT sc.test_case_id,
         sc.sort_order,
         decode(sc.data_id,0,ad.data_id,sc.data_id)  data_id,
@@ -257,6 +279,21 @@ FOR i IN (
                                AND (sc.data_id = ad.data_id or sc.data_id = 0)
   WHERE sc.test_spec_id = p_spec_id
     AND sc.test_case_id = nvl(p_case_id,sc.test_case_id) -- added to return case for a spec
+------------------------------------
+-- Called from Test Specification --
+------------------------------------
+ UNION ALL
+ SELECT sc.test_case_id,
+        sc.sort_order,
+        decode(sc.data_id,0,ad.data_id,sc.data_id)  data_id,
+        ad.data_group_id data_group_id,
+        sc.data_group_id spec_group_id
+  FROM ataf_spec_case sc
+  JOIN ataf_test_case tc ON sc.test_case_id = tc.test_case_id
+  LEFT OUTER JOIN ataf_data ad ON tc.test_data_id = ad.test_data_id
+                               AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)
+                               AND (sc.data_id = ad.data_id or sc.data_id = 0)
+  WHERE sc.spec_case_id = p_spec_case_id    
 ----------------------------
 -- Called from Test Case  --
 ----------------------------
@@ -286,7 +323,7 @@ SELECT
     x.data_group_id    case_group_id,
     tcv.data_group_id  cond_group_id,
     tdv.data_group_id  data_group_id,
- 
+
     -----------------
     tcv.test_case,
     -- Command --
@@ -344,7 +381,7 @@ FROM
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
                                            AND nvl(tdv.data_id,0) = nvl(x.data_id,0)
- 
+
 ---------------------------------------------------------------
             
 ORDER BY
@@ -371,7 +408,7 @@ ORDER BY
       htp.p('<td>'||apex_escape.html(i.command)||'</td>');
       htp.p('<td>'||apex_escape.html(i.target)||'</td>');
       htp.p('<td>'||apex_escape.html(i.value)||'</td>');
- 
+
       ----------------------------------------------------------
       --   Debug to display group values - view in Sel Spec   --
       ----------------------------------------------------------
@@ -390,7 +427,7 @@ ORDER BY
   htp.p('</tbody></table>');
   
 EXCEPTION WHEN results_load_only THEN
- 
+
     SELECT 
       replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
     INTO 
@@ -401,7 +438,7 @@ EXCEPTION WHEN results_load_only THEN
     AND tp.test_spec_id = p_spec_id;
     
     htp.p(l_upload_results_script);
- 
+
       
 END TEST;
 --

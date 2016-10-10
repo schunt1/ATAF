@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE  "ATAF_PKG" 
+create or replace PACKAGE  "ATAF_PKG" 
 AS
 --
 --+============================================================================
@@ -19,6 +19,7 @@ AS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
+--| S. Hunt         10-Oct-15 2       Tes Prodedure updated                     |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -74,10 +75,12 @@ IS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
+--| S. Hunt         10-Oct-15 2       specCase added                            |
 --+=============================================================================+
   PROCEDURE test(
       p_spec_id IN NUMBER,
       p_case_id IN NUMBER,
+      p_spec_case_id IN NUMBER,
       p_domain  IN VARCHAR2
     );
 --

@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   18:12 Sunday October 9, 2016
+--   Date and Time:   07:56 Monday October 10, 2016
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -46,7 +46,7 @@ prompt APPLICATION 108 - ATAF
 --     Dynamic Actions:         37
 --   Shared Components:
 --     Logic:
---       Items:                 17
+--       Items:                 18
 --       Processes:              2
 --       Data Loading:           1
 --     Navigation:
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20161009172135'
+,p_checksum_salt_last_reset=>'20161009221443'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_FAVICONS'
 ,p_substitution_value_01=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20161009172135'
+,p_last_upd_yyyymmddhh24miss=>'20161009221443'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -589,6 +589,7 @@ wwv_flow_api.create_flow_process(
 '  dbms_sql.close_cursor(l_cursor);',
 '   ',
 'END;'))
+,p_process_when_type=>'NEVER'
 ,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
 );
 wwv_flow_api.create_flow_process(
@@ -684,6 +685,11 @@ wwv_flow_api.create_flow_item(
 wwv_flow_api.create_flow_item(
  p_id=>wwv_flow_api.id(67703700463565600583)
 ,p_name=>'SELENIUM_KEY'
+,p_protection_level=>'N'
+);
+wwv_flow_api.create_flow_item(
+ p_id=>wwv_flow_api.id(94913469025799400)
+,p_name=>'SPEC_CASE_ID'
 ,p_protection_level=>'N'
 );
 wwv_flow_api.create_flow_item(
@@ -14746,7 +14752,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925171728'
+,p_last_upd_yyyymmddhh24miss=>'20161009221013'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703693973236995207)
@@ -14755,7 +14761,12 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'N'
 ,p_plug_display_point=>'BODY_3'
-,p_plug_source=>'ataf_pkg.test(:TEST_SPEC_ID, :TEST_CASE_ID, :DOMAIN);'
+,p_plug_source=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
+'ataf_pkg.test(',
+'    p_spec_id =>:TEST_SPEC_ID, ',
+'    p_case_id =>:TEST_CASE_ID, ',
+'    p_spec_case_id => :SPEC_CASE_ID, ',
+'    p_domain => :DOMAIN);'))
 ,p_plug_source_type=>'NATIVE_PLSQL'
 ,p_plug_query_row_template=>1
 ,p_plug_query_headings_type=>'QUERY_COLUMNS'
@@ -14801,6 +14812,14 @@ wwv_flow_api.create_page_process(
 '  FROM ataf_test_case',
 ' WHERE test_case_id = :test_case_id;',
 '',
+'ELSIF :spec_case_id IS NOT NULL THEN',
+'',
+'SELECT tc.test_case',
+'  INTO :test_case_name',
+'  FROM ataf_test_case tc',
+'  JOIN ataf_spec_case sc ON tc.test_case_id = sc.test_case_id',
+' WHERE sc.spec_case_id = :spec_case_id;',
+' ',
 'ELSE',
 '',
 'SELECT test_spec',
@@ -15199,7 +15218,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925151835'
+,p_last_upd_yyyymmddhh24miss=>'20161009221443'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624007852573693)
@@ -15356,7 +15375,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_identifier=>'G'
 ,p_column_label=>'Download'
 ,p_column_html_expression=>wwv_flow_utilities.join(wwv_flow_t_varchar2(
-'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID:#TEST_SPEC_ID#,''));">',
+'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:SPEC_CASE_ID,TEST_SPEC_ID,TEST_CASE_ID:,#TEST_SPEC_ID#,''));">',
 '<i class="fa fa-download"></i>&nbsp;Selenium</a>'))
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
@@ -17220,7 +17239,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20161009113334'
+,p_last_upd_yyyymmddhh24miss=>'20161009214907'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624975316573703)
@@ -17429,7 +17448,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_display_order=>10
 ,p_column_identifier=>'J'
 ,p_column_label=>'Download'
-,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID:,#TEST_CASE_ID#''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
+,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:SPEC_CASE_ID,TEST_SPEC_ID,TEST_CASE_ID:#SPEC_CASE_ID#,,''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
 ,p_static_id=>'SCRIPT'
@@ -24810,7 +24829,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20160925153109'
+,p_last_upd_yyyymmddhh24miss=>'20161009214447'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67687788363281055784)
@@ -25016,7 +25035,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_display_order=>10
 ,p_column_identifier=>'J'
 ,p_column_label=>'Download'
-,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:TEST_SPEC_ID,TEST_CASE_ID,SELENIUM_KEY:,#TEST_CASE_ID#,58703752098d7092a5a986709t34D8h764f510''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
+,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:SPEC_CASE_ID,TEST_SPEC_ID,TEST_CASE_ID,SELENIUM_KEY:,,#TEST_CASE_ID#,58703752098d7092a5a986709t34D8h764f510''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
 ,p_static_id=>'SCRIPT'

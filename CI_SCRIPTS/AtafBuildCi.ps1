@@ -40,11 +40,11 @@ foreach($obj1 in $specObject.items)
    #Loop through cases
    foreach($obj2 in $caseObject.items)
    {
-     $testCaseId = $obj2.test_case_id
-     $caseFileName = "C:\Selenium\Scripts\" + $obj2.test_case + ".htm"
+     $specCaseId = $obj2.spec_case_id
+     $caseFileName = "C:\Selenium\Scripts\" + $obj2.spec_case + ".htm"
      
      #Download the html Case file containing all the cases in the single specification  
-     $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:PROJECT_ID,TEST_SPEC_ID,TEST_CASE_ID,DOMAIN,SELENIUM_KEY:" + $projectId + "," + $testSpecId +","+ $testCaseId + ",dev.westminster.mod.uk," + $seleniumKey
+     $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:PROJECT_ID,SPEC_CASE_ID,DOMAIN,SELENIUM_KEY:" + $projectId + ","+ $specCaseId + ",dev.westminster.mod.uk," + $seleniumKey
 
      wget $theCaseURL -OutFile $caseFileName
  
