@@ -44,7 +44,7 @@ foreach($obj1 in $specObject.items)
      $caseFileName = "C:\Selenium\Scripts\" + $obj2.test_case + ".htm"
      
      #Download the html Case file containing all the cases in the single specification  
-     $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:PROJECT_ID,SPEC_CASE_ID,DOMAIN,SELENIUM_KEY:" + $projectId + ","+ $specCaseId + ",dev.westminster.mod.uk," + $seleniumKey
+     $theCaseURL = "https://apex1uk.revion.com/pls/apex/f?p=108:9:::NO:9:PROJECT_ID,TEST_SPEC_ID,SPEC_CASE_ID,DOMAIN,SELENIUM_KEY:" + $projectId + ","+ $testSpecId + ","+ $specCaseId + ",dev.westminster.mod.uk," + $seleniumKey
 
      wget $theCaseURL -OutFile $caseFileName
  

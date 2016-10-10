@@ -199,7 +199,7 @@ BEGIN
   -- Get project name and application id --
   -- as this might be called from a WS   --  
   -----------------------------------------    
-  IF p_spec_id IS NOT NULL  -- if a test spec in its entirety
+  IF p_spec_id IS NOT NULL AND p_spec_case_id IS NULL  -- if a test spec in its entirety
     THEN
     SELECT tp.test_spec,
       p.application_id,
