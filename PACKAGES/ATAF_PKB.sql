@@ -209,16 +209,18 @@ BEGIN
       l_theme_number
     FROM ataf_test_case tc,
       ataf_spec_case sc,
+      ataf_test_spec ts,
       ataf_project p,
       apex_application_themes aat
     WHERE 
         tc.test_case_id = sc.test_case_id
+    AND sc.test_spec_id = ts.test_spec_id
     AND sc.spec_case_id = p_spec_case_id    
-    AND tc.project_id = p.project_id
+    AND ts.project_id = p.project_id
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
-  ELSIF p_spec_id IS NOT NULL  -- Spec in its entirety
+/*  ELSIF p_spec_id IS NOT NULL  -- Spec in its entirety
     THEN
     SELECT tp.test_spec,
       p.application_id,
@@ -251,6 +253,7 @@ BEGIN
     AND p.application_id = aat.application_id
     AND aat.is_current = 'Yes'
     AND aat.ui_type_name = 'DESKTOP';
+*/
   END IF;
   ----------------------
   -- Initialise table --
@@ -280,7 +283,8 @@ FOR i IN (
                                AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)
                                AND (sc.data_id = ad.data_id or sc.data_id = 0)
   WHERE sc.test_spec_id = p_spec_id
-    AND sc.test_case_id = nvl(p_case_id,sc.test_case_id) -- added to return case for a spec
+    AND sc.test_case_id = sc.test_case_id
+    AND p_spec_case_id IS NULL and p_case_id IS NULL-- added to return case for a spec
 ------------------------------------
 -- Called from Test Specification --
 ------------------------------------
@@ -311,6 +315,7 @@ FOR i IN (
   LEFT OUTER JOIN ataf_test_data dat ON cas.test_data_id = dat.test_data_id
   WHERE cas.test_case_id = p_case_id
     AND p_spec_id IS NULL  -- added to return case for a spec
+   
 )
       
 -----------------
