@@ -30,6 +30,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          16-Sep-16 9       ataf_workspace removed from Nav Bar       |
 --| S.Hunt          23-Sep-16 10      Carriage Returns removed                  |
 --| S.Hunt          09-Oct-16 11      Sidebar menu adjusted with nvl            |
+--| S.Hunt          16-Oct-16 12      Nav Bar predicate added                   |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -180,6 +181,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                                       AND ent.list_id = ui.nav_bar_list_id
                                       and ent.workspace = ui.workspace
    -- where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+     WHERE ent.list_name = 'Navigation Bar'
    UNION ALL
    -----------------
    -- Apex Items  --
