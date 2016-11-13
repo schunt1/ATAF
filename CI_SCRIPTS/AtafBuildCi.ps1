@@ -51,7 +51,8 @@ foreach($obj1 in $specObject.items)
    }
 
  wget $theSpecURL -OutFile $specFileName
- java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite $browserAgent $ciServer $specFileName $resultFileName
+ #java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite $browserAgent $ciServer $specFileName $resultFileName
+ java -jar C:\Selenium\Server\selenium-html-runner-3.01.jar -htmlSuite $browserAgent $ciServer $specFileName $resultFileName
 
 }
 
@@ -64,7 +65,8 @@ $resultFileName = "C:\Selenium\Results\Spec_Upload_Results.htm"
 $theSpecURL = "https://apex1uk.revion.com/pls/apex/f?p=108:10:::NO:10:TEST_SPEC_ID,PROJECT_ID,SELENIUM_KEY:0," + $projectId + "," + $seleniumKey
 
 wget $theSpecURL -OutFile $specFileName
-java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite $browserAgent $devServer $specFileName $resultFileName
+ #java -jar C:\Selenium\Server\selenium-server-standalone-2.53.1.jar -htmlSuite $browserAgent $devServer $specFileName $resultFileName
+ java -jar C:\Selenium\Server\selenium-html-runner-3.01.jar -htmlSuite $browserAgent $ciServer $specFileName $resultFileName
 
 ############################
 #### CREATE JUNIT RESULTS ##
