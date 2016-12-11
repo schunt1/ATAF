@@ -1,4 +1,4 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
+CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
   SELECT 
 --
 --+============================================================================
@@ -31,6 +31,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          23-Sep-16 10      Carriage Returns removed                  |
 --| S.Hunt          09-Oct-16 11      Sidebar menu adjusted with nvl            |
 --| S.Hunt          16-Oct-16 12      Nav Bar predicate added                   |
+--| S.Hunt          21-Nov-16 13      Multiple Reports returned                 |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -82,6 +83,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
      decode(reg.condition_type, 'Never', 'N', 'Y') "DISPLAY"
    FROM apex_application_page_regions reg
    LEFT JOIN apex_application_pages aap ON reg.page_id = aap.page_id
+                                AND reg.application_id = aap.application_id
    WHERE reg.source_type = 'Report'
    UNION ALL   
    ------------------------
