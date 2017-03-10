@@ -1,3 +1,10 @@
+SET DEFINE OFF
+SET VERIFY OFF
+SET SERVEROUTPUT ON SIZE UNLIMITED
+SET TIMING ON
+
+spool drop.log
+
 drop TABLE "ATAF_ACTION" cascade constraints 
 /   
 drop TABLE ATAF_DATA cascade constraints 
@@ -29,12 +36,6 @@ drop TABLE ATAF_TEST_DATA cascade constraints
 drop TABLE ATAF_TEST_SPEC cascade constraints 
 /
 drop TABLE ATAF_USER_RESTRICTIONS cascade constraints 
-/
-drop TABLE ATAF_CASE_RESULT
-/
-drop TABLE ATAF_SPEC_RESULT 
-/
-drop TABLE ATAF_RESULT
 /
 drop VIEW ATAF_APEX_APPLICATION_PAGES_V cascade constraints 
 /
