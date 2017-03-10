@@ -1,0 +1,3136 @@
+SQL> PROMPT 'Running Tables and Sequence'
+'Running Tables and Sequence'
+SQL> ------------------------------------
+SQL> @TABLES/TABLES
+'Create Table Definitions'
+
+Table "ATAF_PROJECT" created.
+
+Elapsed: 00:00:00.213
+
+Table "ATAF_ACTION" created.
+
+Elapsed: 00:00:00.172
+
+Table "ATAF_TEST_DATA" created.
+
+Elapsed: 00:00:00.115
+
+Table "ATAF_DATA_GROUPS" created.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_DATA" created.
+
+Elapsed: 00:00:00.131
+
+Table "ATAF_DATA_ITEM" created.
+
+Elapsed: 00:00:00.129
+
+Table "ATAF_ITEM" created.
+
+Elapsed: 00:00:00.124
+
+Table "ATAF_MODULE" created.
+
+Elapsed: 00:00:00.120
+
+Table "ATAF_SELENIUM" created.
+
+Elapsed: 00:00:00.132
+
+Table "ATAF_TEST_CASE" created.
+
+Elapsed: 00:00:00.199
+
+Table "ATAF_TEST_SPEC" created.
+
+Elapsed: 00:00:00.122
+
+Table "ATAF_SPEC_CASE" created.
+
+Elapsed: 00:00:00.155
+
+Table "ATAF_SYSTEM_PARAMETERS" created.
+
+Elapsed: 00:00:00.114
+
+Table "ATAF_TEST_CASE_IOT" created.
+
+Elapsed: 00:00:00.108
+
+Table "ATAF_TEST_COND" created.
+
+Elapsed: 00:00:00.131
+
+Table "ATAF_USER_RESTRICTIONS" created.
+
+Elapsed: 00:00:00.116
+
+Table "ATAF_SPEC_RESULT" created.
+
+Elapsed: 00:00:00.813
+
+Table "ATAF_RESULT" created.
+
+Elapsed: 00:00:00.110
+
+Table "ATAF_CASE_RESULT" created.
+
+Elapsed: 00:00:00.117
+'Update Table Definitions'
+
+Table "ATAF_PROJECT" altered.
+
+Elapsed: 00:00:00.110
+'Add Constraints'
+
+Table "ATAF_ACTION" altered.
+
+Elapsed: 00:00:00.198
+
+Table "ATAF_DATA" altered.
+
+Elapsed: 00:00:00.128
+
+Table "ATAF_DATA" altered.
+
+Elapsed: 00:00:00.154
+
+Table "ATAF_DATA_GROUPS" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_SPEC_CASE" altered.
+
+Elapsed: 00:00:00.112
+
+Table "ATAF_TEST_COND" altered.
+
+Elapsed: 00:00:00.110
+
+Table "ATAF_TEST_SPEC" altered.
+
+Elapsed: 00:00:00.112
+
+Table "ATAF_DATA_ITEM" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_MODULE" altered.
+
+Elapsed: 00:00:00.115
+
+Table "ATAF_MODULE" altered.
+
+Elapsed: 00:00:00.110
+
+Table "ATAF_SELENIUM" altered.
+
+Elapsed: 00:00:00.118
+
+Table "ATAF_SPEC_CASE" altered.
+
+Elapsed: 00:00:00.112
+
+Table "ATAF_SPEC_CASE" altered.
+
+Elapsed: 00:00:00.231
+
+Table "ATAF_TEST_CASE" altered.
+
+Elapsed: 00:00:00.127
+
+Table "ATAF_TEST_CASE" altered.
+
+Elapsed: 00:00:00.109
+
+Table "ATAF_TEST_CASE_IOT" altered.
+
+Elapsed: 00:00:00.113
+
+Table "ATAF_TEST_CASE_IOT" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_TEST_COND" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_TEST_COND" altered.
+
+Elapsed: 00:00:00.113
+
+Table "ATAF_TEST_COND" altered.
+
+Elapsed: 00:00:00.113
+
+Table "ATAF_TEST_COND" altered.
+
+Elapsed: 00:00:00.112
+
+Table "ATAF_TEST_DATA" altered.
+
+Elapsed: 00:00:00.164
+
+Table "ATAF_TEST_DATA" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_TEST_SPEC" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_USER_RESTRICTIONS" altered.
+
+Elapsed: 00:00:00.111
+
+Table "ATAF_SPEC_RESULT" altered.
+
+Elapsed: 00:00:00.117
+
+Table "ATAF_SPEC_RESULT" altered.
+
+Elapsed: 00:00:00.117
+
+Table "ATAF_CASE_RESULT" altered.
+
+Elapsed: 00:00:00.113
+
+Table "ATAF_CASE_RESULT" altered.
+
+Elapsed: 00:00:00.117
+'Create Indexes'
+
+Unique index "ATAF_SYSTEM_PARAMETERS_UK1" created.
+
+Elapsed: 00:00:00.110
+'Create Sequences'
+
+Sequence "ATAF_SEQ" created.
+
+Elapsed: 00:00:00.096
+SQL> PROMPT 'Running Base Views'
+'Running Base Views'
+SQL> ---------------------------
+SQL> @VIEWS/ATAF_APEX_PAGE_ITEMS_V
+
+View "ATAF_APEX_PAGE_ITEMS_V" created.
+
+Elapsed: 00:00:01.215
+SQL> @VIEWS/ATAF_APEX_PAGE_ITEMS
+
+View "ATAF_APEX_PAGE_ITEMS" created.
+
+Elapsed: 00:00:00.124
+SQL> @VIEWS/ATAF_RESULT_V
+
+View "ATAF_RESULT_V" created.
+
+Elapsed: 00:00:00.109
+SQL> @VIEWS/ATAF_TEST_COND_FULL_V
+
+View "ATAF_TEST_COND_FULL_V" created.
+
+Elapsed: 00:00:00.112
+SQL> @VIEWS/ATAF_FULL_TEST_DATA_V
+
+View "ATAF_FULL_TEST_DATA_V" created.
+
+Elapsed: 00:00:00.155
+SQL> @VIEWS/ATAF_TEST_CONDITION_FULL_V
+
+View "ATAF_TEST_CONDITION_FULL_V" created.
+
+Elapsed: 00:00:00.148
+SQL> @VIEWS/ATAF_TEST_CONDITION_V
+
+View "ATAF_TEST_CONDITION_V" created.
+
+Elapsed: 00:00:00.290
+SQL> PROMPT 'Running Packages'
+'Running Packages'
+SQL> -------------------------
+SQL> @PACKAGES/ATAF_DATA_GENERATOR_PKS
+
+Package ATAF_DATA_GENERATOR compiled
+
+Elapsed: 00:00:00.539
+SQL> @PACKAGES/ATAF_DATA_GENERATOR_PKB
+
+Package body ATAF_DATA_GENERATOR compiled
+
+Elapsed: 00:00:00.477
+SQL> @PACKAGES/ATAF_PKS
+
+Package ATAF_PKG compiled
+
+Elapsed: 00:00:01.027
+SQL> @PACKAGES/ATAF_PKB
+
+Package body ATAF_PKG compiled
+
+Errors: check compiler log
+Elapsed: 00:00:00.545
+SQL> PROMPT 'Running Materialized Views'
+'Running Materialized Views'
+SQL> -----------------------------------
+SQL> @MATERIALIZED_VIEWS/ATAF_APEX_PAGE_ITEMS_MV
+
+Materialized view "ATAF_APEX_PAGE_ITEMS_MV" created.
+
+Elapsed: 00:02:18.298
+SQL> PROMPT 'Running Triggers'
+'Running Triggers'
+SQL> -------------------------
+SQL> @TRIGGERS/TRIGGERS
+
+Trigger ATAF_BI_RESULT compiled
+
+Elapsed: 00:00:00.284
+
+Trigger "ATAF_BI_RESULT" altered.
+
+Elapsed: 00:00:00.095
+
+Trigger BI_ATAF_SEPC_RESULT compiled
+
+Elapsed: 00:00:00.318
+
+Trigger "BI_ATAF_SEPC_RESULT" altered.
+
+Elapsed: 00:00:00.097
+
+Trigger BI_ATAF_CASE_RESULT compiled
+
+Elapsed: 00:00:00.298
+
+Trigger "BI_ATAF_CASE_RESULT" altered.
+
+Elapsed: 00:00:00.097
+
+Trigger BI_ATAF_DATA_GROUPS compiled
+
+Elapsed: 00:00:00.292
+
+Trigger "BI_ATAF_DATA_GROUPS" altered.
+
+Elapsed: 00:00:00.096
+
+Trigger ATAF_BI_USER_RESTRICTIONS compiled
+
+Elapsed: 00:00:00.293
+
+Trigger "ATAF_BI_USER_RESTRICTIONS" altered.
+
+Elapsed: 00:00:00.098
+
+Trigger ATAF_BI_TEST_SPEC compiled
+
+Elapsed: 00:00:00.321
+
+Trigger "ATAF_BI_TEST_SPEC" altered.
+
+Elapsed: 00:00:00.099
+
+Trigger ATAF_BI_TEST_DATA compiled
+
+Elapsed: 00:00:00.306
+
+Trigger "ATAF_BI_TEST_DATA" altered.
+
+Elapsed: 00:00:00.098
+
+Trigger ATAF_BI_TEST_COND compiled
+
+Elapsed: 00:00:00.301
+
+Trigger "ATAF_BI_TEST_COND" altered.
+
+Elapsed: 00:00:00.099
+
+Trigger ATAF_BI_TEST_CASE compiled
+
+Elapsed: 00:00:00.297
+
+Trigger "ATAF_BI_TEST_CASE" altered.
+
+Elapsed: 00:00:00.100
+
+Trigger ATAF_BI_SPEC_CASE compiled
+
+Elapsed: 00:00:00.297
+
+Trigger "ATAF_BI_SPEC_CASE" altered.
+
+Elapsed: 00:00:00.097
+
+Trigger ATAF_BI_SELENIUM compiled
+
+Elapsed: 00:00:00.303
+
+Trigger "ATAF_BI_SELENIUM" altered.
+
+Elapsed: 00:00:00.106
+
+Trigger ATAF_BI_PROJECT compiled
+
+Elapsed: 00:00:00.292
+
+Trigger "ATAF_BI_PROJECT" altered.
+
+Elapsed: 00:00:00.097
+
+Trigger ATAF_BI_MODULE compiled
+
+Elapsed: 00:00:00.295
+
+Trigger "ATAF_BI_MODULE" altered.
+
+Elapsed: 00:00:00.097
+
+Trigger ATAF_BI_ITEM compiled
+
+Elapsed: 00:00:00.299
+
+Trigger "ATAF_BI_ITEM" altered.
+
+Elapsed: 00:00:00.099
+
+Trigger ATAF_BI_DATA_ITEM compiled
+
+Elapsed: 00:00:00.305
+
+Trigger "ATAF_BI_DATA_ITEM" altered.
+
+Elapsed: 00:00:00.100
+
+Trigger ATAF_BI_DATA compiled
+
+Elapsed: 00:00:00.300
+
+Trigger "ATAF_BI_DATA" altered.
+
+Elapsed: 00:00:00.099
+
+Trigger ATAF_BI_ACTION compiled
+
+Elapsed: 00:00:00.301
+
+Trigger "ATAF_BI_ACTION" altered.
+
+Elapsed: 00:00:00.101
+
+View "ATAF_APEX_APPLICATION_PAGES_V" created.
+
+Elapsed: 00:00:00.163
+SQL> PROMPT 'Import Data'
+'Import Data'
+SQL> --------------------
+SQL> @ATAF_DATA/ATAF_ACTION
+
+1 row inserted.
+
+Elapsed: 00:00:00.115
+
+1 row inserted.
+
+Elapsed: 00:00:00.113
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.112
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.110
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+SQL> @ATAF_DATA/ATAF_SELENIUM
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.106
+SQL> @ATAF_DATA/ATAF_TEST_DATA
+
+1 row inserted.
+
+Elapsed: 00:00:00.100
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+SQL> @ATAF_DATA/ATAF_DATA_ITEM
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+SQL> @ATAF_DATA/ATAF_DATA
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.098
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.099
+
+1 row inserted.
+
+Elapsed: 00:00:00.099
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.098
+
+1 row inserted.
+
+Elapsed: 00:00:00.110
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.106
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+SQL> PROMPT 'Import Test Data'
+'Import Test Data'
+SQL> -------------------------
+SQL> @ATAF_DATA/ATAF_PROJECT
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+SQL> @ATAF_DATA/ATAF_TEST_SPEC
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+SQL> @ATAF_DATA/ATAF_TEST_CASE
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+SQL> @ATAF_DATA/ATAF_TEST_COND
+
+1 row inserted.
+
+Elapsed: 00:00:00.292
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.107
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.097
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.091
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+SQL> @ATAF_DATA/ATAF_SPEC_CASE
+
+1 row inserted.
+
+Elapsed: 00:00:00.095
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.096
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.093
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+
+1 row inserted.
+
+Elapsed: 00:00:00.092
+
+1 row inserted.
+
+Elapsed: 00:00:00.106
+
+1 row inserted.
+
+Elapsed: 00:00:00.094
+SQL> SET DEFINE ON
+SQL> PROMPT 'Change User to ATAF Workspace'
+'Change User to ATAF Workspace'
+SQL> --------------------------------------
+SQL> DECLARE
+    l_workspace_id NUMBER;
+    l_schema       VARCHAR(64);
+BEGIN
+    SELECT workspace_id INTO l_workspace_id
+      FROM apex_workspaces
+     WHERE workspace = '&&1';
+     SELECT sys_context('USERENV','SESSION_USER')
+	  INTO l_schema
+    FROM dual;
+	APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
+    APEX_APPLICATION_INSTALL.set_workspace_id( l_workspace_id );
+    ----------------------------------------
+    -- If not running the ATAF self test  --
+    ----------------------------------------
+    IF '&3' = 'No' THEN 
+      APEX_APPLICATION_INSTALL.set_application_id(&2);
+      APEX_APPLICATION_INSTALL.generate_offset;
+      APEX_APPLICATION_INSTALL.set_schema( l_schema );
+      APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
+    END IF;
+END;
+/
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.289
+SQL> PROMPT 'Insatlling ATAF Apex Application'
+'Insatlling ATAF Apex Application'
+SQL> -----------------------------------------
+SQL> PROMPT 'Installing Application'
+'Installing Application'
+SQL> @APPLICATION_EXPORTS/ATAF_APPLICATION
+Elapsed: 00:00:00.127
+API Last Extended:20160824
+Your Current Version:20160824
+This import is compatible with version: 20130101
+COMPATIBLE (You should be able to run this import without issues.)
+
+
+--application/set_environment
+APPLICATION 108 - ATAF
+--application/delete_application
+Elapsed: 00:00:00.746
+--application/ui_types
+Elapsed: 00:00:00.092
+--application/create_application
+Elapsed: 00:00:00.212
+--application/shared_components/navigation/lists
+Elapsed: 00:00:00.242
+--application/shared_components/files
+Elapsed: 00:00:00.230
+--application/plugin_settings
+Elapsed: 00:00:00.115
+--application/shared_components/security/authorizations
+Elapsed: 00:00:00.133
+--application/shared_components/navigation/navigation_bar
+Elapsed: 00:00:00.105
+--application/shared_components/logic/application_processes
+Elapsed: 00:00:00.199
+--application/shared_components/logic/application_items
+Elapsed: 00:00:00.124
+--application/shared_components/logic/application_computations
+Elapsed: 00:00:00.090
+--application/shared_components/navigation/tabs/standard
+Elapsed: 00:00:00.090
+--application/shared_components/navigation/tabs/parent
+Elapsed: 00:00:00.090
+--application/shared_components/user_interface/lovs
+Elapsed: 00:00:00.580
+--application/shared_components/navigation/trees
+Elapsed: 00:00:00.090
+--application/pages/page_groups
+Elapsed: 00:00:00.113
+--application/comments
+Elapsed: 00:00:00.090
+--application/shared_components/navigation/breadcrumbs/breadcrumb
+Elapsed: 00:00:00.205
+--application/shared_components/user_interface/templates/page
+Elapsed: 00:00:00.792
+Elapsed: 00:00:00.408
+Elapsed: 00:00:00.156
+--application/shared_components/user_interface/templates/button
+Elapsed: 00:00:00.121
+--application/shared_components/user_interface/templates/region
+Elapsed: 00:00:00.303
+--application/shared_components/user_interface/templates/list
+Elapsed: 00:00:00.281
+--application/shared_components/user_interface/templates/report
+Elapsed: 00:00:00.303
+--application/shared_components/user_interface/templates/label
+Elapsed: 00:00:00.167
+--application/shared_components/user_interface/templates/breadcrumb
+Elapsed: 00:00:00.103
+--application/shared_components/user_interface/templates/popuplov
+Elapsed: 00:00:00.134
+--application/shared_components/user_interface/templates/calendar
+Elapsed: 00:00:00.167
+--application/shared_components/user_interface/themes
+Elapsed: 00:00:00.179
+--application/shared_components/user_interface/theme_style
+Elapsed: 00:00:00.122
+--application/shared_components/user_interface/theme_files
+Elapsed: 00:00:01.173
+Elapsed: 00:00:00.206
+--application/shared_components/user_interface/theme_display_points
+Elapsed: 00:00:00.090
+--application/shared_components/user_interface/template_opt_groups
+Elapsed: 00:00:00.268
+--application/shared_components/user_interface/template_options
+Elapsed: 00:00:00.460
+Elapsed: 00:00:00.473
+Elapsed: 00:00:00.344
+--application/shared_components/logic/build_options
+Elapsed: 00:00:00.090
+--application/shared_components/globalization/language
+Elapsed: 00:00:00.090
+--application/shared_components/globalization/translations
+Elapsed: 00:00:00.091
+--application/shared_components/globalization/messages
+Elapsed: 00:00:00.090
+--application/shared_components/globalization/dyntranslations
+Elapsed: 00:00:00.090
+--application/shared_components/user_interface/shortcuts
+Elapsed: 00:00:00.115
+--application/shared_components/security/authentications
+Elapsed: 00:00:00.118
+--application/ui_types
+Elapsed: 00:00:00.090
+--application/shared_components/data_loading/tables/ataf_data
+Elapsed: 00:00:00.105
+--application/user_interfaces
+Elapsed: 00:00:00.121
+--application/user_interfaces/combined_files
+Elapsed: 00:00:00.090
+--application/pages/page_00000
+Elapsed: 00:00:00.192
+--application/pages/page_00001
+Elapsed: 00:00:00.312
+--application/pages/page_00002
+Elapsed: 00:00:00.978
+--application/pages/page_00003
+Elapsed: 00:00:00.329
+--application/pages/page_00004
+Elapsed: 00:00:00.490
+--application/pages/page_00005
+Elapsed: 00:00:00.250
+--application/pages/page_00006
+Elapsed: 00:00:00.208
+--application/pages/page_00007
+Elapsed: 00:00:00.235
+--application/pages/page_00008
+Elapsed: 00:00:00.500
+Elapsed: 00:00:00.131
+--application/pages/page_00009
+Elapsed: 00:00:00.147
+--application/pages/page_00010
+Elapsed: 00:00:00.134
+--application/pages/page_00011
+Elapsed: 00:00:00.190
+--application/pages/page_00012
+Elapsed: 00:00:00.298
+--application/pages/page_00013
+Elapsed: 00:00:00.396
+--application/pages/page_00014
+Elapsed: 00:00:00.289
+--application/pages/page_00015
+Elapsed: 00:00:00.360
+--application/pages/page_00016
+Elapsed: 00:00:00.528
+--application/pages/page_00017
+Elapsed: 00:00:00.569
+Elapsed: 00:00:00.106
+--application/pages/page_00018
+Elapsed: 00:00:00.608
+Elapsed: 00:00:00.136
+--application/pages/page_00019
+Elapsed: 00:00:00.340
+--application/pages/page_00020
+Elapsed: 00:00:00.146
+--application/pages/page_00021
+Elapsed: 00:00:00.374
+--application/pages/page_00022
+Elapsed: 00:00:00.180
+--application/pages/page_00023
+Elapsed: 00:00:00.623
+--application/pages/page_00024
+Elapsed: 00:00:00.285
+--application/pages/page_00025
+Elapsed: 00:00:00.263
+--application/pages/page_00026
+Elapsed: 00:00:00.181
+--application/pages/page_00027
+Elapsed: 00:00:00.219
+--application/pages/page_00028
+Elapsed: 00:00:00.190
+--application/pages/page_00029
+Elapsed: 00:00:00.160
+--application/pages/page_00030
+Elapsed: 00:00:00.179
+--application/pages/page_00032
+Elapsed: 00:00:00.137
+--application/pages/page_00033
+Elapsed: 00:00:00.207
+--application/pages/page_00034
+Elapsed: 00:00:00.121
+--application/pages/page_00035
+Elapsed: 00:00:00.211
+--application/pages/page_00036
+Elapsed: 00:00:00.293
+--application/pages/page_00037
+Elapsed: 00:00:00.227
+--application/pages/page_00101
+Elapsed: 00:00:00.150
+--application/pages/page_00102
+Elapsed: 00:00:00.175
+--application/deployment/definition
+Elapsed: 00:00:00.090
+--application/deployment/install
+Elapsed: 00:00:00.090
+--application/deployment/checks
+Elapsed: 00:00:00.090
+--application/deployment/buildoptions
+Elapsed: 00:00:00.090
+--application/end_environment
+Elapsed: 00:00:00.116
+... elapsed: 44.98 sec
+
+...done
+SQL> PROMPT 'Running Web Services'
+'Running Web Services'
+SQL> -----------------------------
+SQL> @WEB_SERVICES/SELENIUM_WEB_SERVICES
+Elapsed: 00:00:00.095
+API Last Extended:20160824
+Your Current Version:20160824
+This import is compatible with version: 20130101
+COMPATIBLE (You should be able to run this import without issues.)
+
+
+Set Application Offset...
+Elapsed: 00:00:00.095
+Elapsed: 00:00:00.106
+--application/restful_services/selenium_web_services
+Elapsed: 00:00:00.211
+Elapsed: 00:00:00.093
+... elapsed: 1.05 sec
+
+...done
+SQL> PROMPT 'Create Test Users'
+'Create Test Users'
+SQL> --------------------------
+old:@SQL/CREATE_USERS &1
+new:@SQL/CREATE_USERS BEAUFIGHTER
+SQL> @SQL/CREATE_USERS &1
+old:DECLARE
+  lv_group_id VARCHAR2(256);
+  lv_workspace_id NUMBER;
+BEGIN
+  SELECT workspace_id INTO lv_workspace_id
+  FROM apex_workspaces
+  WHERE workspace = '&1';
+  APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>lv_workspace_id);
+  APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+  lv_group_id := APEX_UTIL.GET_GROUP_ID(p_group_name => 'ataf_administrator');
+  APEX_UTIL.CREATE_USER(
+    p_user_name => 'ADMIN_USER',
+    p_description => 'Test User created by CI process',
+    p_email_address => 'simon@apextestautomation.co.uk',
+    p_web_password => 'Password1!',
+    p_change_password_on_first_use => 'N',
+    p_group_ids => lv_group_id);
+  APEX_UTIL.CREATE_USER(
+    p_user_name => 'BASIC_USER',
+    p_description => 'Test User created by CI process',
+    p_email_address => 'simon@apextestautomation.co.uk',
+    p_web_password => 'Password1!',
+    p_change_password_on_first_use => 'N',
+    p_group_ids => '');
+END;
+new:DECLARE
+  lv_group_id VARCHAR2(256);
+  lv_workspace_id NUMBER;
+BEGIN
+  SELECT workspace_id INTO lv_workspace_id
+  FROM apex_workspaces
+  WHERE workspace = 'BEAUFIGHTER';
+  APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>lv_workspace_id);
+  APEX_UTIL.CREATE_USER_GROUP(p_group_name => 'ataf_administrator');
+  lv_group_id := APEX_UTIL.GET_GROUP_ID(p_group_name => 'ataf_administrator');
+  APEX_UTIL.CREATE_USER(
+    p_user_name => 'ADMIN_USER',
+    p_description => 'Test User created by CI process',
+    p_email_address => 'simon@apextestautomation.co.uk',
+    p_web_password => 'Password1!',
+    p_change_password_on_first_use => 'N',
+    p_group_ids => lv_group_id);
+  APEX_UTIL.CREATE_USER(
+    p_user_name => 'BASIC_USER',
+    p_description => 'Test User created by CI process',
+    p_email_address => 'simon@apextestautomation.co.uk',
+    p_web_password => 'Password1!',
+    p_change_password_on_first_use => 'N',
+    p_group_ids => '');
+END;
+
+PL/SQL procedure successfully completed.
+
+Elapsed: 00:00:00.921
+
+Commit complete.
+
+Elapsed: 00:00:00.090

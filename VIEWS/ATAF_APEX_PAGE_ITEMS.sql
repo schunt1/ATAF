@@ -20,6 +20,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS" ("APPLICATION_ID", "PAGE_ID"
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         09-Aug-16 1       Initial Version                           |
 --| S. Hunt         02-Sep-16 2       Ataf Items added                          |
+--| S. Hunt         10-Mar-17 3       Region Name added to Items                |
 --+=============================================================================+   
  APPLICATION_ID,
  PAGE_ID,
@@ -48,7 +49,7 @@ SELECT
   item_id id,
   NULL element_type,
   NULL region_id,
-  null region_name,
+  region_name,
   null display_sequence1,
   null display_sequence2
 FROM ataf_item

@@ -25,8 +25,9 @@ IS
 --| S. Hunt         09-Aug-16 5       Update to Test Procedure                  |
 --| S. Hunt         11-Aug-16 6       Load Result File Added                    |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
---| S. Hunt         10-Oct-15 8       Test pkg updated                          |
---| S. Hunt         10-Oct-15 9       Test pkg bug fix                          |
+--| S. Hunt         10-Oct-16 8       Test pkg updated                          |
+--| S. Hunt         10-Oct-16 9       Test pkg bug fix                          |
+--| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -171,8 +172,9 @@ END TEST_FUNC;
 --| S. Hunt         09-Aug-16 5       Test Spec & Name added to data            |
 --| S. Hunt         11-Aug-16 6       Load Results File added                   |
 --| S. Hunt         25-Sep-16 7       apex_escape.html                          |
---| S. Hunt         10-Oct-15 8       specCase added                            |
---| S. Hunt         10-Oct-15 9       specCase used for results file            |
+--| S. Hunt         10-Oct-16 8       specCase added                            |
+--| S. Hunt         10-Oct-16 9       specCase used for results file            |
+--| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
@@ -185,19 +187,11 @@ IS
   l_test_name ataf_project.project_name%TYPE;
   l_test_case_old ataf_test_case.test_case%TYPE;
   l_theme_number NUMBER;
-  l_upload_results_script VARCHAR2(4000);
-  results_load_only EXCEPTION;
-BEGIN
 
-  IF p_spec_case_id = 0 THEN
-    
-    RAISE results_load_only;
-    
-  END IF;
+BEGIN
   
   -----------------------------------------
   -- Get project name and application id --
-  -- as this might be called from a WS   --  
   -----------------------------------------    
   IF p_spec_case_id IS NOT NULL  -- if a test case for a spec is provided
     THEN
@@ -224,12 +218,10 @@ BEGIN
     THEN
     SELECT tp.test_spec,
       p.application_id,
-      aat.theme_number,
-      replace(P.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
+      aat.theme_number
     INTO l_test_name,
       l_application_id,
-      l_theme_number,
-      l_upload_results_script
+      l_theme_number
     FROM ataf_test_spec tp,
       ataf_project p,
       apex_application_themes aat
@@ -432,20 +424,6 @@ ORDER BY
     
   END LOOP;
   htp.p('</tbody></table>');
-  
-EXCEPTION WHEN results_load_only THEN
-
-    SELECT 
-      replace(p.upload_results_script,'#TEST_SPEC_ID#',tp.test_spec_id)
-    INTO 
-      l_upload_results_script
-    FROM ataf_test_spec tp,
-      ataf_project p
-    WHERE tp.project_id = p.project_id
-    AND tp.test_spec_id = p_spec_id;
-    
-    htp.p(l_upload_results_script);
-
       
 END TEST;
 --
