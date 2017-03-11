@@ -74,6 +74,7 @@ BEGIN
     FROM dual;
 	APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
     APEX_APPLICATION_INSTALL.set_workspace_id( l_workspace_id );
+    
     -------------------------
     -- Set application id  --
     -------------------------
