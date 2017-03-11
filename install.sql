@@ -57,6 +57,7 @@ PROMPT 'Migrate Data'
 BEGIN
   UPDATE ataf_test_cond set apex_item_id = ataf_migrate_script(apex_item_id) where apex_item_id is not null;
 END;
+/
 
 SET DEFINE ON
 
@@ -79,10 +80,10 @@ BEGIN
     -- Set application id  --
     -------------------------
 
-     -- APEX_APPLICATION_INSTALL.set_application_id(&&2);
-     -- APEX_APPLICATION_INSTALL.generate_offset;
-     -- APEX_APPLICATION_INSTALL.set_schema( l_schema );
-     -- APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
+      APEX_APPLICATION_INSTALL.set_application_id(&&2);
+      APEX_APPLICATION_INSTALL.generate_offset;
+      APEX_APPLICATION_INSTALL.set_schema( l_schema );
+      APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
 
 END;
 /
