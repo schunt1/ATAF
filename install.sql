@@ -33,6 +33,10 @@ PROMPT 'Running Triggers'
 -------------------------
 @TRIGGERS/TRIGGERS
 
+PROMPT 'Running Functions'
+--------------------------
+@FUNCTIONS/ATAF_MIGRATE_SCRIPT
+
 PROMPT 'Import Data'
 --------------------
 @ATAF_DATA/ATAF_PROJECT_DATA_TABLE.sql
@@ -47,6 +51,12 @@ PROMPT 'Import Data'
 @ATAF_DATA/ATAF_TEST_COND_DATA_TABLE.sql
 @ATAF_DATA/ATAF_SPEC_CASE_DATA_TABLE.sql
 @ATAF_DATA/ATAF_TEMP_MV_DATA_TABLE.sql
+
+PROMPT 'Migrate Data'
+---------------------
+BEGIN
+  UPDATE ataf_test_cond set apex_item_id = ataf_migrate_script(apex_item_id) where apex_item_id is not null;
+END;
 
 SET DEFINE ON
 
@@ -64,15 +74,15 @@ BEGIN
     FROM dual;
 	APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
     APEX_APPLICATION_INSTALL.set_workspace_id( l_workspace_id );
-    ----------------------------------------
-    -- If not running the ATAF self test  --
-    ----------------------------------------
-    IF '&3' = 'No' THEN 
+    -------------------------
+    -- Set application id  --
+    -------------------------
+
       APEX_APPLICATION_INSTALL.set_application_id(&2);
       APEX_APPLICATION_INSTALL.generate_offset;
       APEX_APPLICATION_INSTALL.set_schema( l_schema );
       APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
-    END IF;
+
 END;
 /
 
@@ -88,3 +98,10 @@ PROMPT 'Running Web Services'
 PROMPT 'Create Test Users'
 --------------------------
 @SQL/CREATE_USERS &1
+
+PROMPT 'Cleanup'
+----------------
+BEGIN
+  drop Table ATAF_TEMP_MV;
+  drop function ATAF_MIGRATE_SCRIPT;
+END;
