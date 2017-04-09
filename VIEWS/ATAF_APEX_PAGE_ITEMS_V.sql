@@ -32,6 +32,7 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_
 --| S.Hunt          09-Oct-16 11      Sidebar menu adjusted with nvl            |
 --| S.Hunt          16-Oct-16 12      Nav Bar predicate added                   |
 --| S.Hunt          21-Nov-16 13      Multiple Reports returned                 |
+--| S.Hunt          30-Mar-17 14      Generic Navigation Bar List Added         |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -183,7 +184,7 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_
                                       AND ent.list_id = ui.nav_bar_list_id
                                       and ent.workspace = ui.workspace
    -- where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
-     WHERE ent.list_name = 'Navigation Bar'
+     WHERE ent.list_name IN ('Navigation Bar','Generic Navigation Bar List')
    UNION ALL
    -----------------
    -- Apex Items  --

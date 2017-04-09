@@ -28,6 +28,8 @@ IS
 --| S. Hunt         10-Oct-16 8       Test pkg updated                          |
 --| S. Hunt         10-Oct-16 9       Test pkg bug fix                          |
 --| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
+--| S. Hunt         23-Mar-17 11      Spec Groups added to proc TEST            |
+--| S. Hunt         30-Mar-17 12      ATAF agent added to MV.                   |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -175,18 +177,24 @@ END TEST_FUNC;
 --| S. Hunt         10-Oct-16 8       specCase added                            |
 --| S. Hunt         10-Oct-16 9       specCase used for results file            |
 --| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
+--| S. Hunt         26-Mar-17 11      Ability to link spec groups to actions    |
+--| S. Hunt         30-Mar-17 12      Change to use ATAF agent MVs              |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
       p_case_id      IN NUMBER,
       p_spec_case_id IN NUMBER,
-      p_domain       IN VARCHAR2
+      p_domain       IN VARCHAR2,
+      p_ws_name      OUT apex_application_global.vc_arr2,
+      p_ws_value     OUT apex_application_global.vc_arr2
   )
 IS
   l_application_id NUMBER;
   l_test_name ataf_project.project_name%TYPE;
   l_test_case_old ataf_test_case.test_case%TYPE;
   l_theme_number NUMBER;
+  l_test_serial NUMBER := 0;
+  x NUMBER := 0;
 
 BEGIN
   
@@ -205,7 +213,7 @@ BEGIN
       ataf_spec_case sc,
       ataf_test_spec ts,
       ataf_project p,
-      apex_application_themes aat
+      ataf_apex_themes_v aat -- 
     WHERE 
         tc.test_case_id = sc.test_case_id
     AND sc.test_spec_id = ts.test_spec_id
@@ -224,7 +232,7 @@ BEGIN
       l_theme_number
     FROM ataf_test_spec tp,
       ataf_project p,
-      apex_application_themes aat
+      ataf_apex_themes_v aat --
     WHERE tp.project_id = p.project_id
     AND tp.test_spec_id = p_spec_id
     AND p.application_id = aat.application_id
@@ -239,7 +247,7 @@ BEGIN
       l_theme_number
     FROM ataf_test_case tc,
       ataf_project p,
-      apex_application_themes aat
+      apex_application_themes aat --
     WHERE tc.project_id = p.project_id
     AND tc.test_case_id = p_case_id
     AND p.application_id = aat.application_id
@@ -314,7 +322,6 @@ FOR i IN (
 -- MAIN CURSOR --
 -----------------
 SELECT
-    
     -----------------
     -- Data Groups --
     -----------------
@@ -377,6 +384,12 @@ FROM
   JOIN ataf_selenium sel ON tcv.action_id = sel.action_id
                         AND tcv.theme_number = sel.theme_number
   JOIN x ON tcv.test_case_id = x.test_case_id
+                         ----------------------------------------------------------------------    
+                         ---- If the test case (tcv.data_group_id) has no group then do nothing
+                         ---- ELse Match to spec group first then data group
+                         ----------------------------------------------------------------------
+                         AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,x.data_group_id),-1)
+                         -----------------------------------------------
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
                                            AND nvl(tdv.data_id,0) = nvl(x.data_id,0)
@@ -417,7 +430,25 @@ ORDER BY
     --htp.p('<td>'||apex_escape.html(i.data_group_id)||'</td>');
       
       htp.p('</tr>');
-    
+      
+      --------------------------------
+      --   set web servive values   --
+      --------------------------------
+  
+      l_test_serial := l_test_serial + 1;
+                    
+      p_ws_name(x+1)  := 'steps[][cmd]';
+      p_ws_name(x+2)  := 'steps[][locator]';
+      p_ws_name(x+3)  := 'steps[][value]';
+      p_ws_name(x+4)  := 'steps[][order]';
+      p_ws_value(x+1) := i.command;
+      p_ws_value(x+2) := i.target;
+      p_ws_value(x+3) := i.value;
+      p_ws_value(x+4) := l_test_serial;
+      
+      x:=x+4;
+ 
+      -------------------------------- 
     END IF;
    
     l_test_case_old := i.test_case;
