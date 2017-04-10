@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   07:44 Monday April 10, 2017
+--   Date and Time:   08:54 Monday April 10, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -40,7 +40,7 @@ prompt APPLICATION 108 - ATAF
 --     Items:                  145
 --     Computations:             7
 --     Validations:             11
---     Processes:               87
+--     Processes:               86
 --     Regions:                 85
 --     Buttons:                104
 --     Dynamic Actions:         39
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170410074337'
+,p_checksum_salt_last_reset=>'20170410084637'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410074337'
+,p_last_upd_yyyymmddhh24miss=>'20170410084637'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -10840,7 +10840,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410061024'
+,p_last_upd_yyyymmddhh24miss=>'20170410075156'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(413630793740989)
@@ -11187,6 +11187,7 @@ wwv_flow_api.create_page_item(
 ,p_cSize=>30
 ,p_field_template=>wwv_flow_api.id(67686597071778521501)
 ,p_item_template_options=>'#DEFAULT#'
+,p_protection_level=>'S'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
@@ -19103,7 +19104,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410073631'
+,p_last_upd_yyyymmddhh24miss=>'20170410084637'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67720645586470650925)
@@ -19352,6 +19353,13 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>50
 ,p_item_plug_id=>wwv_flow_api.id(67720645586470650925)
 ,p_prompt=>'Data Options'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'IF :P18_DATA_ATTRIBUTE IS NOT NULL THEN',
+'  RETURN ''1'';',
+'ELSIF :P18_DATA_ITEM_ID IS NOT NULL THEN',
+'  RETURN ''2'';',
+'END IF;'))
+,p_source_type=>'FUNCTION_BODY'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'STATIC:Use an Attribute from the current test case data-set;1,',
@@ -19711,7 +19719,7 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'Y'
+,p_attribute_01=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67720704478046619349)
@@ -19721,7 +19729,7 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'Y'
+,p_attribute_01=>'N'
 );
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(67683110067221483288)
@@ -19876,20 +19884,6 @@ wwv_flow_api.create_page_da_action(
 ,p_affected_elements=>'P18_DATA_OPTIONS'
 ,p_attribute_01=>'Y'
 ,p_stop_execution_on_error=>'Y'
-);
-wwv_flow_api.create_page_da_action(
- p_id=>wwv_flow_api.id(67682300917692460289)
-,p_event_id=>wwv_flow_api.id(67720702673703521053)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_action=>'NATIVE_SET_VALUE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P18_DATA_OPTIONS'
-,p_attribute_01=>'STATIC_ASSIGNMENT'
-,p_attribute_09=>'N'
-,p_stop_execution_on_error=>'Y'
-,p_wait_for_result=>'Y'
 );
 wwv_flow_api.create_page_da_action(
  p_id=>wwv_flow_api.id(67720703178730521054)
@@ -20091,20 +20085,6 @@ wwv_flow_api.create_page_process(
 ,p_attribute_04=>'TEST_COND_ID'
 ,p_process_when=>'close'
 ,p_process_when_type=>'REQUEST_NOT_EQUAL_CONDITION'
-);
-wwv_flow_api.create_page_process(
- p_id=>wwv_flow_api.id(67682300788102460288)
-,p_process_sequence=>20
-,p_process_point=>'AFTER_HEADER'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Set Data Options'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'IF :P18_DATA_ATTRIBUTE IS NOT NULL THEN',
-'  :P18_DATA_OPTIONS:=''1'';',
-'ELSIF :P18_DATA_ITEM_ID IS NOT NULL THEN',
-'  :P18_DATA_OPTIONS:=''2'';',
-'END IF;'))
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67707891269992587815)
