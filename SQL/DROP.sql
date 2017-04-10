@@ -37,6 +37,10 @@ drop TABLE ATAF_TEST_SPEC cascade constraints
 /
 drop TABLE ATAF_USER_RESTRICTIONS cascade constraints 
 /
+drop TABLE ATAF_TL_TEST cascade constraints
+/
+drop TABLE ATAF_TL_JOB cascade constraints
+/
 drop TABLE ATAF_TEMP_MV cascade constraints
 /
 drop VIEW ATAF_APEX_APPLICATION_PAGES_V cascade constraints 
