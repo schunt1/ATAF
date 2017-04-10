@@ -27,7 +27,7 @@ prompt APPLICATION 108 - ATAF
 -- Application Export:
 --   Application:     108
 --   Name:            ATAF
---   Date and Time:   08:54 Monday April 10, 2017
+--   Date and Time:   13:42 Monday April 10, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -95,7 +95,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170410084637'
+,p_checksum_salt_last_reset=>'20170410134008'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -124,7 +124,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410084637'
+,p_last_upd_yyyymmddhh24miss=>'20170410134008'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -10840,7 +10840,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410075156'
+,p_last_upd_yyyymmddhh24miss=>'20170410134008'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(413630793740989)
@@ -11188,6 +11188,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67686597071778521501)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
+,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
@@ -14977,7 +14978,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410054121'
+,p_last_upd_yyyymmddhh24miss=>'20170410094048'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67703693973236995207)
@@ -15400,7 +15401,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410054328'
+,p_last_upd_yyyymmddhh24miss=>'20170410093744'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67686624007852573693)
