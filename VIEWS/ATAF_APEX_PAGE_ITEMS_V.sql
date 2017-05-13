@@ -1,4 +1,4 @@
-CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
+CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2", "ID", "ELEMENT_TYPE", "PAGE_ALIAS", "REGION_ID", "REGION_NAME", "REGION_POSITION", "DISPLAY") AS 
   SELECT 
 --
 --+============================================================================
@@ -33,6 +33,8 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_
 --| S.Hunt          16-Oct-16 12      Nav Bar predicate added                   |
 --| S.Hunt          21-Nov-16 13      Multiple Reports returned                 |
 --| S.Hunt          30-Mar-17 14      Generic Navigation Bar List Added         |
+--| S.Hunt          06-May-17 15      Yes/No add as Select List                 |
+--|                                   IRs Use column static_id before alias.    |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -192,7 +194,11 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_
    SELECT aapi.application_id,
           aapi.page_id,
           NVL (aapi.label, aapi.item_name),
-          decode(aapi.display_as,'Text Field with autocomplete','Text Field',aapi.display_as) display_as,
+          decode(
+              aapi.display_as
+              ,'Text Field with autocomplete','Text Field'
+              ,'Yes/No','Select List'
+              ,aapi.display_as) display_as,
           TO_CHAR (aapi.item_id) r,
           aapi.item_name,
           aapi.display_sequence,
@@ -265,7 +271,7 @@ CREATE OR REPLACE FORCE VIEW  "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_
           report_label,
           'Report Column',
           TO_CHAR (column_id),
-          column_alias,
+          nvl(static_id,column_alias),
           display_order,
           null display_sequence1,
           null display_sequence2,

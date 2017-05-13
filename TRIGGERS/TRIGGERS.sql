@@ -128,7 +128,7 @@ IF inserting THEN
     INTO :new.row_key
     FROM dual;
     IF :NEW.theme_number is null THEN
-      :NEW.theme_number   := nv('P3_THEME_NUMBER');
+      :NEW.theme_number   := nv('P4_THEME_NUMBER');
     END IF;
   END IF;
 END IF;

@@ -61,6 +61,35 @@ PROMPT 'Import Data'
 @ATAF_DATA/ATAF_SPEC_CASE_DATA_TABLE.sql
 @ATAF_DATA/ATAF_TEMP_MV_DATA_TABLE.sql
 
+PROMPT 'System Parameters'
+--------------------------
+BEGIN
+  INSERT INTO ataf_system_parameters
+  (name,
+   value,
+   start_date)
+  VALUES
+  ('Wallet Path',
+   '',
+   sysdate);
+  INSERT INTO ataf_system_parameters
+  (name,
+   value,
+   start_date)
+  VALUES
+  ('Wallet Password',
+   '',
+   sysdate);
+  INSERT INTO ataf_system_parameters
+  (name,
+   value,
+   start_date)
+  VALUES
+  ('ATAF Version',
+   '0.2.0 Beta',
+   sysdate);
+END;
+
 PROMPT 'Migrate Data'
 ---------------------
 BEGIN
