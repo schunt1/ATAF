@@ -12,14 +12,14 @@ BEGIN
     p_user_name => 'ADMIN_USER',
     p_description => 'Test User created by CI process',
     p_email_address => 'simon@apextestautomation.co.uk',
-    p_web_password => 'Password1!',
+    p_web_password => 'TESTING1!',
     p_change_password_on_first_use => 'N',
     p_group_ids => lv_group_id);
   APEX_UTIL.CREATE_USER(
     p_user_name => 'BASIC_USER',
     p_description => 'Test User created by CI process',
     p_email_address => 'simon@apextestautomation.co.uk',
-    p_web_password => 'Password1!',
+    p_web_password => 'TESTING1!',
     p_change_password_on_first_use => 'N',
     p_group_ids => '');
 END;
