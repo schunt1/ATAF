@@ -89,6 +89,7 @@ BEGIN
    '0.2.0 Beta',
    sysdate);
 END;
+/
 
 PROMPT 'Migrate Data'
 ---------------------
