@@ -119,12 +119,9 @@ BEGIN
     -- Set application id  --
     -------------------------
 
-      IF &&2 IS NOT NULL THEN
-        APEX_APPLICATION_INSTALL.set_application_id(&2);
-      END IF;
+      APEX_APPLICATION_INSTALL.set_application_id(&&2);
       APEX_APPLICATION_INSTALL.generate_offset;
       APEX_APPLICATION_INSTALL.set_schema( l_schema );
-      APEX_APPLICATION_INSTALL.set_workspace(&1);
       APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
 
 END;
