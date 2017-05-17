@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   12:08 Saturday May 13, 2017
+--   Date and Time:   08:49 Wednesday May 17, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -39,7 +39,7 @@ prompt APPLICATION 242 - ATAF
 --   Pages:                     44
 --     Items:                  155
 --     Computations:             7
---     Validations:             12
+--     Validations:             13
 --     Processes:               89
 --     Regions:                 88
 --     Buttons:                109
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170513120635'
+,p_checksum_salt_last_reset=>'20170517083837'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170513120635'
+,p_last_upd_yyyymmddhh24miss=>'20170517083837'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -13846,7 +13846,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170502035451'
+,p_last_upd_yyyymmddhh24miss=>'20170517082356'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67707834329557975960)
@@ -14151,8 +14151,6 @@ wwv_flow_api.create_page_process(
 '    DBMS_SNAPSHOT.REFRESH( ''ATAF_AGENT_PAGES_MV'',''COMPLETE'');',
 '    DBMS_SNAPSHOT.REFRESH( ''ATAF_AGENT_SHORTCUTS_MV'',''COMPLETE'');',
 '    DBMS_SNAPSHOT.REFRESH( ''ATAF_AGENT_THEMES_MV'',''COMPLETE'');',
-'',
-'htp.p(''UI Map Last Updated: ''||ataf_agent.last_refresh_date);',
 '',
 '    SELECT',
 '      ''UI Map Last Updated: ''||TO_CHAR(MIN(last_refresh_date), ''DD-Mon-YYYY HH24:MI'') ',
@@ -17426,7 +17424,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170501112931'
+,p_last_upd_yyyymmddhh24miss=>'20170517083837'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67708502364625409059)
@@ -18170,9 +18168,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_id=>wwv_flow_api.id(67710118199433643032)
 ,p_button_image_alt=>'Create'
 ,p_button_position=>'REGION_TEMPLATE_EDIT'
-,p_button_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-':P8_TEST_DATA_ID IS NULL',
-'AND :P8_EDIT = ''Yes'''))
+,p_button_condition=>':P8_TEST_DATA_ID IS NULL'
 ,p_button_condition_type=>'PLSQL_EXPRESSION'
 ,p_database_action=>'INSERT'
 );
@@ -18406,6 +18402,20 @@ wwv_flow_api.create_page_validation(
 ,p_error_message=>'Attribute must have a value.  '
 ,p_always_execute=>'N'
 ,p_only_for_changed_rows=>'Y'
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
+);
+wwv_flow_api.create_page_validation(
+ p_id=>wwv_flow_api.id(55439322606202757)
+,p_validation_name=>'Project Not Null'
+,p_validation_sequence=>70
+,p_validation=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'IF :p8_project_id IS NULL AND :is_administrator = ''No'' THEN',
+'  RETURN ''Only ATAF Administrators can create Global Items.  '';',
+'ELSIF :p8_project_id != :WRITE_ACCESS THEN',
+'  RETURN ''You do not have write access to this project.  '';',
+'END IF;'))
+,p_validation_type=>'FUNC_BODY_RETURNING_ERR_TEXT'
+,p_always_execute=>'N'
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_api.create_page_da_event(
