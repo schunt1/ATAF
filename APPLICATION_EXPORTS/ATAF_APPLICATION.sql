@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   08:49 Wednesday May 17, 2017
+--   Date and Time:   10:19 Wednesday May 17, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170517083837'
+,p_checksum_salt_last_reset=>'20170517095858'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170517083837'
+,p_last_upd_yyyymmddhh24miss=>'20170517095858'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -15003,7 +15003,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170501101839'
+,p_last_upd_yyyymmddhh24miss=>'20170517095858'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67711219892990723920)
@@ -15074,8 +15074,9 @@ wwv_flow_api.create_page_plug(
 '           else ''No''',
 '          end edit,',
 '          a.notes',
-'    FROM ataf_action a, ataf_selenium s',
-'   WHERE a.action_id = s.action_id AND s.theme_number = :p3_theme_number',
+'    FROM ataf_action a',
+'    LEFT OUTER JOIN ataf_selenium s ON a.action_id = s.action_id  ',
+'                                   AND s.theme_number = :p3_theme_number',
 'GROUP BY a.action_id,',
 '         a.item_type,',
 '         a.action,',
@@ -16764,7 +16765,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170501063620'
+,p_last_upd_yyyymmddhh24miss=>'20170517092453'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67727196540869601976)
@@ -16889,11 +16890,11 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT project_name, project_id FROM ataf_project ',
-'WHERE project_id = :project_id AND :is_administrtor = ''No''',
+'WHERE project_id = :project_id AND :is_administrator = ''No''',
 'UNION ALL',
 'SELECT ''-- Global --'', NULL FROM DUAL',
 'WHERE :is_administrator = ''Yes''',
-'UNION ALL',
+'UNION',
 'SELECT project_name, project_id FROM ataf_project',
 'WHERE :is_administrator = ''Yes''',
 ''))
@@ -17424,7 +17425,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170517083837'
+,p_last_upd_yyyymmddhh24miss=>'20170517094426'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67708502364625409059)
@@ -18207,11 +18208,21 @@ wwv_flow_api.create_page_branch(
 ,p_branch_sequence=>15
 );
 wwv_flow_api.create_page_branch(
+ p_id=>wwv_flow_api.id(34299167495054450)
+,p_branch_name=>'Create with Edit'
+,p_branch_action=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.:RP:P8_TEST_DATA_ID,P8_EDIT:&P8_TEST_DATA_ID.,Yes&success_msg=#SUCCESS_MSG#'
+,p_branch_point=>'AFTER_PROCESSING'
+,p_branch_type=>'REDIRECT_URL'
+,p_branch_when_button_id=>wwv_flow_api.id(67744107043164066869)
+,p_branch_sequence=>25
+);
+wwv_flow_api.create_page_branch(
  p_id=>wwv_flow_api.id(67744113240889067055)
+,p_branch_name=>'Go To Page 8'
 ,p_branch_action=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.::TEST_DATA_ID:&P8_TEST_DATA_ID.&success_msg=#SUCCESS_MSG#'
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
-,p_branch_sequence=>20
+,p_branch_sequence=>35
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(23990895240192729)
