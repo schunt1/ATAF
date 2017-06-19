@@ -114,6 +114,7 @@ BEGIN
     FROM dual;
 	APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>l_workspace_id);
     APEX_APPLICATION_INSTALL.set_workspace_id( l_workspace_id );
+<<<<<<< HEAD
     
     -------------------------
     -- Set application id  --
@@ -121,6 +122,14 @@ BEGIN
 
       APEX_APPLICATION_INSTALL.set_application_id(&&2);
       APEX_APPLICATION_INSTALL.generate_offset;
+=======
+    ----------------------------------------
+    -- If not running the ATAF self test  --
+    ----------------------------------------
+    IF '&3' = 'No' THEN 
+      APEX_APPLICATION_INSTALL.set_application_id(&2);
+      —-APEX_APPLICATION_INSTALL.generate_offset;
+>>>>>>> master
       APEX_APPLICATION_INSTALL.set_schema( l_schema );
       APEX_APPLICATION_INSTALL.set_application_alias( 'F' || apex_application.get_application_id );
 
