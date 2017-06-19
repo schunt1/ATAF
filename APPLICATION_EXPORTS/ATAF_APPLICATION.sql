@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   11:58 Tuesday May 30, 2017
+--   Date and Time:   10:44 Monday June 19, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170530115523'
+,p_checksum_salt_last_reset=>'20170619104216'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170530115523'
+,p_last_upd_yyyymmddhh24miss=>'20170619104216'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -17156,7 +17156,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170411121848'
+,p_last_upd_yyyymmddhh24miss=>'20170619104216'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67708502255108409058)
@@ -17250,11 +17250,8 @@ wwv_flow_api.create_worksheet(
 ,p_show_notify=>'Y'
 ,p_show_calendar=>'N'
 ,p_download_formats=>'CSV:HTML:EMAIL'
-,p_detail_link=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.:RP,8:P8_TEST_DATA_ID,TEST_DATA_ID:#TEST_DATA_ID#,#TEST_DATA_ID#'
-,p_detail_link_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<a href="#URL#">',
-'  <img src="#IMAGE_PREFIX##IMAGE#" class="apex-edit-pencil" alt="">',
-'</a>'))
+,p_detail_link=>'#URL#'
+,p_detail_link_text=>'<img src="#IMAGE_PREFIX##IMAGE#" class="apex-edit-pencil" alt="">'
 ,p_owner=>'SHUNT'
 ,p_internal_uid=>16979028232179979
 );
