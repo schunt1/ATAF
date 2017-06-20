@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   10:44 Monday June 19, 2017
+--   Date and Time:   21:56 Monday June 19, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -40,7 +40,7 @@ prompt APPLICATION 242 - ATAF
 --     Items:                  155
 --     Computations:             7
 --     Validations:             13
---     Processes:               89
+--     Processes:               90
 --     Regions:                 88
 --     Buttons:                109
 --     Dynamic Actions:         41
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170619104216'
+,p_checksum_salt_last_reset=>'20170619215504'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170619104216'
+,p_last_upd_yyyymmddhh24miss=>'20170619215504'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -701,6 +701,7 @@ wwv_flow_api.create_flow_process(
 ' ',
 'END;'))
 ,p_process_error_message=>'There was a problem creating the APEX_PAGE_ITEMS collection.'
+,p_process_when_type=>'NEVER'
 );
 end;
 /
@@ -13846,7 +13847,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170517082356'
+,p_last_upd_yyyymmddhh24miss=>'20170619215223'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67707834329557975960)
@@ -14163,6 +14164,28 @@ wwv_flow_api.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_api.id(28153712025705187)
 ,p_process_success_message=>'UI Map Refreshed'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(64734961772070501)
+,p_process_sequence=>10
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'On New Instance'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT WORKSPACE ',
+'INTO :ATAF_WORKSPACE ',
+'FROM APEX_APPLICATIONS ',
+'WHERE application_id = :app_id;',
+'',
+'SELECT ''Apex Items Last Refreshed: ''||TO_CHAR(last_refresh_date, ''DD-Mon-YYYY HH24:MI'') ',
+'INTO :UI_MAP_LAST_REFRESHED',
+'FROM ALL_MVIEWS',
+'WHERE mview_name = ''ATAF_AGENT_PAGE_ITEMS_MV'';',
+' ',
+''))
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when=>':ATAF_WORKSPACE IS NULL'
+,p_process_when_type=>'PLSQL_EXPRESSION'
 );
 end;
 /
@@ -19509,7 +19532,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410062945'
+,p_last_upd_yyyymmddhh24miss=>'20170619172516'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67744135537692483094)
@@ -19745,7 +19768,7 @@ wwv_flow_api.create_page_item(
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_api.id(67744135537692483094)
 ,p_use_cache_before_default=>'NO'
-,p_prompt=>'Test Specification Name'
+,p_prompt=>'Specification Name'
 ,p_source=>'TEST_SPEC'
 ,p_source_type=>'DB_COLUMN'
 ,p_source_post_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -23886,7 +23909,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170501113725'
+,p_last_upd_yyyymmddhh24miss=>'20170619173836'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67728667134239404131)
@@ -23948,9 +23971,8 @@ wwv_flow_api.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>wwv_flow_api.id(67710118199433643032)
 ,p_button_image_alt=>'Cancel'
-,p_button_position=>'REGION_TEMPLATE_CLOSE'
+,p_button_position=>'REGION_TEMPLATE_NEXT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.'
-,p_grid_new_grid=>false
 );
 wwv_flow_api.create_page_button(
  p_id=>wwv_flow_api.id(67728667645863404139)
@@ -28096,7 +28118,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_cache_mode=>'NOCACHE'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410164219'
+,p_last_upd_yyyymmddhh24miss=>'20170619215504'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(23933666013862510)
@@ -28268,15 +28290,15 @@ wwv_flow_api.create_page_process(
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Delete Project'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'DELETE from ATAF_DATA_ITEM where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
-'DELETE from ATAF_DATA where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
-'DELETE from ATAF_DATA_GROUPS where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
-'DELETE from ATAF_TEST_DATA where project_id = :PROJECT_ID;',
 'DELETE from ATAF_ACTION where project_id = :PROJECT_ID;',
 'DELETE from ATAF_TEST_COND where test_case_id in (select test_case_id from ATAF_TEST_CASE where project_id = :PROJECT_ID);',
 'DELETE from ATAF_SPEC_CASE where test_spec_id IN (select test_spec_id from ATAF_TEST_SPEC where project_id = :PROJECT_ID);',
 'DELETE from ATAF_TEST_CASE where project_id = :PROJECT_ID;',
 'DELETE from ATAF_TEST_SPEC where project_id = :PROJECT_ID;',
+'DELETE from ATAF_DATA_ITEM where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
+'DELETE from ATAF_DATA where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
+'DELETE from ATAF_DATA_GROUPS where TEST_DATA_ID IN (select test_data_id from ATAF_TEST_DATA where project_id = :PROJECT_ID);',
+'DELETE from ATAF_TEST_DATA where project_id = :PROJECT_ID;',
 'DELETE from ATAF_PROJECT wHere project_id = :PROJECT_ID;'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_api.id(23826220479456898)
@@ -29498,7 +29520,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410073848'
+,p_last_upd_yyyymmddhh24miss=>'20170619124253'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(101667011181481856)
@@ -29509,7 +29531,22 @@ wwv_flow_api.create_page_plug(
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'BODY'
-,p_plug_source=>'select * from ataf_tl_job'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+' TL_JOB_ID,',
+' JOB_ID,',
+' SUCCESS,',
+' PROJECT_ID,',
+' TEST_SPEC_ID,',
+' SESSION_ID,',
+' ERRORS,',
+' TEST_IDS,',
+' --JSON,',
+' JOB_DATE,',
+' RUN_SUCCESS,',
+' STATUS_CODE',
+' from ATAF_TL_JOB',
+''))
 ,p_plug_source_type=>'NATIVE_IR'
 ,p_plug_query_row_template=>1
 ,p_plug_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -29624,22 +29661,6 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'STRING'
 );
 wwv_flow_api.create_worksheet_column(
- p_id=>wwv_flow_api.id(26961828224908145)
-,p_db_column_name=>'JSON'
-,p_display_order=>90
-,p_column_identifier=>'Z'
-,p_column_label=>'Json'
-,p_allow_sorting=>'N'
-,p_allow_ctrl_breaks=>'N'
-,p_allow_aggregations=>'N'
-,p_allow_computations=>'N'
-,p_allow_charting=>'N'
-,p_allow_group_by=>'N'
-,p_allow_pivot=>'N'
-,p_column_type=>'CLOB'
-,p_rpt_show_filter_lov=>'N'
-);
-wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(26962298577908145)
 ,p_db_column_name=>'JOB_DATE'
 ,p_display_order=>100
@@ -29674,7 +29695,7 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>50
-,p_report_columns=>'TL_JOB_ID:JOB_DATE:JOB_ID:SUCCESS:PROJECT_ID:SESSION_ID:TEST_SPEC_ID:JSON:RUN_SUCCESS:STATUS_CODE:'
+,p_report_columns=>'TL_JOB_ID:JOB_DATE:JOB_ID:SUCCESS:PROJECT_ID:SESSION_ID:TEST_SPEC_ID:RUN_SUCCESS:STATUS_CODE'
 ,p_sort_column_1=>'JOB_DATE'
 ,p_sort_direction_1=>'DESC'
 ,p_flashback_enabled=>'N'
@@ -29753,7 +29774,7 @@ wwv_flow_api.create_page_da_action(
 ' ',
 '    $(''#R101667011181481856_search_button'').click();',
 '',
-'}, 6000);'))
+'}, 20000);'))
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(26965894691908153)
