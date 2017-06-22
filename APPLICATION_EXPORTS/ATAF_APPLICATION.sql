@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   21:56 Monday June 19, 2017
+--   Date and Time:   10:26 Thursday June 22, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170619215504'
+,p_checksum_salt_last_reset=>'20170622100835'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170619215504'
+,p_last_upd_yyyymmddhh24miss=>'20170622100835'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -13847,7 +13847,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170619215223'
+,p_last_upd_yyyymmddhh24miss=>'20170622100835'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67707834329557975960)
@@ -13876,7 +13876,7 @@ wwv_flow_api.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'SELECT project_id,',
 '       version,',
-'       apex_escape.html(project_name) project_name,',
+'       apex_escape.html_whitelist(project_name,q''!''!'') project_name,',
 '       application_id,',
 '       apex_escape.html(domain) domain,',
 '       last_updated_date,',
@@ -13946,7 +13946,7 @@ wwv_flow_api.create_worksheet(
 ,p_show_calendar=>'N'
 ,p_show_flashback=>'N'
 ,p_download_formats=>'CSV:HTML:EMAIL'
-,p_detail_link=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.:RP:PROJECT_ID,PROJECT_NAME,THEME_NUMBER,WRITE_ACCESS,APPLICATION_ID,IS_OWNER:#PROJECT_ID#,#PROJECT_NAME#,#THEME_NUMBER#,#WRITE_ACCESS_P_ID#,#APPLICATION_ID#,#WRITE_ACCESS#'
+,p_detail_link=>'f?p=&APP_ID.:12:&SESSION.:new:&DEBUG.:RP:PROJECT_ID,IS_OWNER,THEME_NUMBER,WRITE_ACCESS,APPLICATION_ID,PROJECT_NAME:#PROJECT_ID#,#WRITE_ACCESS#,#THEME_NUMBER#,#WRITE_ACCESS_P_ID#,#APPLICATION_ID#,#PROJECT_NAME#'
 ,p_detail_link_text=>'<img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="">'
 ,p_owner=>'SHUNT'
 ,p_internal_uid=>16586227731719174
@@ -19022,7 +19022,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410093744'
+,p_last_upd_yyyymmddhh24miss=>'20170622100630'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67710144573387695219)
@@ -19340,11 +19340,14 @@ wwv_flow_api.create_page_process(
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Set Items'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'IF :domain IS NULL THEN',
+'IF :DOMAIN IS NULL THEN',
 '',
-'  SELECT nvl(domain,''Not Specified'') INTO :DOMAIN',
-'  FROM ataf_project ',
-'  WHERE project_id = :project_id;',
+'  SELECT ',
+'    nvl(pro.domain,''Not Specified'')',
+'  INTO ',
+'    :DOMAIN',
+'  FROM ataf_project  pro',
+'  WHERE pro.project_id = :project_id;',
 '',
 'END IF;',
 '',
