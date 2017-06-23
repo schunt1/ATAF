@@ -19,38 +19,60 @@ end;
 /
 begin
 wwv_flow_api.remove_restful_service(
- p_id=>wwv_flow_api.id(21764150256345751)
-,p_name=>'testingbot'
+ p_id=>wwv_flow_api.id(74907154278383103)
+,p_name=>'testlab'
 );
  
 end;
 /
-prompt --application/restful_services/testingbot
+prompt --application/restful_services/testlab
 begin
 wwv_flow_api.create_restful_module(
- p_id=>wwv_flow_api.id(21764150256345751)
-,p_name=>'testingbot'
-,p_uri_prefix=>'testingbot/'
+ p_id=>wwv_flow_api.id(74907154278383103)
+,p_name=>'testlab'
 ,p_parsing_schema=>'ATAF'
 ,p_items_per_page=>25
 ,p_status=>'PUBLISHED'
-,p_row_version_number=>79
+,p_row_version_number=>29
 );
 wwv_flow_api.create_restful_template(
- p_id=>wwv_flow_api.id(21764277164345752)
-,p_module_id=>wwv_flow_api.id(21764150256345751)
-,p_uri_template=>'callback'
+ p_id=>wwv_flow_api.id(65750360329211405)
+,p_module_id=>wwv_flow_api.id(74907154278383103)
+,p_uri_template=>'ci/{projectId}'
 ,p_priority=>0
 ,p_etag_type=>'HASH'
 );
 wwv_flow_api.create_restful_handler(
- p_id=>wwv_flow_api.id(21764303238345756)
-,p_template_id=>wwv_flow_api.id(21764277164345752)
+ p_id=>wwv_flow_api.id(65750442447218879)
+,p_template_id=>wwv_flow_api.id(65750360329211405)
 ,p_source_type=>'PLSQL'
 ,p_format=>'DEFAULT'
 ,p_method=>'POST'
 ,p_mimes_allowed=>'application/json'
-,p_require_https=>'NO'
+,p_require_https=>'YES'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'BEGIN',
+'  ataf_test_lab.ci_trigger(:projectId);',
+'  htp.p(''*** ATAF Complete'');',
+'EXCEPTION when others THEN',
+'  htp.p(''-1'');',
+'END;'))
+);
+wwv_flow_api.create_restful_template(
+ p_id=>wwv_flow_api.id(74907318403383106)
+,p_module_id=>wwv_flow_api.id(74907154278383103)
+,p_uri_template=>'testlab/'
+,p_priority=>0
+,p_etag_type=>'HASH'
+);
+wwv_flow_api.create_restful_handler(
+ p_id=>wwv_flow_api.id(74907373334386435)
+,p_template_id=>wwv_flow_api.id(74907318403383106)
+,p_source_type=>'PLSQL'
+,p_format=>'DEFAULT'
+,p_method=>'POST'
+,p_mimes_allowed=>'application/json'
+,p_require_https=>'YES'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
 '',
@@ -59,8 +81,11 @@ wwv_flow_api.create_restful_handler(
 '  l_src_offsset INTEGER := 1;  ',
 '  l_lang_context INTEGER := dbms_lob.default_lang_ctx;  ',
 '  l_warning INTEGER; ',
-'  l_job_id NUMBER;',
-'  l_success VARCHAR2(8);',
+'  l_job_id       ataf_tl_job.job_id%TYPE;',
+'  l_test_ids     ataf_tl_job.test_ids%TYPE;',
+'  l_errors       ataf_tl_job.errors%TYPE;',
+'  l_success      ataf_tl_job.run_success%TYPE;',
+'  l_status_code  ataf_tl_job.status_code%TYPE;',
 '',
 'BEGIN',
 '',
@@ -72,67 +97,25 @@ wwv_flow_api.create_restful_handler(
 '                           blob_csid => dbms_lob.default_csid,  ',
 '                           lang_context => l_lang_context,  ',
 '                           warning => l_warning);',
-'                           ',
-'  apex_json.parse(l_clob);',
-'        ',
-'  l_job_id  := apex_json.get_varchar2(p_path => ''job_id'');',
-'  l_success := apex_json.get_varchar2(p_path => ''success'');',
-'  ',
-'  UPDATE testingbot_jobs ',
-'  SET status = l_success',
-'  WHERE testingbot_job_id = l_job_id;',
 '',
-'  -- Add the Tests --',
-'  ',
-'  INSERT INTO testingbot_tests',
-'  (testingbot_test_id, testingbot_job_id)',
-'  (SELECT id, l_job_id',
-'            FROM json_table (l_clob, ''$.test_ids[*]'' ',
-'            COLUMNS ("id" path ''$''))); ',
 '',
-'  -- Loop through errors --',
-'  ',
-'  INSERT INTO testingbot_errors',
-'  (SELECT null testingbot_error_id,',
-'          msg,',
-'          step,',
-'          browser_name,',
-'          browser_version,',
-'          browser_os,',
-'          to_date(substr(time,1,19),''YYYY-MM-DD HH24:MI:SS''),',
-'          test_id,',
-'          job_id,',
-'          lab_id',
-'         FROM json_table ',
-'              (l_clob, ''$.errors[*]''',
-'         COLUMNS (',
-'                  "msg"             path ''$.msg'',',
-'                  "step"            path ''$.step'',',
-'                  "browser_name"    path ''$.browser.name'',',
-'                  "browser_version" path ''$.browser.version'',',
-'                  "browser_os"      path ''$.browser.os'',',
-'                  "time"            path ''$.time'',',
-'                  "test_id"         path ''$.test_id'',',
-'                  "job_id"          path ''$.job_id'',',
-'                  "lab_id"          path ''$.lab_id''',
-'                 )',
-'              ));',
-'  ',
-'  htp.p(''{sucess:true}'');',
-'  ',
-'EXCEPTION WHEN OTHERS THEN',
-'  ',
-'  INSERT INTO testingbot_json ',
-'  (testingbot_json_id,',
-'   json,',
-'   date_time)',
-'  VALUES',
-'  (null,',
-'   l_clob,',
-'   sysdate);',
+'    ',
+'    apex_json.parse(l_clob);',
+'    l_success     := apex_json.get_varchar2(p_path => ''success'');',
+'    l_job_id      := apex_json.get_varchar2(p_path => ''job_id'');',
+' --   l_test_ids    := apex_json.get_varchar2(p_path => ''test_ids'');',
+'    l_errors      := apex_json.get_varchar2(p_path => ''errors/msg'');',
+'',
+'    ',
+'    UPDATE ataf_tl_job SET',
+'      run_success = l_success,',
+'      test_ids = l_test_ids,',
+'      errors = l_errors,',
+'      json = l_clob',
+'    WHERE job_id = l_job_id;',
 '   ',
-'   htp.p(''{sucess:false}'');  ',
-'  ',
+'    commit;',
+'    ',
 'END;'))
 );
 end;
