@@ -35,6 +35,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          30-Mar-17 14      Generic Navigation Bar List Added         |
 --| S.Hunt          06-May-17 15      Yes/No add as Select List                 |
 --|                                   IRs Use column static_id before alias.    |
+--| S.Hunt          26-Jun-17 16      Desktop Navigation Bar                    |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -186,7 +187,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                                       AND ent.list_id = ui.nav_bar_list_id
                                       and ent.workspace = ui.workspace
    -- where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
-     WHERE ent.list_name IN ('Navigation Bar','Generic Navigation Bar List')
+     WHERE ent.list_name IN ('Navigation Bar','Generic Navigation Bar List','Desktop Navigation Bar')
    UNION ALL
    -----------------
    -- Apex Items  --
