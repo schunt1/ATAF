@@ -1,3 +1,10 @@
+SET DEFINE OFF
+SET VERIFY OFF
+SET SERVEROUTPUT ON SIZE UNLIMITED
+SET TIMING ON
+
+spool drop.log
+
 drop TABLE "ATAF_ACTION" cascade constraints 
 /   
 drop TABLE ATAF_DATA cascade constraints 
@@ -30,11 +37,11 @@ drop TABLE ATAF_TEST_SPEC cascade constraints
 /
 drop TABLE ATAF_USER_RESTRICTIONS cascade constraints 
 /
-drop TABLE ATAF_CASE_RESULT
+drop TABLE ATAF_TL_TEST cascade constraints
 /
-drop TABLE ATAF_SPEC_RESULT 
+drop TABLE ATAF_TL_JOB cascade constraints
 /
-drop TABLE ATAF_RESULT
+drop TABLE ATAF_TEMP_MV cascade constraints
 /
 drop VIEW ATAF_APEX_APPLICATION_PAGES_V cascade constraints 
 /
@@ -50,13 +57,31 @@ drop VIEW ATAF_TEST_CONDITION_V cascade constraints
 /
 drop VIEW ATAF_TEST_COND_FULL_V cascade constraints 
 / 
+drop VIEW ATAF_APEX_PAGES_V cascade constraints 
+/ 
+drop VIEW ATAF_APEX_SHORTCUTS_V cascade constraints 
+/
+drop VIEW ATAF_APEX_THEMES_V cascade constraints 
+/
+
 drop SEQUENCE ATAF_SEQ 
 /
 drop PACKAGE ATAF_DATA_GENERATOR 
 /
 drop PACKAGE ATAF_PKG 
 /
-drop MATERIALIZED VIEW "ATAF_APEX_PAGE_ITEMS_MV" 
+drop PACKAGE ATAF_TEST_LAB
 /
-@SQL/DROP_USERS
+DROP MATERIALIZED VIEW ATAF_AGENT_SHORTCUTS_MV
+/
+DROP MATERIALIZED VIEW ATAF_AGENT_PAGES_MV
+/
+DROP MATERIALIZED VIEW ATAF_AGENT_THEMES_MV
+/
+DROP MATERIALIZED VIEW ATAF_AGENT_PAGE_ITEMS_MV
+/
+
+SET DEFINE ON
+
+@SQL/DROP_USERS &1
 /

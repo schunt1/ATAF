@@ -78,10 +78,12 @@ IS
 --| S. Hunt         10-Oct-15 2       specCase added                            |
 --+=============================================================================+
   PROCEDURE test(
-      p_spec_id IN NUMBER,
-      p_case_id IN NUMBER,
+      p_spec_id      IN NUMBER,
+      p_case_id      IN NUMBER,
       p_spec_case_id IN NUMBER,
-      p_domain  IN VARCHAR2
+      p_domain       IN VARCHAR2,
+      p_ws_name      OUT apex_application_global.vc_arr2,
+      p_ws_value     OUT apex_application_global.vc_arr2
     );
 --
 --+=============================================================================+

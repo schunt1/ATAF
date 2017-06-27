@@ -1,1 +1,0 @@
-java -jar c:\ApexSec\apexsec-win64.jar --host localhost --sid XE --port 1521 --user ATAF --pass Password1! --savepassword --appid 108 --junit c:\ApexSec\atafApexSec

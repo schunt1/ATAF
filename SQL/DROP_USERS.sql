@@ -7,7 +7,12 @@ BEGIN
   APEX_UTIL.SET_SECURITY_GROUP_ID(p_security_group_id=>lv_workspace_id);
   APEX_UTIL.REMOVE_USER(p_user_name => 'ADMIN_USER');
   APEX_UTIL.REMOVE_USER(p_user_name => 'BASIC_USER');
+  APEX_UTIL.REMOVE_USER(p_user_name => 'TEST1');
+  APEX_UTIL.REMOVE_USER(p_user_name => 'TEST2');
+  APEX_UTIL.REMOVE_USER(p_user_name => 'TEST3');
+  APEX_UTIL.REMOVE_USER(p_user_name => 'TEST4');
   APEX_UTIL.DELETE_USER_GROUP(p_group_name => 'ataf_administrator');
 END;
 /
 commit;
+

@@ -1,5 +1,5 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS" ("APPLICATION_ID", "PAGE_ID", "LABEL", "TYPE", "DOM_ID", "NAME", "DISPLAY_SEQUENCE", "ID", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "DISPLAY_SEQUENCE1", "DISPLAY_SEQUENCE2") AS 
-    SELECT
+CREATE OR REPLACE FORCE VIEW "ATAF_APEX_SHORTCUTS_V" ("WORKSPACE", "WORKSPACE_DISPLAY_NAME", "APPLICATION_ID", "APPLICATION_NAME", "SHORTCUT_NAME", "SHORTCUT_TYPE", "CONDITION_TYPE", "CONDITION_TYPE_CODE", "CONDITION_EXPRESSION1", "CONDITION_EXPRESSION2", "ERROR_TEXT", "BUILD_OPTION", "SHORTCUT", "IS_SUBSCRIBED", "SUBSCRIBED_FROM", "LAST_UPDATED_BY", "LAST_UPDATED_ON", "COMPONENT_COMMENTS", "SHORTCUT_ID", "COMPONENT_SIGNATURE") AS 
+  SELECT 
 --
 --+============================================================================
 --|                     Apex Test Automation Framework
@@ -11,49 +11,16 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS" ("APPLICATION_ID", "PAGE_ID"
 --| $Revision: $                                                                |
 --| $HeadURL: $                                                                 |
 --|                                                                             |
---| Description : View of all apex and custom items drawn from apex views       |
+--| Description : View that unions all the agent views into one object.         |
 --|                                                                             |
 --| Modification History :                                                      |
 --| ----------------------                                                      |
 --|                                                                             |
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
---| S. Hunt         09-Aug-16 1       Initial Version                           |
---| S. Hunt         02-Sep-16 2       Ataf Items added                          |
---| S. Hunt         10-Mar-17 3       Region Name added to Items                |
---| S. Hunt         09-Apr-17 4       Updated to use Agent.                     |
---+=============================================================================+   
- APPLICATION_ID,
- PAGE_ID,
- LABEL,
- TYPE,
- DOM_ID,
- NAME,
- DISPLAY_SEQUENCE,
- ID,
- ELEMENT_TYPE,
- REGION_ID,
- REGION_NAME,
- DISPLAY_SEQUENCE1,
- DISPLAY_SEQUENCE2
-FROM
-  ATAF_AGENT_PAGE_ITEMS_MV
-UNION ALL
-SELECT 
-  application_id,
-  page_id,
-  item_label label,
-  item_type TYPE,
-  item_dom_id,
-  item_name name,
-  display_sequence,
-  item_id id,
-  NULL element_type,
-  NULL region_id,
-  region_name,
-  null display_sequence1,
-  null display_sequence2
-FROM ataf_item
+--| S. Hunt         09-Apr-17 1       Initial Version                           |
+--+=============================================================================+ 
+"WORKSPACE","WORKSPACE_DISPLAY_NAME","APPLICATION_ID","APPLICATION_NAME","SHORTCUT_NAME","SHORTCUT_TYPE","CONDITION_TYPE","CONDITION_TYPE_CODE","CONDITION_EXPRESSION1","CONDITION_EXPRESSION2","ERROR_TEXT","BUILD_OPTION","SHORTCUT","IS_SUBSCRIBED","SUBSCRIBED_FROM","LAST_UPDATED_BY","LAST_UPDATED_ON","COMPONENT_COMMENTS","SHORTCUT_ID","COMPONENT_SIGNATURE" FROM ATAF_AGENT_SHORTCUTS_MV
 -------------------------------------------------------------------------------
 -- The Apex View are only able to access application elements from the       --
 -- applications parsing schema.  Therefore, you will need to add Agent MVs   --
@@ -62,21 +29,6 @@ FROM ataf_item
 -------------------------------------------------------------------------------
 /*
 UNION ALL
-SELECT
- APPLICATION_ID,
- PAGE_ID,
- LABEL,
- TYPE,
- DOM_ID,
- NAME,
- DISPLAY_SEQUENCE,
- ID,
- ELEMENT_TYPE,
- REGION_ID,
- REGION_NAME,
- DISPLAY_SEQUENCE1,
- DISPLAY_SEQUENCE2
-FROM
-  OTHER.ATAF_AGENT_PAGE_ITEMS_MV
+SELECT * FROM OTHER.ATAF_AGENT_SHORTCUTS_MV
 */
 /

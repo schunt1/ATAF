@@ -1,5 +1,26 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM_ID", "DATA_ID", "TEST_COND_ID", "ROW_NUMBER", "CON_SORT_ORDER", "PAGE_ID", "OUTCOME_PAGE_ID", "ACTION_ID", "DATA_ATTRIBUTE", "TEST_DATA_ID", "TEST_CASE_ID", "TEST_CASE", "NOTES", "ID", "DOM_ID", "NAME", "LABEL", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "SCRIPT", "ACTION", "DATA_ITEM_VALUE", "DATA_ITEM_NAME", "PAGE_TITLE", "OUTCOME_PAGE_TITLE", "THEME_NUMBER", "APPLICATION_ID", "PROJECT_ID", "DATA_GROUP_ID", "AND_WAIT") AS 
+CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM_ID", "DATA_ID", "TEST_COND_ID", "ROW_NUMBER", "CON_SORT_ORDER", "PAGE_ID", "OUTCOME_PAGE_ID", "ACTION_ID", "DATA_ATTRIBUTE", "TEST_DATA_ID", "TEST_CASE_ID", "TEST_CASE", "NOTES", "ID", "DOM_ID", "NAME", "LABEL", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "SCRIPT", "ACTION", "DATA_ITEM_VALUE", "DATA_ITEM_NAME", "PAGE_TITLE", "OUTCOME_PAGE_TITLE", "THEME_NUMBER", "APPLICATION_ID", "PROJECT_ID", "DATA_GROUP_ID", "AND_WAIT", "NOT_IN_GROUP") AS 
   SELECT
+--
+--+============================================================================
+--|                     Apex Test Automation Framework
+--|                                Andover
+--+=============================================================================+
+--|                                                                             |
+--| $Author: $                                                                  |
+--| $Date: $                                                                    |
+--| $Revision: $                                                                |
+--| $HeadURL: $                                                                 |
+--|                                                                             |
+--| Description : Denormalised View of Test Conditions                          |
+--|                                                                             |
+--| Modification History :                                                      |
+--| ----------------------                                                      |
+--|                                                                             |
+--| Author          Date      Version Remarks                                   |
+--| --------------- --------- ------- ------------------------------------------
+--| S. Hunt         19-Jul-16 1       Initial Version                           |
+--| S. Hunt         13-May-17 2       Not In Group.                             |
+--+=============================================================================+ 
   ac.row_key,
   con.data_item_id,
   con.data_id,
@@ -34,7 +55,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
   aa.application_id,
   pr.project_id,
   con.data_group_id,
-  ac1.and_wait
+  ac1.and_wait,
+  con.not_in_group
 FROM
   -- Use ataf_test_cond_full_v if outcomes are reqd on separate rows ataf_test_cond for the same row
   ataf_test_cond_full_v con
