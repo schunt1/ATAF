@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   07:24 Monday June 26, 2017
+--   Date and Time:   16:36 Friday June 30, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -38,11 +38,11 @@ prompt APPLICATION 242 - ATAF
 -- Application Statistics:
 --   Pages:                     44
 --     Items:                  155
---     Computations:             7
+--     Computations:             6
 --     Validations:             13
 --     Processes:               90
 --     Regions:                 88
---     Buttons:                109
+--     Buttons:                108
 --     Dynamic Actions:         41
 --   Shared Components:
 --     Logic:
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170625192506'
+,p_checksum_salt_last_reset=>'20170630163147'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170625192506'
+,p_last_upd_yyyymmddhh24miss=>'20170630163147'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -1280,7 +1280,7 @@ wwv_flow_api.create_list_of_values(
  p_id=>wwv_flow_api.id(67730486742943175110)
 ,p_lov_name=>'WORKSPACE USERS'
 ,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select USER_NAME D, USER_NAME R',
+'select apex_escape.html(USER_NAME) D, apex_escape.js_literal(USER_NAME) R',
 'from APEX_WORKSPACE_APEX_USERS',
 'where workspace_id = :WORKSPACE_ID',
 'order by 1'))
@@ -14213,7 +14213,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170424123716'
+,p_last_upd_yyyymmddhh24miss=>'20170630161336'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(23934196328862515)
@@ -14601,7 +14601,7 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_POPUP_LOV'
 ,p_named_lov=>'WORKSPACE USERS'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select USER_NAME D, USER_NAME R',
+'select apex_escape.html(USER_NAME) D, apex_escape.js_literal(USER_NAME) R',
 'from APEX_WORKSPACE_APEX_USERS',
 'where workspace_id = :WORKSPACE_ID',
 'order by 1'))
@@ -14915,7 +14915,6 @@ wwv_flow_api.create_page_process(
 '     APPLICATION_ID,',
 '     DOMAIN,',
 '     VERSION,',
-'     ACCESS_RESTRICTIONS,',
 '     OWNER,',
 '     TL_USERNAME,',
 '     TL_PASSWORD,',
@@ -14925,7 +14924,6 @@ wwv_flow_api.create_page_process(
 '     :P2_APPLICATION_ID,',
 '     :P2_DOMAIN,',
 '     :P2_VERSION,',
-'     :P2_ACCESS_RESTRICTIONS,',
 '     :P2_OWNER,',
 '     :P2_TL_USERNAME,',
 '     :P2_TL_PASSWORD,',
@@ -16789,7 +16787,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170622213317'
+,p_last_upd_yyyymmddhh24miss=>'20170630161535'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67727196540869601976)
@@ -17103,6 +17101,7 @@ wwv_flow_api.create_page_validation(
 'END IF;'))
 ,p_validation_type=>'FUNC_BODY_RETURNING_ERR_TEXT'
 ,p_always_execute=>'N'
+,p_associated_item=>wwv_flow_api.id(23991912059192740)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_api.create_page_da_event(
@@ -17447,7 +17446,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170517094426'
+,p_last_upd_yyyymmddhh24miss=>'20170630161628'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67708502364625409059)
@@ -18449,6 +18448,7 @@ wwv_flow_api.create_page_validation(
 'END IF;'))
 ,p_validation_type=>'FUNC_BODY_RETURNING_ERR_TEXT'
 ,p_always_execute=>'N'
+,p_associated_item=>wwv_flow_api.id(67744108444270066960)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_api.create_page_da_event(
@@ -28797,7 +28797,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410055425'
+,p_last_upd_yyyymmddhh24miss=>'20170630163147'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67711308928816177310)
@@ -28819,7 +28819,7 @@ wwv_flow_api.create_page_plug(
 '                tc.status,',
 '                tc.notes,',
 '                tc.project_id,',
-'                ''Selenium Script'' script,',
+'                apex_util.prepare_url(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:SPEC_CASE_ID,TEST_SPEC_ID,TEST_CASE_ID:,,''||tc.test_case_id) script,',
 '                ''Script'' test_script,',
 '                sc.sort_order,',
 '                SUM ( ',
@@ -29003,7 +29003,9 @@ wwv_flow_api.create_worksheet_column(
 ,p_display_order=>10
 ,p_column_identifier=>'J'
 ,p_column_label=>'Download'
-,p_column_html_expression=>'<a href="javascript:void(window.open(''f?p=&APP_ID.:9:&SESSION.::&DEBUG.:9:SPEC_CASE_ID,TEST_SPEC_ID,TEST_CASE_ID,SELENIUM_KEY:,,#TEST_CASE_ID#,58703752098d7092a5a986709t34D8h764f510''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<a href="javascript:void(window.open(''#SCRIPT#''));">',
+'<i class="fa fa-download"></i>&nbsp;Selenium</a>'))
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
 ,p_static_id=>'SCRIPT'
@@ -29171,29 +29173,6 @@ wwv_flow_api.create_page_button(
 ,p_button_position=>'REGION_TEMPLATE_EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:34:&SESSION.::&DEBUG.:RP::'
 ,p_grid_new_grid=>false
-);
-wwv_flow_api.create_page_button(
- p_id=>wwv_flow_api.id(67711317072724177348)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_api.id(67711308928816177310)
-,p_button_name=>'CREATE'
-,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>wwv_flow_api.id(67710118199433643032)
-,p_button_image_alt=>'Create Test Case'
-,p_button_position=>'REGION_TEMPLATE_EDIT'
-,p_button_redirect_url=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.:17,18::'
-,p_button_condition=>':WRITE_ACCESS = :PROJECT_ID'
-,p_button_condition_type=>'PLSQL_EXPRESSION'
-,p_grid_new_grid=>false
-);
-wwv_flow_api.create_page_computation(
- p_id=>wwv_flow_api.id(67711317921612177381)
-,p_computation_sequence=>1
-,p_computation_item=>'P17_TEST_CASE_ID'
-,p_computation_type=>'STATIC_ASSIGNMENT'
-,p_compute_when=>'CREATE'
-,p_compute_when_type=>'REQUEST_EQUALS_CONDITION'
 );
 end;
 /
