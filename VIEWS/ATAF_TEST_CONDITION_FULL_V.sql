@@ -19,7 +19,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         19-Jul-16 1       Initial Version                           |
---| S. Hunt         13-May-17 2       Not In Group.                             |
+--| S. Hunt         13-May-17 2       Not In Group                             |
+--| S. Hunt         01-Jul-17 3       v('ATAF_WORKSPACE') removed               |
 --+=============================================================================+ 
   ac.row_key,
   con.data_item_id,
@@ -64,7 +65,7 @@ FROM
 --  LEFT OUTER JOIN ataf_test_data td                ON tc.test_data_id = td.test_data_id
   JOIN ataf_project pr                             ON tc.project_id = pr.project_id
   LEFT OUTER JOIN apex_application_themes aa       ON pr.application_id = aa.application_id and ui_type_NAME = 'DESKTOP'
-                                                      and aa.workspace = v('ATAF_WORKSPACE')
+                                                      --and aa.workspace = v('ATAF_WORKSPACE')
   JOIN ataf_action ac                              ON con.action_id = ac.action_id
   LEFT OUTER JOIN ataf_action ac1                  ON con.outcome_id = ac1.action_id
   -- For prod change to ataf_apex_page_items for dev use ataf_apex_page_items_v
@@ -74,9 +75,9 @@ FROM
                                                   AND con.data_id = di.data_id
 ---------------------------------------------------------------------------------------------
   LEFT OUTER JOIN apex_application_pages pv        ON con.page_id = pv.page_id and pr.application_id = pv.application_id
-                                                      and pv.workspace = v('ATAF_WORKSPACE')
+                                                      --and pv.workspace = v('ATAF_WORKSPACE')
   LEFT OUTER JOIN apex_application_pages pv2       ON con.outcome_page_id = pv2.page_id and pr.application_id = pv2.application_id
-                                                      and pv2.workspace = v('ATAF_WORKSPACE')
+                                                      --and pv2.workspace = v('ATAF_WORKSPACE')
 --WHERE di.data_group_id = td.default_data_group_id
 --    OR td.default_data_group_id IS NULL
 /
