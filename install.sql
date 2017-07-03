@@ -144,6 +144,6 @@ PROMPT 'Create Test Users'
 PROMPT 'Cleanup'
 ----------------
 BEGIN
-  drop Table ATAF_TEMP_MV;
+  drop  Table ATAF_TEMP_MV;
   drop function ATAF_MIGRATE_SCRIPT;
 END;
