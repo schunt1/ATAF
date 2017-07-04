@@ -1,4 +1,4 @@
-CREATE OR REPLACE PACKAGE body ATAF_TEST_LAB
+create or replace PACKAGE body ATAF_TEST_LAB
 AS
   --
   --+============================================================================
@@ -262,19 +262,16 @@ AS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         09-Apr-16 1       Initial Version                           |
+--| S. Hunt         04-Jul-17 2       l_status l_upload_result increased to 32  |
 --+=============================================================================+
   PROCEDURE ci_trigger
     (
       p_project_id IN NUMBER
     )
   AS
-    l_upload_result VARCHAR2
-    (
-      16
-    )
-    ;
+    l_upload_result VARCHAR2(32);
     l_job_id    NUMBER;
-    l_status    VARCHAR2(16);
+    l_status    VARCHAR2(32);
     l_limit     NUMBER := 0;
     l_exception EXCEPTION;
     PRAGMA EXCEPTION_INIT(l_exception, -20001);
@@ -283,7 +280,7 @@ AS
     IF l_upload_result = 'Success' THEN
       dbms_output.put_line('Tests uploaded successfully.  ');
     ELSE
-      raise_application_error( -20001, 'There was a problem uploading scripts.  ');
+      raise_application_error( -20001, 'There was a problem uploading scripts.  '||l_upload_result);
     END IF;
     ataf_test_lab.play_lab_suite(p_project_id, l_job_id);
     IF l_job_id IS NOT NULL THEN
