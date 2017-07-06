@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   13:06 Saturday July 1, 2017
+--   Date and Time:   06:11 Thursday July 6, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20170701130553'
+,p_checksum_salt_last_reset=>'20170706061102'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170701130553'
+,p_last_upd_yyyymmddhh24miss=>'20170706061102'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -1184,7 +1184,7 @@ wwv_flow_api.create_list_of_values(
  p_id=>wwv_flow_api.id(67744181157594090589)
 ,p_lov_name=>'PAGE ID'
 ,p_lov_query=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'  SELECT page_id || '' '' || page_name d, NVL (page_alias, page_id) r',
+'  SELECT page_id || '' '' || page_name d,  page_id r',
 '    FROM apex_application_pages',
 '   WHERE application_id = :application_id',
 'ORDER BY page_id'))
@@ -22751,7 +22751,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170622213403'
+,p_last_upd_yyyymmddhh24miss=>'20170706061102'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67744166152005772451)
@@ -23259,7 +23259,7 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_POPUP_LOV'
 ,p_named_lov=>'PAGE ID'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'  SELECT page_id || '' '' || page_name d, NVL (page_alias, page_id) r',
+'  SELECT page_id || '' '' || page_name d,  page_id r',
 '    FROM apex_application_pages',
 '   WHERE application_id = :application_id',
 'ORDER BY page_id'))
@@ -23338,7 +23338,7 @@ wwv_flow_api.create_page_item(
 ,p_display_as=>'NATIVE_POPUP_LOV'
 ,p_named_lov=>'PAGE ID'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'  SELECT page_id || '' '' || page_name d, NVL (page_alias, page_id) r',
+'  SELECT page_id || '' '' || page_name d,  page_id r',
 '    FROM apex_application_pages',
 '   WHERE application_id = :application_id',
 'ORDER BY page_id'))
@@ -30479,7 +30479,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'U'
 ,p_cache_mode=>'NOCACHE'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170622220754'
+,p_last_upd_yyyymmddhh24miss=>'20170705115342'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67743711037159666884)
@@ -30536,7 +30536,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'N'
+,p_attribute_01=>'Y'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
 ,p_attribute_05=>'NONE'
@@ -30566,7 +30566,6 @@ wwv_flow_api.create_page_process(
 'apex_authentication.send_login_username_cookie (',
 '    p_username => lower(:P101_USERNAME) );'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_api.id(67743711346279666910)
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67743711450533666912)
@@ -30579,7 +30578,6 @@ wwv_flow_api.create_page_process(
 '    p_username => :P101_USERNAME,',
 '    p_password => :P101_PASSWORD );'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_when_button_id=>wwv_flow_api.id(67743711346279666910)
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67743711744341666919)
