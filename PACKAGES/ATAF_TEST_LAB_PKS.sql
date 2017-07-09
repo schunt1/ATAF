@@ -19,6 +19,7 @@ AS
   --| Author          Date      Version Remarks                                   |
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
+  --| S. Hunt         09-Jul-17 2       Escape HTML                               |
   --+=============================================================================+
   --
   --+=============================================================================+
@@ -30,9 +31,11 @@ AS
   --| Author          Date      Version Remarks                                   |
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
+  --| S. Hunt         09-Jul-17 2       Escape HTML option for cmd line           |
   --+=============================================================================+
   PROCEDURE modify_test_steps(
       p_test_spec_id IN NUMBER,
+      p_display_html IN VARCHAR2,
       p_outcome OUT VARCHAR);
   --+=============================================================================+
   --| Description : Updates an entire project                                     |
@@ -43,10 +46,12 @@ AS
   --| Author          Date      Version Remarks                                   |
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
+  --| S. Hunt         09-Jul-17 2       Escape HTML option for cmd line           |
   --+=============================================================================+
   PROCEDURE upload_project(
       p_project_id IN NUMBER,
-      p_outcome OUT VARCHAR);
+      p_escape     IN VARCHAR,
+      p_outcome    OUT VARCHAR);
   --+=============================================================================+
   --| Description : Runs an entire test lab suite                                 |
   --|                                                                             |

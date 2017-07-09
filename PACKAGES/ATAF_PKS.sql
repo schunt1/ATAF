@@ -20,6 +20,7 @@ AS
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         10-Oct-15 2       Tes Prodedure updated                     |
+--| S. Hunt         09-Jul-17 3       Function Test updated                     |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -76,12 +77,14 @@ IS
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         04-Mar-15 1       Initial Version                           |
 --| S. Hunt         10-Oct-15 2       specCase added                            |
+--| S. Hunt         09-Jul-17 3       p_display added to escap html             |
 --+=============================================================================+
   PROCEDURE test(
       p_spec_id      IN NUMBER,
       p_case_id      IN NUMBER,
       p_spec_case_id IN NUMBER,
       p_domain       IN VARCHAR2,
+      p_display      IN VARCHAR2,
       p_ws_name      OUT apex_application_global.vc_arr2,
       p_ws_value     OUT apex_application_global.vc_arr2
     );

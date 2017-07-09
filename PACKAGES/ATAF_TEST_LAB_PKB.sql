@@ -19,6 +19,7 @@ AS
   --| Author          Date      Version Remarks                                   |
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
+  --| S. Hunt         09-Jul-17 2       Escape HTML                               |
   --+=============================================================================+
   g_wallet_path VARCHAR2(64) := ataf_test_lab.get_parameter('Wallet Path');
   g_wallet_pwd  VARCHAR2(32) := ataf_test_lab.get_parameter('Wallet Password');
@@ -31,9 +32,11 @@ AS
   --| Author          Date      Version Remarks                                   |
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
+  --| S. Hunt         09-Jul-17 2       Escape HTML option for cmd line           |
   --+=============================================================================+
   PROCEDURE MODIFY_TEST_STEPS(
       p_test_spec_id IN NUMBER,
+      p_display_html IN VARCHAR2,
       p_outcome OUT VARCHAR )
   AS
     l_arr1 apex_application_global.vc_arr2;
@@ -58,7 +61,16 @@ AS
     LEFT JOIN ataf_project pro ON ats.project_id = pro.project_id
     WHERE
       ats.test_spec_id = p_test_spec_id;
-    ataf_pkg.test( p_spec_id => p_test_spec_id, p_case_id => NULL, p_spec_case_id => NULL, p_domain => NULL, p_ws_name => l_arr1, p_ws_value => l_arr2);
+
+    ataf_pkg.test( 
+      p_spec_id => p_test_spec_id, 
+      p_case_id => NULL, 
+      p_spec_case_id => NULL, 
+      p_domain => NULL, 
+      p_display => p_display_html,
+      p_ws_name => l_arr1, 
+      p_ws_value => l_arr2);
+    
     l_clob := apex_web_service.make_rest_request( p_url => 'https://api.testingbot.com/v1/lab/'||l_test_lab_test_id||'/steps', p_http_method => 'POST', p_username => l_username, p_password => l_password, p_parm_name => l_arr1, p_parm_value => l_arr2, p_wallet_path => g_wallet_path, p_wallet_pwd => g_wallet_pwd );
     apex_json.parse(l_clob);
     l_success     := apex_json.get_varchar2(p_path => 'success');
@@ -101,15 +113,12 @@ AS
 --+=============================================================================+
   PROCEDURE upload_project
     (
-      p_project_id IN NUMBER,
-      p_outcome OUT VARCHAR
+      p_project_id  IN NUMBER,
+      p_escape      IN VARCHAR,  
+      p_outcome     OUT VARCHAR
     )
   AS
-    l_outcome VARCHAR2
-    (
-      32
-    )
-    ;
+    l_outcome VARCHAR2(32);
   BEGIN
     FOR i IN
     (SELECT
@@ -123,11 +132,11 @@ AS
         sort_order
     )
     LOOP
-      ATAF_TEST_LAB.MODIFY_TEST_STEPS
-      (
-        i.test_spec_id,l_outcome
-      )
-      ;
+      ATAF_TEST_LAB.MODIFY_TEST_STEPS (
+        p_test_spec_id => i.test_spec_id,
+        p_display_html => p_escape,
+        p_outcome => l_outcome
+      );
       -- A failure trumps!
       IF l_outcome = 'Failure' THEN
         p_outcome := 'Failure';
@@ -263,20 +272,29 @@ AS
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         09-Apr-16 1       Initial Version                           |
 --| S. Hunt         04-Jul-17 2       l_status l_upload_result increased to 32  |
+--| S. Hunt         09-Jul-17 3       HTML Escape added to upload_project       |
 --+=============================================================================+
   PROCEDURE ci_trigger
     (
       p_project_id IN NUMBER
     )
   AS
+
     l_upload_result VARCHAR2(32);
     l_job_id    NUMBER;
     l_status    VARCHAR2(32);
     l_limit     NUMBER := 0;
     l_exception EXCEPTION;
     PRAGMA EXCEPTION_INIT(l_exception, -20001);
+
   BEGIN
-    ataf_test_lab.upload_project(p_project_id,l_upload_result);
+
+    ataf_test_lab.upload_project(
+      p_project_id => p_project_id,
+      p_escape     => 'N',
+      p_outcome    => l_upload_result
+    );
+
     IF l_upload_result = 'Success' THEN
       dbms_output.put_line('Tests uploaded successfully.  ');
     ELSE

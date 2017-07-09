@@ -29,7 +29,8 @@ IS
 --| S. Hunt         10-Oct-16 9       Test pkg bug fix                          |
 --| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
 --| S. Hunt         23-Mar-17 11      Spec Groups added to proc TEST            |
---| S. Hunt         30-Mar-17 12      ATAF agent added to MV.                   |
+--| S. Hunt         30-Mar-17 12      ATAF agent added to MV                    |
+--| S. Hunt         17-Jul-17 13      Escape HTML for Test Procedure            |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -179,12 +180,14 @@ END TEST_FUNC;
 --| S. Hunt         10-Mar-17 10      Results Upload Removed                    |
 --| S. Hunt         26-Mar-17 11      Ability to link spec groups to actions    |
 --| S. Hunt         30-Mar-17 12      Change to use ATAF agent MVs              |
+--| S. Hunt         17-Jul-17 13      Escape htp.p when not run from an app     |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
       p_case_id      IN NUMBER,
       p_spec_case_id IN NUMBER,
       p_domain       IN VARCHAR2,
+      p_display      IN VARCHAR2,
       p_ws_name      OUT apex_application_global.vc_arr2,
       p_ws_value     OUT apex_application_global.vc_arr2
   )
@@ -258,11 +261,14 @@ BEGIN
   ----------------------
   -- Initialise table --
   ----------------------
+  IF p_display = 'Y' THEN
+
     htp.p('<table cellpadding="1" cellspacing="1" border="1">');
     htp.p('<thead>');
     htp.p('<tr><td rowspan="1" colspan="3">'||apex_escape.html(l_test_name)||'</td></tr>');
     htp.p('</thead><tbody>');
-    
+
+ END IF;   
     
 FOR i IN (
 
@@ -384,18 +390,16 @@ FROM
   JOIN ataf_selenium sel ON tcv.action_id = sel.action_id
                         AND tcv.theme_number = sel.theme_number
   JOIN x ON tcv.test_case_id = x.test_case_id
-                         ----------------------------------------------------------------------    
-                         ---- If the test case (tcv.data_group_id) has no group then do nothing
-                         ---- ELse Match to spec group first then data group
-                         ----------------------------------------------------------------------
-                         AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,x.data_group_id),-1)
-                         -----------------------------------------------
+  ----------------------------------------------------------------------    
+  ---- If the test case (tcv.data_group_id) has no group then do nothing
+  ---- ELse Match to spec group first then data group
+  ----------------------------------------------------------------------
+  AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,x.data_group_id),-1)
+  ----------------------------------------------------------------------
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
                                            AND nvl(tdv.data_id,0) = nvl(x.data_id,0)
-
----------------------------------------------------------------
-            
+  ----------------------------------------------------------------------         
 ORDER BY
   x.sort_order,
   x.data_id,
@@ -405,36 +409,46 @@ ORDER BY
 ---------------------------------------------------------------
 )
   LOOP
-    IF l_test_case_old IS NULL OR l_test_case_old != i.test_case THEN
-      htp.p('<!--Test Case: '||apex_escape.html(i.test_case)||'-->');
-    END IF;
+
+    -------------------------------------------------
+    -- Add comment to the start of a new Test Case --
+    -------------------------------------------------
+    IF p_display = 'Y' THEN
+
+      IF l_test_case_old IS NULL OR l_test_case_old != i.test_case THEN
+        htp.p('<!--Test Case: '||apex_escape.html(i.test_case)||'-->');
+      END IF;
     
+    END IF;
+
     -----------------------------------------------
     -- Group Logic that ensure cond gp = data gp --
     -----------------------------------------------
-    
     IF i.case_group_id + i.cond_group_id IS NULL 
       OR (NVL(i.case_group_id,0) = NVL(i.cond_group_id,0)) THEN
       
-      htp.p('<tr>');
-      htp.p('<td>'||apex_escape.html(i.command)||'</td>');
-      htp.p('<td>'||apex_escape.html(i.target)||'</td>');
-      htp.p('<td>'||apex_escape.html(i.value)||'</td>');
+      IF p_display = 'Y' THEN
+
+        htp.p('<tr>');
+        htp.p('<td>'||apex_escape.html(i.command)||'</td>');
+        htp.p('<td>'||apex_escape.html(i.target)||'</td>');
+        htp.p('<td>'||apex_escape.html(i.value)||'</td>');
 
       ----------------------------------------------------------
       --   Debug to display group values - view in Sel Spec   --
       ----------------------------------------------------------
-    --htp.p('<td>'||apex_escape.html(i.spec_group_id)||'</td>');
-    --htp.p('<td>'||apex_escape.html(i.case_group_id)||'</td>');
-    --htp.p('<td>'||apex_escape.html(i.cond_group_id)||'</td>');
-    --htp.p('<td>'||apex_escape.html(i.data_group_id)||'</td>');
+      --htp.p('<td>'||apex_escape.html(i.spec_group_id)||'</td>');
+      --htp.p('<td>'||apex_escape.html(i.case_group_id)||'</td>');
+      --htp.p('<td>'||apex_escape.html(i.cond_group_id)||'</td>');
+      --htp.p('<td>'||apex_escape.html(i.data_group_id)||'</td>');
       
-      htp.p('</tr>');
+        htp.p('</tr>');
       
+      END IF;
+
       --------------------------------
       --   set web servive values   --
       --------------------------------
-  
       l_test_serial := l_test_serial + 1;
                     
       p_ws_name(x+1)  := 'steps[][cmd]';
@@ -454,7 +468,12 @@ ORDER BY
     l_test_case_old := i.test_case;
     
   END LOOP;
-  htp.p('</tbody></table>');
+
+  IF p_display = 'Y' THEN
+
+    htp.p('</tbody></table>');
+
+  END IF;
       
 END TEST;
 --
