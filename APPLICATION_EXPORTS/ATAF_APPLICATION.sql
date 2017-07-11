@@ -27,7 +27,15 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
+<<<<<<< Updated upstream
 --   Date and Time:   09:39 Sunday July 9, 2017
+=======
+<<<<<<< HEAD
+--   Date and Time:   17:10 Monday July 10, 2017
+=======
+--   Date and Time:   09:39 Sunday July 9, 2017
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -47,7 +55,7 @@ prompt APPLICATION 242 - ATAF
 --   Shared Components:
 --     Logic:
 --       Items:                 18
---       Processes:              3
+--       Processes:              2
 --       Build Options:          1
 --       Data Loading:           1
 --     Navigation:
@@ -96,7 +104,15 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
+<<<<<<< Updated upstream
 ,p_checksum_salt_last_reset=>'20170709092910'
+=======
+<<<<<<< HEAD
+,p_checksum_salt_last_reset=>'20170710171023'
+=======
+,p_checksum_salt_last_reset=>'20170709092910'
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +142,15 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
+<<<<<<< Updated upstream
 ,p_last_upd_yyyymmddhh24miss=>'20170709092910'
+=======
+<<<<<<< HEAD
+,p_last_upd_yyyymmddhh24miss=>'20170710171023'
+=======
+,p_last_upd_yyyymmddhh24miss=>'20170709092910'
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -650,58 +674,6 @@ wwv_flow_api.create_flow_process(
 'END;'))
 ,p_process_when_type=>'NEVER'
 ,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
-);
-wwv_flow_api.create_flow_process(
- p_id=>wwv_flow_api.id(67727955135548735478)
-,p_process_sequence=>1
-,p_process_point=>'ON_NEW_INSTANCE'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Create apex_page_items collection'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'DECLARE',
-'',
-'  lv_workspace VARCHAR2(60);',
-'  ',
-'BEGIN',
-'',
-'select WORKSPACE INTO lv_workspace from APEX_APPLICATIONS where application_id = :app_id;',
-'APEX_UTIL.set_session_state(''ATAF_WORKSPACE'',lv_workspace);',
-'',
-'-----------------------------------------------------------------------------',
-'-- REPLACED BY MATERIALIZED VIES --------------------------------------------',
-'-----------------------------------------------------------------------------',
-'/*IF APEX_COLLECTION.COLLECTION_EXISTS (''ATAF_APEX_PAGE_ITEMS_V'') = false THEN',
-'',
-'  apex_collection.create_collection_from_query( ',
-'    p_collection_name => ''APEX_PAGE_ITEMS'',',
-'    p_query => q''!select ',
-'                   APPLICATION_ID,',
-'                   PAGE_ID,',
-'                   LABEL,',
-'                   TYPE,',
-'                   DOM_ID,',
-'                   NAME,',
-'                   DISPLAY_SEQUENCE,',
-'                   ID,',
-'                   ELEMENT_TYPE,',
-'                   REGION_ID,',
-'                   REGION_NAME,',
-'                   DISPLAY_SEQUENCE1,',
-'                   DISPLAY_SEQUENCE2',
-'                 from ATAF_APEX_PAGE_ITEMS_V',
-'                 where display = ''Y'' !'');',
-'',
-'END IF;',
-'*/',
-'SELECT ''Apex Items Last Refreshed: ''||TO_CHAR(last_refresh_date, ''DD-Mon-YYYY HH24:MI'') ',
-'  INTO :UI_MAP_LAST_REFRESHED',
-'  FROM ALL_MVIEWS',
-' WHERE mview_name = ''ATAF_AGENT_PAGE_ITEMS_MV'';',
-'-----------------------------------------------------------------------------',
-' ',
-'END;'))
-,p_process_error_message=>'There was a problem creating the APEX_PAGE_ITEMS collection.'
-,p_process_when_type=>'NEVER'
 );
 end;
 /
@@ -13847,7 +13819,7 @@ wwv_flow_api.create_page(
 ,p_cache_mode=>'NOCACHE'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170622100835'
+,p_last_upd_yyyymmddhh24miss=>'20170710171023'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67707834329557975960)
@@ -14158,7 +14130,7 @@ wwv_flow_api.create_page_process(
 '    INTO',
 '      :UI_MAP_LAST_REFRESHED',
 '    FROM',
-'      ALL_MVIEWS',
+'      USER_MVIEWS',
 '    WHERE',
 '      mview_name LIKE ''ATAF_AGENT%'';'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
@@ -14179,7 +14151,7 @@ wwv_flow_api.create_page_process(
 '',
 'SELECT ''Apex Items Last Refreshed: ''||TO_CHAR(last_refresh_date, ''DD-Mon-YYYY HH24:MI'') ',
 'INTO :UI_MAP_LAST_REFRESHED',
-'FROM ALL_MVIEWS',
+'FROM USER_MVIEWS',
 'WHERE mview_name = ''ATAF_AGENT_PAGE_ITEMS_MV'';',
 ' ',
 ''))
