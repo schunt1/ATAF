@@ -27,15 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
-<<<<<<< Updated upstream
---   Date and Time:   09:39 Sunday July 9, 2017
-=======
-<<<<<<< HEAD
---   Date and Time:   17:10 Monday July 10, 2017
-=======
---   Date and Time:   09:39 Sunday July 9, 2017
->>>>>>> origin/master
->>>>>>> Stashed changes
+--   Date and Time:   02:22 Wednesday July 12, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -104,15 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-<<<<<<< Updated upstream
-,p_checksum_salt_last_reset=>'20170709092910'
-=======
-<<<<<<< HEAD
-,p_checksum_salt_last_reset=>'20170710171023'
-=======
-,p_checksum_salt_last_reset=>'20170709092910'
->>>>>>> origin/master
->>>>>>> Stashed changes
+,p_checksum_salt_last_reset=>'20170712022147'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -131,7 +115,7 @@ wwv_flow_api.create_flow(
 ,p_favicons=>'<link rel="shortcut icon" href="#APP_IMAGES#favicon.ico">'
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=> nvl(wwv_flow_application_install.get_proxy,'')
-,p_flow_version=>'0.2.0 Beta'
+,p_flow_version=>'0.2.2 Beta'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_flow_unavailable_text=>'This application is currently unavailable at this time.'
 ,p_exact_substitutions_only=>'Y'
@@ -142,15 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-<<<<<<< Updated upstream
-,p_last_upd_yyyymmddhh24miss=>'20170709092910'
-=======
-<<<<<<< HEAD
-,p_last_upd_yyyymmddhh24miss=>'20170710171023'
-=======
-,p_last_upd_yyyymmddhh24miss=>'20170709092910'
->>>>>>> origin/master
->>>>>>> Stashed changes
+,p_last_upd_yyyymmddhh24miss=>'20170712022147'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
