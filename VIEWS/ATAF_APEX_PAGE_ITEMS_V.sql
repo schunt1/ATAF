@@ -36,6 +36,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          06-May-17 15      Yes/No add as Select List                 |
 --|                                   IRs Use column static_id before alias.    |
 --| S.Hunt          26-Jun-17 16      Desktop Navigation Bar                    |
+--| S.Hunt          13-Jul-17 17      Legacy NavBar                             |
+--| S.Hunt          13-Jul-17 18      Interactive Grids                         |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -62,8 +64,63 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
      FROM apex_application_list_entries ent
           join apex_application_lists lis ON ent.list_id = lis.list_id and ent.workspace = lis.workspace
           join apex_application_page_regions reg ON lis.list_id = reg.list_id and lis.workspace = reg.workspace
-          left outer join apex_application_list_entries ent2 on ent.list_entry_parent_id = ent2.list_entry_id and ent.workspace = ent2.workspace
-    --WHERE ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)    
+          left outer join apex_application_list_entries ent2 on ent.list_entry_parent_id = ent2.list_entry_id and ent.workspace = ent2.workspace  
+   UNION ALL
+   -----------------------
+   -- Interactive Grid  --
+   ----------------------- 
+   SELECT
+     ig.application_id "APPLICATION_ID", 
+     ig.page_id "PAGE_ID", 
+     ig.region_name "LABEL", 
+     'Report' "TYPE", 
+     'R'||ig.region_id "DOM_ID", 
+     ig.region_name "NAME", 
+     null "DISPLAY_SEQUENCE", 
+     null "DISPLAY_SEQUENCE1", 
+     null "DISPLAY_SEQUENCE2", 
+     to_number(ig.region_id) "ID", 
+     'div' "ELEMENT_TYPE", 
+     ig.page_name "PAGE_ALIAS", 
+     to_char(ig.region_id) "REGION_ID", 
+     ig.region_name "REGION_NAME", 
+     null "REGION_POSITION", 
+     null "DISPLAY"
+   FROM APEX_APPL_PAGE_IG_RPTS ig 
+   UNION ALL
+   -----------------------------
+   -- Interactive Grid Column --
+   -----------------------------
+   SELECT
+     igc.application_id "APPLICATION_ID", 
+     igc.page_id "PAGE_ID", 
+     igc.heading "LABEL", 
+     decode(igc.item_type,
+       'NATIVE_TEXT_FIELD', 'Text Field',
+       'NATIVE_TEXTAREA',  'Textarea',
+       'NATIVE_DATE_PICKER', 'Date Picker',
+       'NATIVE_SELECT_LIST', 'Select List',
+       'NATIVE_NUMBER_FIELD', 'Number Field'
+     ) "TYPE",
+     'C'||igc.column_id "DOM_ID", 
+     'C'||igc.column_id "NAME", 
+     igc.display_sequence "DISPLAY_SEQUENCE", 
+     null "DISPLAY_SEQUENCE1", 
+     null "DISPLAY_SEQUENCE2", 
+     to_number(igc.column_id) "ID", 
+     'div' "ELEMENT_TYPE", 
+     igc.page_name "PAGE_ALIAS", 
+     to_char(igc.region_id) "REGION_ID", 
+     igc.region_name "REGION_NAME", 
+     null "REGION_POSITION", 
+     null "DISPLAY"
+   FROM APEX_APPL_PAGE_IG_COLUMNS igc 
+   WHERE igc.item_type IN (
+       'NATIVE_TEXT_FIELD', 
+       'NATIVE_TEXTAREA',  
+       'NATIVE_DATE_PICKER',
+       'NATIVE_SELECT_LIST',
+       'NATIVE_NUMBER_FIELD')
    UNION ALL
    ------------------------
    -- Application Region --
@@ -113,8 +170,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
      FROM apex_application_list_entries ent
      JOIN APEX_APPL_USER_INTERFACES ui ON ent.application_id = ui.application_id
                                       AND ent.list_id = ui.navigation_list_id
-                                      and ent.workspace = ui.workspace
-     --where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)                                
+                                      and ent.workspace = ui.workspace                               
      UNION ALL
    -----------------------------------
    -- Parent List Items Stores Only --
@@ -139,29 +195,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           apex_application_page_regions reg
     WHERE reg.list_id = lis.list_id
       and reg.workspace = lis.workspace
-      --and reg.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
-   ------------------
-   -- Custom Items --
-   ------------------
-/*   SELECT application_id,
-          page_id,
-          item_label label,
-          item_type TYPE,
-          item_dom_id,
-          item_name name,
-          display_sequence,
-          null display_sequence1,
-          null display_sequence2,
-          item_id id,
-          NULL element_type,
-          NULL page_alias,
-          NULL region_id,
-          null region_name,
-          null region_position,
-          'Y' display
-   FROM ataf_item
-   UNION ALL*/
    -------------
    -- Nav Bar --
    -------------
@@ -186,36 +220,56 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
      JOIN APEX_APPL_USER_INTERFACES ui ON ent.application_id = ui.application_id
                                       AND ent.list_id = ui.nav_bar_list_id
                                       and ent.workspace = ui.workspace
-   -- where ent.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
      WHERE ent.list_name IN ('Navigation Bar','Generic Navigation Bar List','Desktop Navigation Bar')
    UNION ALL
-   -----------------
-   -- Apex Items  --
-   -----------------
+--------------------   
+-- Legacy Nav Bar --   
+--------------------      
+SELECT         
+  nav.application_id,
+  0 page_id,
+  nav.ICON_IMAGE_ALT label,
+  'Nav Bar' TYPE,
+  to_char(nav.NAV_BAR_ID) dom_id, 
+  nav.ICON_IMAGE_ALT name,
+  nav.display_sequence,
+  null display_sequence1,
+  null display_sequence2,
+  nav.NAV_BAR_ID id,
+  NULL, 
+  NULL page_alias,
+  NULL region_id,
+  'Nav Bar' region_name,          
+  'Nav Bar' region_position,
+  'Y' display
+FROM apex_application_nav_bar nav   
+UNION ALL
+-----------------
+-- Apex Items  --
+-----------------
    SELECT aapi.application_id,
-          aapi.page_id,
-          NVL (aapi.label, aapi.item_name),
-          decode(
-              aapi.display_as
-              ,'Text Field with autocomplete','Text Field'
-              ,'Yes/No','Select List'
-              ,aapi.display_as) display_as,
-          TO_CHAR (aapi.item_id) r,
-          aapi.item_name,
-          aapi.display_sequence,
-          null display_sequence1,
-          null display_sequence2,
-          aapi.item_id,
-          NULL,
-          NULL page_alias,
-          NULL region_id,
-          aapi.region region_name,
-          null region_position,
-          case when aapi.display_as = 'Hidden' then 'N'
-               when aapi.condition_type = 'Never' then 'N'
-               else 'Y' end disply
-     FROM apex_application_page_items aapi
-   -- WHERE aapi.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
+       aapi.page_id,
+       NVL (aapi.label, aapi.item_name),
+        decode(
+            aapi.display_as
+            ,'Text Field with autocomplete','Text Field'
+            ,'Yes/No','Select List'
+            ,aapi.display_as) display_as,
+       TO_CHAR (aapi.item_id) r,
+       aapi.item_name,
+       aapi.display_sequence,
+       null display_sequence1,
+       null display_sequence2,
+       aapi.item_id,
+       NULL,
+       NULL page_alias,
+       NULL region_id,
+       aapi.region region_name,
+       null region_position,
+       case when aapi.display_as = 'Hidden' then 'N'
+            when aapi.condition_type = 'Never' then 'N'
+            else 'Y' end disply
+   FROM apex_application_page_items aapi
    UNION ALL
    -------------------
    -- Apex Buttons  --
@@ -240,7 +294,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_buttons
---    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    ---------------
    -- Apex Tabs --
@@ -262,7 +315,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_tabs a
---    WHERE a.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    -----------------
    -- IR Columns  --
@@ -284,7 +336,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           null region_position,
           decode(display_condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_ir_col
---    WHERE workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    --------------------
    -- Report Columns --
@@ -307,7 +358,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
           decode(condition_type, 'Never', 'N', 'Y') display
      FROM apex_application_page_rpt_cols
     WHERE column_is_hidden = 'No'
---      and workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    -------------------
    -- IR Components --
@@ -336,13 +386,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                   NULL
              FROM DUAL
            UNION ALL
-           --select
-           --  'IR Go Button' label,
-           --  'IR Go Button' type,
-           --  'apexir_btn_SEARCH' dom_id,
-           --  20 display_sequence,
-           --  2 id    --from dual
-           --union all
            SELECT 'IR Reset' label,
                   'IR Reset' TYPE,
                   'apexir_ACTIONSMENUROOT' dom_id,
@@ -366,7 +409,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
                   4 id,
                   NULL
              FROM DUAL) ir,
-          --apex_application_page_ir aa
           (select 
              ir.workspace,
              ir.application_id, 
@@ -378,7 +420,6 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
            from 
              apex_application_page_ir ir 
            join APEX_APPLICATION_PAGE_REGIONS pr on ir.region_id = pr.region_id) aa
---          where aa.workspace = (SELECT v('ATAF_WORKSPACE') FROM DUAL)
    UNION ALL
    --------------
    -- Outcomes --
