@@ -38,6 +38,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_APEX_PAGE_ITEMS_V" ("APPLICATION_ID", "PAGE_I
 --| S.Hunt          26-Jun-17 16      Desktop Navigation Bar                    |
 --| S.Hunt          13-Jul-17 17      Legacy NavBar                             |
 --| S.Hunt          13-Jul-17 18      Interactive Grids                         |
+--| S.Hunt          02-Dec-17 19      Application Pages addedd                  |
 --+=============================================================================+   
    ----------------
    -- List Items --
@@ -462,4 +463,42 @@ UNION ALL
           null region_position,
           'Y' dislpay
      FROM DUAL
+   -----------------------
+   -- Application Pages --
+   -----------------------
+   SELECT aap.application_id,
+          aap.page_id,
+          to_char(aap.page_id) label,
+          'Page' TYPE,
+          NULL dom_id,
+          'Page' name,
+          aap.page_id display_sequence,
+          null display_sequence1,
+          null display_sequence2,
+          to_number(aap.application_id||'00000'||aap.page_id) id,
+          NULL element_type,
+          NULL page_alias,
+          NULL region_id,
+          'Page' region_name,
+          null region_position,
+          'Y' dislpay
+     FROM apex_application_pages aap
+   UNION ALL
+   SELECT app.application_id,
+          0 page_id,
+          'Any' label,
+          'Page' TYPE,
+          NULL dom_id,
+          'Page' name,
+          0 display_sequence,
+          null display_sequence1,
+          null display_sequence2,
+          to_number(app.application_id||'00000'||'0') id,
+          NULL element_type,
+          NULL page_alias,
+          NULL region_id,
+          'Page' region_name,
+          null region_position,
+          'Y' dislpay
+     FROM apex_applications app
 /
