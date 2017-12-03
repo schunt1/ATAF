@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   12:58 Saturday December 2, 2017
+--   Date and Time:   05:49 Sunday December 3, 2017
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -96,7 +96,7 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20171202125511'
+,p_checksum_salt_last_reset=>'20171203054819'
 ,p_bookmark_checksum_function=>'MD5'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
@@ -126,7 +126,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20171202125511'
+,p_last_upd_yyyymmddhh24miss=>'20171203054819'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -30518,7 +30518,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_cache_mode=>'NOCACHE'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20171202054629'
+,p_last_upd_yyyymmddhh24miss=>'20171203054819'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(205620532532319113)
@@ -30568,6 +30568,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
+,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'Y'
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
@@ -30582,6 +30583,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
+,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'Y'
 ,p_attribute_02=>'VALUE'
 ,p_attribute_04=>'Y'
@@ -30593,15 +30595,28 @@ wwv_flow_api.create_page_process(
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Send Username'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'   apex_mail.send(',
-'        p_to       => :P43_EMAIL,   ',
+'DECLARE',
+'',
+'  lv_email VARCHAR2(256);',
+'  ',
+'BEGIN',
+'',
+'  -- Select back the email to prevent any Email XSS',
+'  SELECT email INTO lv_email',
+'  FROM ataf_user',
+'  WHERE username = :P43_USERNAME;',
+'  ',
+'    apex_mail.send(',
+'        p_to       => lv_email,   ',
 '        p_from     => ''admin@apextestautomation.co.uk'',',
 '        p_body     => ''Your ATAF username is: ''||:P43_USERNAME||utl_tcp.crlf,',
-'        p_subj     => ''ATAF Username Confirmation''); ',
+'        p_subj     => ''ATAF Username Confirmation'');    ',
 '        ',
-'   UPDATE ataf_user',
-'   SET send_username = null',
-'   WHERE username = :p43_username;'))
+'  UPDATE ataf_user',
+'  SET send_username = null',
+'  WHERE username = :p43_username;',
+'  ',
+'END;'))
 ,p_process_error_message=>'There was a problem sending the Username.  '
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when_button_id=>wwv_flow_api.id(205620979578319117)
@@ -30989,7 +31004,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_cache_mode=>'NOCACHE'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20171202045337'
+,p_last_upd_yyyymmddhh24miss=>'20171203053913'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(205619510111319103)
@@ -31032,6 +31047,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
+,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
@@ -31089,7 +31105,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_cache_mode=>'NOCACHE'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20171202045438'
+,p_last_upd_yyyymmddhh24miss=>'20171203053951'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(411260099859923725)
@@ -31126,6 +31142,7 @@ wwv_flow_api.create_page_item(
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
+,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'N'
 ,p_attribute_02=>'N'
 ,p_attribute_04=>'TEXT'
