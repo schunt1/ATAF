@@ -463,6 +463,7 @@ UNION ALL
           null region_position,
           'Y' dislpay
      FROM DUAL
+     UNION ALL
    -----------------------
    -- Application Pages --
    -----------------------
