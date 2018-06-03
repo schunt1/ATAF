@@ -20,6 +20,7 @@ AS
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
   --| S. Hunt         09-Jul-17 2       Escape HTML                               |
+  --| S. Hunt         03-Jun-18 3       Content-type headers added                |
   --+=============================================================================+
   g_wallet_path VARCHAR2(64) := ataf_test_lab.get_parameter('Wallet Path');
   g_wallet_pwd  VARCHAR2(32) := ataf_test_lab.get_parameter('Wallet Password');
@@ -33,6 +34,7 @@ AS
   --| --------------- --------- ------- ------------------------------------------
   --| S. Hunt         09-Apr-16 1       Initial Version                           |
   --| S. Hunt         09-Jul-17 2       Escape HTML option for cmd line           |
+  --| S. Hunt         03-Jun-18 3       Content-type headers added                |
   --+=============================================================================+
   PROCEDURE MODIFY_TEST_STEPS(
       p_test_spec_id IN NUMBER,
@@ -48,6 +50,11 @@ AS
     l_username ataf_project.tl_username%TYPE;
     l_password ataf_project.tl_password%TYPE;
   BEGIN
+  
+    -- This will fail with a content type of application/json
+    apex_web_service.g_request_headers(1).name := 'Content-Type';   
+    apex_web_service.g_request_headers(1).value := 'application/x-www-form-urlencoded';
+  
     SELECT
       ats.test_lab_test_id,
       pro.tl_username,
@@ -155,6 +162,7 @@ AS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         09-Apr-16 1       Initial Version                           |
+--| S. Hunt         03-Jun-18 2       Content-type headers added                |
 --+=============================================================================+
   PROCEDURE play_lab_suite
     (
@@ -168,6 +176,11 @@ AS
     l_username ataf_project.tl_username%TYPE;
     l_password ataf_project.tl_password%TYPE;
   BEGIN
+  
+    -- This will fail with a content type of application/json
+    apex_web_service.g_request_headers(1).name := 'Content-Type';   
+    apex_web_service.g_request_headers(1).value := 'application/x-www-form-urlencoded';
+  
     SELECT
       test_lab_suite_id,
       tl_username,
@@ -180,6 +193,7 @@ AS
       ataf_project
     WHERE
       project_id = p_project_id;
+      
     l_clob      := apex_web_service.make_rest_request( p_url => 'https://api.testingbot.com/v1/labsuites/'||l_test_lab_suite_id||'/trigger', p_http_method => 'POST', p_username => l_username, p_password => l_password, p_wallet_path => g_wallet_path, p_wallet_pwd => g_wallet_pwd );
     apex_json.parse(l_clob);
     l_success := apex_json.get_varchar2(p_path => 'success');
@@ -213,6 +227,7 @@ AS
 --| Author          Date      Version Remarks                                   |
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         09-Apr-16 1       Initial Version                           |
+--| S. Hunt         03-Jun-18 2       Content-type headers added                |
 --+=============================================================================+
   PROCEDURE play_lab_test
     (
@@ -226,6 +241,11 @@ AS
     l_username ataf_project.tl_username%TYPE;
     l_password ataf_project.tl_password%TYPE;
   BEGIN
+  
+    -- This will fail with a content type of application/json
+    apex_web_service.g_request_headers(1).name := 'Content-Type';   
+    apex_web_service.g_request_headers(1).value := 'application/x-www-form-urlencoded';
+  
     SELECT
       ats.test_lab_test_id,
       pro.tl_username,
@@ -239,6 +259,7 @@ AS
     LEFT JOIN ataf_project pro ON ats.project_id = pro.project_id
     WHERE
       ats.test_spec_id = p_test_spec_id;
+      
     l_clob            := apex_web_service.make_rest_request( p_url => 'https://api.testingbot.com/v1/lab/'||l_test_lab_test_id||'/trigger', p_http_method => 'POST', p_username => l_username, p_password => l_password, p_wallet_path => g_wallet_path, p_wallet_pwd => g_wallet_pwd );
     apex_json.parse(l_clob);
     l_success := apex_json.get_varchar2(p_path => 'success');
