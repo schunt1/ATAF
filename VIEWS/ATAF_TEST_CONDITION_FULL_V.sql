@@ -1,5 +1,4 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM_ID", "DATA_ID", "TEST_COND_ID", "ROW_NUMBER", "CON_SORT_ORDER", "PAGE_ID", "OUTCOME_PAGE_ID", "ACTION_ID", "DATA_ATTRIBUTE", "TEST_DATA_ID", "TEST_CASE_ID", "TEST_CASE", "NOTES", "ID", "DOM_ID", "NAME", "LABEL", "ELEMENT_TYPE", "REGION_ID", "REGION_NAME", "SCRIPT", "ACTION", "DATA_ITEM_VALUE", "DATA_ITEM_NAME", "PAGE_TITLE", "OUTCOME_PAGE_TITLE", "THEME_NUMBER", "APPLICATION_ID", "PROJECT_ID", "DATA_GROUP_ID", "AND_WAIT", "NOT_IN_GROUP") AS 
-  SELECT
+SELECT
 --
 --+============================================================================
 --|                     Apex Test Automation Framework
@@ -22,6 +21,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
 --| S. Hunt         13-May-17 2       Not In Group                              |
 --| S. Hunt         01-Jul-17 3       v('ATAF_WORKSPACE') removed               |
 --| S. Hunt         09-Jul-17 4       Replace refere to Apex Views              |
+--| S. Hunt         10-Jun-18 5       nvl 0 added to Groups                     |
 --+=============================================================================+ 
   ac.row_key,
   con.data_item_id,
@@ -53,7 +53,8 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
   aa.theme_number,
   aa.application_id,
   pr.project_id,
-  con.data_group_id,
+  --con.data_group_id 
+  nvl2(con.not_in_group,0,con.data_group_id) data_group_id,
   ac1.and_wait,
   con.not_in_group
 FROM

@@ -31,6 +31,7 @@ IS
 --| S. Hunt         23-Mar-17 11      Spec Groups added to proc TEST            |
 --| S. Hunt         30-Mar-17 12      ATAF agent added to MV                    |
 --| S. Hunt         17-Jul-17 13      Escape HTML for Test Procedure            |
+--| S. Hunt         10-Jun-18 14      Better handling of null groups            |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -181,6 +182,7 @@ END TEST_FUNC;
 --| S. Hunt         26-Mar-17 11      Ability to link spec groups to actions    |
 --| S. Hunt         30-Mar-17 12      Change to use ATAF agent MVs              |
 --| S. Hunt         17-Jul-17 13      Escape htp.p when not run from an app     |
+--| S. Hunt         10-Jun-18 14      Data Group nvl to 0                       |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
@@ -394,7 +396,8 @@ FROM
   ---- If the test case (tcv.data_group_id) has no group then do nothing
   ---- ELse Match to spec group first then data group
   ----------------------------------------------------------------------
-  AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,x.data_group_id),-1)
+  --AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,x.data_group_id),-1)
+  AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,nvl(x.data_group_id,0)),-1)
   ----------------------------------------------------------------------
   LEFT OUTER JOIN ataf_full_test_data_v tdv ON tcv.test_data_id   = tdv.test_data_id
                                            AND tcv.data_attribute = tdv.attribute      
