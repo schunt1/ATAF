@@ -32,6 +32,7 @@ IS
 --| S. Hunt         30-Mar-17 12      ATAF agent added to MV                    |
 --| S. Hunt         17-Jul-17 13      Escape HTML for Test Procedure            |
 --| S. Hunt         10-Jun-18 14      Better handling of null groups            |
+--| S. Hunt         15-Jun-18 15      Selenium version added                    |
 --+=============================================================================+
 --
 --+=============================================================================+
@@ -183,6 +184,7 @@ END TEST_FUNC;
 --| S. Hunt         30-Mar-17 12      Change to use ATAF agent MVs              |
 --| S. Hunt         17-Jul-17 13      Escape htp.p when not run from an app     |
 --| S. Hunt         10-Jun-18 14      Data Group nvl to 0                       |
+--| S. Hunt         15-Jun-18 15      Selenium version added                    |
 --+=============================================================================+
 PROCEDURE TEST(
       p_spec_id      IN NUMBER,
@@ -191,7 +193,8 @@ PROCEDURE TEST(
       p_domain       IN VARCHAR2,
       p_display      IN VARCHAR2,
       p_ws_name      OUT apex_application_global.vc_arr2,
-      p_ws_value     OUT apex_application_global.vc_arr2
+      p_ws_value     OUT apex_application_global.vc_arr2,
+      p_selenium_version IN NUMBER
   )
 IS
   l_application_id NUMBER;
@@ -391,6 +394,7 @@ FROM
   ataf_test_condition_full_v tcv
   JOIN ataf_selenium sel ON tcv.action_id = sel.action_id
                         AND tcv.theme_number = sel.theme_number
+                        AND sel.selenium_version = p_selenium_version
   JOIN x ON tcv.test_case_id = x.test_case_id
   ----------------------------------------------------------------------    
   ---- If the test case (tcv.data_group_id) has no group then do nothing
@@ -450,7 +454,7 @@ ORDER BY
       END IF;
 
       --------------------------------
-      --   set web servive values   --
+      --   set web service values   --
       --------------------------------
       l_test_serial := l_test_serial + 1;
                     
