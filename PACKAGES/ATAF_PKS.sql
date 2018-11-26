@@ -189,3 +189,4 @@ IS
       p_string VARCHAR2, p_separator VARCHAR2)
     RETURN ret_val_t PIPELINED;
 END;
+/
