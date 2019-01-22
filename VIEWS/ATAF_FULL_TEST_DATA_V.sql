@@ -1,4 +1,4 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
+CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("PROJECT_ID", "DATA_ID", "DATA_ITEM_ID", "ROW_NAME", "ROW_NUMBER", "ROW_KEY", "DATA_ITEM_VALUE", "TEST_DATA_ID", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ATTRIBUTE", "DATA_ITEM_NAME", "DATA_GROUP_ID") AS 
   SELECT 
 --
 --+============================================================================
@@ -21,7 +21,9 @@ CREATE OR REPLACE FORCE VIEW "ATAF_FULL_TEST_DATA_V" ("DATA_ID", "DATA_ITEM_ID",
 --| S. Hunt         19-Jul-16 1       Initial Version                           |
 --| S. Hunt         19-Jul-16 2       Include NULLS in UNPIVOT                  |
 --| S. Hunt         09-Oct-16 3       Data function null p1 error fix           |
+--| S. Hunt         21-Jan-19 3       Project ID added                          |
 --+=============================================================================+   
+  at.project_id,
   x.data_id,
   di.data_item_id,
   x.row_name,
@@ -115,4 +117,5 @@ UNPIVOT INCLUDE NULLS (data_item_value FOR attribute IN (
   ATTRIBUTE_20 AS 19
 ))) x
 JOIN ataf_data_item di ON x.test_data_id = di.test_data_id AND x.attribute = di.data_attribute
+JOIN ataf_test_data at ON x.test_data_id = at.test_data_id
 /

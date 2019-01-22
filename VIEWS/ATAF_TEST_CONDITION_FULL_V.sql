@@ -23,6 +23,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
 --| S. Hunt         01-Jul-17 3       v('ATAF_WORKSPACE') removed               |
 --| S. Hunt         09-Jul-17 4       Replace refere to Apex Views              |
 --| S. Hunt         10-Jun-18 5       nvl 0 added to Groups                     |
+--| S. Hunt         18-Jan-19 6       Application ID in test condition          |
 --+=============================================================================+ 
   ac.row_key,
   con.data_item_id,
@@ -52,7 +53,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_FULL_V" ("ROW_KEY", "DATA_ITEM
   pv.page_title,
   pv2.page_title outcome_page_title,
   aa.theme_number,
-  aa.application_id,
+  nvl(con.application_id,aa.application_id) application_id,
   pr.project_id,
   --con.data_group_id 
   nvl2(con.not_in_group,0,con.data_group_id) data_group_id,

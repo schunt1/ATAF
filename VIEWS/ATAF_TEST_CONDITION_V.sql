@@ -20,6 +20,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_V" ("DATA_ITEM_ID", "DATA_ID",
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         19-Jul-16 1       Initial Version                           |
 --| S. Hunt         13-May-17 2       Not In Group.                             |
+--| S. Hunt         18-Jan-19 3       Application ID in test condition          |
 --+=============================================================================+ 
   con.data_item_id,
   con.data_id,
@@ -51,7 +52,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_CONDITION_V" ("DATA_ITEM_ID", "DATA_ID",
   pv.page_title,
   pv2.page_title outcome_page_title,
   aa.theme_number,
-  aa.application_id,
+  nvl(con.application_id,aa.application_id) application_id,
   pr.project_id,
   nvl(con.data_group_id,0) data_group_id,
   ac.row_key,

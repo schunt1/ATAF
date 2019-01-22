@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   07:21 Monday November 26, 2018
+--   Date and Time:   15:24 Tuesday January 22, 2019
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -37,10 +37,10 @@ prompt APPLICATION 242 - ATAF
 
 -- Application Statistics:
 --   Pages:                     49
---     Items:                  156
+--     Items:                  159
 --     Computations:             6
 --     Validations:             13
---     Processes:              101
+--     Processes:              102
 --     Regions:                 94
 --     Buttons:                115
 --     Dynamic Actions:         40
@@ -92,12 +92,13 @@ wwv_flow_api.create_flow(
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'ATAF')
 ,p_page_view_logging=>'YES'
 ,p_page_protection_enabled_y_n=>'Y'
-,p_checksum_salt_last_reset=>'20181126072022'
-,p_bookmark_checksum_function=>'MD5'
+,p_checksum_salt=>'65C6282A37F244CDD605712688D21CB8B65A99BAA6B4D3C03DA50DD2FFDCC368'
+,p_checksum_salt_last_reset=>'20181203042323'
+,p_bookmark_checksum_function=>'SH512'
 ,p_max_session_length_sec=>28800
 ,p_max_session_idle_sec=>3600
 ,p_compatibility_mode=>'5.1'
-,p_flow_language=>'en'
+,p_flow_language=>'en-gb'
 ,p_flow_language_derived_from=>'FLOW_PRIMARY_LANGUAGE'
 ,p_allow_feedback_yn=>'Y'
 ,p_date_format=>'DD-MON-YYYY'
@@ -124,7 +125,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20181126072022'
+,p_last_upd_yyyymmddhh24miss=>'20190121165556'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -15724,7 +15725,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20181124155532'
+,p_last_upd_yyyymmddhh24miss=>'20190119092633'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(68172073696977665233)
@@ -16348,13 +16349,18 @@ wwv_flow_api.create_page_item(
 ,p_prompt=>'Test Data Required? '
 ,p_source=>'DATA_YN'
 ,p_source_type=>'DB_COLUMN'
-,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_named_lov=>'YES NO SELECT LIST'
+,p_lov=>'.'||wwv_flow_api.id(67744058230505221524)||'.'
+,p_lov_display_null=>'YES'
+,p_cHeight=>1
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'Determines if the data fields are present in the test condition.  The ''Test Data Required'' in the tabular form determines if the data is included in the Value column of the Selenium script.'
 ,p_encrypt_session_state_yn=>'Y'
-,p_attribute_01=>'1'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(338566908110559790)
@@ -19220,7 +19226,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20180918161636'
+,p_last_upd_yyyymmddhh24miss=>'20181201052805'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67710144573387695219)
@@ -19372,10 +19378,10 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'SCRIPT'
 ,p_display_order=>8
 ,p_column_identifier=>'G'
-,p_column_label=>'Download'
+,p_column_label=>'Sel 2'
 ,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<a href="javascript:void(window.open(''#SCRIPT#''));">',
-'<i class="fa fa-download"></i>&nbsp;Selenium</a>'))
+'<i class="fa fa-download"></i></a>'))
 ,p_allow_sorting=>'N'
 ,p_allow_filtering=>'N'
 ,p_allow_highlighting=>'N'
@@ -19576,7 +19582,7 @@ wwv_flow_api.create_page_button(
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>wwv_flow_api.id(67710118199433643032)
 ,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Selenium 3 (trial)'
+,p_button_image_alt=>'Selenium 3'
 ,p_button_position=>'REGION_TEMPLATE_EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:44:&SESSION.::&DEBUG.:RP::'
 ,p_security_scheme=>wwv_flow_api.id(67730495745568071090)
@@ -20787,7 +20793,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20180827064202'
+,p_last_upd_yyyymmddhh24miss=>'20190119171818'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67710950873161436550)
@@ -20861,6 +20867,29 @@ wwv_flow_api.create_page_branch(
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_sequence=>10
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(41550780142678991)
+,p_name=>'P15_SPEC_CASE_REF_ID'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_api.id(67710950873161436550)
+,p_prompt=>'Parent Case'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'  atc.test_case d,',
+'  sc.spec_case_id r',
+'from ataf_spec_case sc',
+'inner join ataf_test_case atc on sc.test_case_id = atc.test_case_id',
+'where sc.test_spec_id = :P15_TEST_SPEC_ID',
+'order by sc.sort_order'))
+,p_lov_display_null=>'YES'
+,p_cHeight=>1
+,p_field_template=>wwv_flow_api.id(67710117637313643027)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67705822473692581825)
@@ -20995,7 +21024,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67710955542497436561)
 ,p_name=>'P15_SORT_ORDER'
 ,p_is_required=>true
-,p_item_sequence=>50
+,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_api.id(67710950873161436550)
 ,p_use_cache_before_default=>'NO'
 ,p_item_default=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -21323,13 +21352,15 @@ wwv_flow_api.create_page_process(
 ' TEST_CASE_ID,',
 ' SORT_ORDER,',
 ' DATA_ID,',
-' DATA_GROUP_ID)',
+' DATA_GROUP_ID,',
+' SPEC_CASE_REF_ID)',
 'VALUES',
 '(:p15_TEST_SPEC_ID,',
 ' :p15_TEST_CASE_ID,',
 ' :p15_SORT_ORDER,',
 ' :p15_DATA_ID,',
-' :p15_DATA_GROUP_ID);'))
+' :p15_DATA_GROUP_ID,',
+' :P15_SPEC_CASE_REF_ID);'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 );
 wwv_flow_api.create_page_process(
@@ -21399,7 +21430,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20170410172530'
+,p_last_upd_yyyymmddhh24miss=>'20190118174159'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67710145540851695229)
@@ -21611,8 +21642,8 @@ wwv_flow_api.create_worksheet_column(
 ,p_db_column_name=>'SCRIPT'
 ,p_display_order=>10
 ,p_column_identifier=>'J'
-,p_column_label=>'Download'
-,p_column_html_expression=>'<a href="javascript:void(window.open(''#SCRIPT#''));"><i class="fa fa-download"></i>&nbsp;Selenium</a>'
+,p_column_label=>'Sel 2'
+,p_column_html_expression=>'<a href="javascript:void(window.open(''#SCRIPT#''));"><i class="fa fa-download"></i></a>'
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
 ,p_static_id=>'SCRIPT'
@@ -21945,7 +21976,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20180609101434'
+,p_last_upd_yyyymmddhh24miss=>'20190119172323'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67710999021192471911)
@@ -21982,6 +22013,7 @@ wwv_flow_api.create_page_plug(
 '  tcv.outcome_page_id,',
 '  tcv.page_id,',
 '  tcv.row_number,',
+'  tcv.application_id,',
 '  case ',
 '    WHEN tcv.label IS NULL AND tcv.error = ''Error'' then ''Error''',
 '  else tcv.label end label,',
@@ -22063,6 +22095,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_identifier=>'G'
 ,p_column_label=>'From<br>Page'
 ,p_column_type=>'STRING'
+,p_column_alignment=>'CENTER'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(67710999640033471917)
@@ -22111,6 +22144,7 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_identifier=>'F'
 ,p_column_label=>'To<br>Page'
 ,p_column_type=>'STRING'
+,p_column_alignment=>'CENTER'
 );
 wwv_flow_api.create_worksheet_column(
  p_id=>wwv_flow_api.id(67711000290340471923)
@@ -22149,6 +22183,15 @@ wwv_flow_api.create_worksheet_column(
 ,p_column_type=>'STRING'
 ,p_column_alignment=>'CENTER'
 );
+wwv_flow_api.create_worksheet_column(
+ p_id=>wwv_flow_api.id(36952246190088706)
+,p_db_column_name=>'APPLICATION_ID'
+,p_display_order=>130
+,p_column_identifier=>'M'
+,p_column_label=>'App<br />ID'
+,p_column_type=>'NUMBER'
+,p_column_alignment=>'CENTER'
+);
 wwv_flow_api.create_worksheet_rpt(
  p_id=>wwv_flow_api.id(67711010557065315574)
 ,p_application_user=>'APXWS_DEFAULT'
@@ -22156,12 +22199,12 @@ wwv_flow_api.create_worksheet_rpt(
 ,p_report_alias=>'74015'
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
-,p_report_columns=>'SEQUENCE:PAGE_ID:ACTION:LABEL:DATA_ITEM_NAME:ACTION_OUTCOME:ROW_NUMBER:OUTCOME_PAGE_ID:DATA_GROUP::SORT_LINK'
+,p_report_columns=>'SEQUENCE:APPLICATION_ID:PAGE_ID:ACTION:LABEL:DATA_ITEM_NAME:ACTION_OUTCOME:ROW_NUMBER:OUTCOME_PAGE_ID:DATA_GROUP:SORT_LINK:'
 ,p_sort_column_1=>'SEQUENCE'
 ,p_sort_direction_1=>'ASC'
 );
 wwv_flow_api.create_worksheet_condition(
- p_id=>wwv_flow_api.id(67706080147967839138)
+ p_id=>wwv_flow_api.id(41501219785644287)
 ,p_report_id=>wwv_flow_api.id(67711010557065315574)
 ,p_name=>'Errors'
 ,p_condition_type=>'HIGHLIGHT'
@@ -22347,6 +22390,30 @@ wwv_flow_api.create_page_branch(
 ,p_branch_sequence=>20
 );
 wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(36952345593088707)
+,p_name=>'P17_SPEC_CASE_REF_ID'
+,p_item_sequence=>50
+,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
+,p_prompt=>'Parent Case'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ',
+'  atc.test_case d,',
+'  sc.spec_case_id r',
+'from ataf_spec_case sc',
+'inner join ataf_test_case atc on sc.test_case_id = atc.test_case_id',
+'where sc.test_spec_id = :P17_TEST_SPEC_ID',
+'  and sc.spec_case_id != :P17_SPEC_CASE_ID',
+'order by sc.sort_order'))
+,p_lov_display_null=>'YES'
+,p_cHeight=>1
+,p_field_template=>wwv_flow_api.id(67710117637313643027)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
+);
+wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67705823279466581833)
 ,p_name=>'P17_TEST_SPEC_ID'
 ,p_item_sequence=>20
@@ -22369,7 +22436,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67705825754835581858)
 ,p_name=>'P17_LAST_PAGE'
-,p_item_sequence=>120
+,p_item_sequence=>130
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
@@ -22379,7 +22446,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67706087387173652417)
 ,p_name=>'P17_DATA_ID'
-,p_item_sequence=>90
+,p_item_sequence=>100
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_prompt=>'Data Row'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -22415,7 +22482,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67706095523594991372)
 ,p_name=>'P17_DATA_GROUP_ID'
-,p_item_sequence=>100
+,p_item_sequence=>110
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_prompt=>'Data Group'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -22445,7 +22512,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67728481018635981452)
 ,p_name=>'P17_TEST_DATA_ID'
-,p_item_sequence=>80
+,p_item_sequence=>90
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Test Data Set'
@@ -22507,7 +22574,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67744157544297772415)
 ,p_name=>'P17_MODULE_ID'
 ,p_is_required=>true
-,p_item_sequence=>50
+,p_item_sequence=>60
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Module'
@@ -22531,7 +22598,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67744157754303772415)
 ,p_name=>'P17_PRIORITY'
 ,p_is_required=>true
-,p_item_sequence=>60
+,p_item_sequence=>70
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Priority'
@@ -22552,7 +22619,7 @@ wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67744157947960772416)
 ,p_name=>'P17_STATUS'
 ,p_is_required=>true
-,p_item_sequence=>70
+,p_item_sequence=>80
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Status'
@@ -22572,7 +22639,7 @@ wwv_flow_api.create_page_item(
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(67744158148222772416)
 ,p_name=>'P17_NOTES'
-,p_item_sequence=>110
+,p_item_sequence=>120
 ,p_item_plug_id=>wwv_flow_api.id(67744155754017772401)
 ,p_use_cache_before_default=>'NO'
 ,p_prompt=>'Notes'
@@ -22748,7 +22815,7 @@ wwv_flow_api.create_page_process(
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when=>'REMOVE'
 ,p_process_when_type=>'REQUEST_NOT_IN_CONDITION'
-,p_process_success_message=>'Action Processed.'
+,p_process_success_message=>'Test Case Processed.  '
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67705824631632581847)
@@ -22759,13 +22826,15 @@ wwv_flow_api.create_page_process(
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '  UPDATE ataf_spec_case ',
 '  SET data_id = :p17_data_id,',
-'      data_group_id = :p17_data_group_id',
+'      data_group_id = :p17_data_group_id,',
+'      spec_case_ref_id = :p17_spec_case_ref_id',
 '  WHERE spec_case_id = :p17_spec_case_id;',
 ''))
 ,p_process_error_message=>'Error update data row.  '
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
 ,p_process_when=>'P17_SPEC_CASE_ID'
 ,p_process_when_type=>'ITEM_IS_NOT_NULL'
+,p_process_success_message=>'Test Spec Processed.  '
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67744177939382926965)
@@ -22908,6 +22977,9 @@ wwv_flow_api.create_page_process(
 ,p_process_when_button_id=>wwv_flow_api.id(67737264639432922167)
 ,p_process_success_message=>'Copy Made.'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67744159926569772422)
 ,p_process_sequence=>10
@@ -22918,9 +22990,6 @@ wwv_flow_api.create_page_process(
 ,p_attribute_03=>'P17_TEST_CASE_ID'
 ,p_attribute_04=>'TEST_CASE_ID'
 );
-end;
-/
-begin
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(67744177747085910232)
 ,p_process_sequence=>50
@@ -22933,15 +23002,16 @@ wwv_flow_api.create_page_process(
 '  SELECT LISTAGG (tc.test_case, '':'') WITHIN GROUP (ORDER BY tc.test_case)',
 '    INTO :p17_dependent_test_cases',
 '    FROM ataf_test_case_iot tci, ataf_test_case tc',
-'   WHERE     tci.test_case_id = tc.test_case_id',
-'         AND tci.test_case_ref_id = :p17_test_case_id;',
+'   WHERE tci.test_case_id = tc.test_case_id',
+'     AND tci.test_case_ref_id = :p17_test_case_id;',
 '    ',
 '  EXCEPTION WHEN OTHERS THEN NULL;',
 'END;',
 '',
 'BEGIN',
 '',
-'   SELECT data_id, data_group_id INTO :p17_data_id,:p17_data_group_id',
+'   SELECT data_id, data_group_id, spec_case_ref_id ',
+'   INTO :p17_data_id,:p17_data_group_id,:p17_spec_case_ref_id',
 '   FROM ataf_spec_case',
 '   WHERE spec_case_id = :p17_spec_case_id;',
 '',
@@ -22953,7 +23023,6 @@ wwv_flow_api.create_page_process(
 'END IF;'))
 ,p_process_error_message=>'Unable to set dependent test cases.  '
 );
-null;
 end;
 /
 prompt --application/pages/page_00018
@@ -22977,7 +23046,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20181126050751'
+,p_last_upd_yyyymmddhh24miss=>'20190118170959'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67744166152005772451)
@@ -23139,6 +23208,34 @@ wwv_flow_api.create_page_item(
 ,p_lov_display_extra=>'YES'
 ,p_encrypt_session_state_yn=>'Y'
 ,p_attribute_01=>'1'
+);
+wwv_flow_api.create_page_item(
+ p_id=>wwv_flow_api.id(41170676764770344)
+,p_name=>'P18_APPLICATION_ID'
+,p_is_required=>true
+,p_item_sequence=>1
+,p_item_plug_id=>wwv_flow_api.id(67744166152005772451)
+,p_use_cache_before_default=>'NO'
+,p_item_default=>'return :APPLICATION_ID;'
+,p_item_default_type=>'PLSQL_FUNCTION_BODY'
+,p_prompt=>'Application'
+,p_source=>'APPLICATION_ID'
+,p_source_type=>'DB_COLUMN'
+,p_display_as=>'NATIVE_SELECT_LIST'
+,p_named_lov=>'APPLICATIONS'
+,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'SELECT ',
+'   application_id||'' - '' ||application_name d',
+'  ,application_id r',
+'FROM apex_applications',
+'ORDER BY application_id'))
+,p_cHeight=>1
+,p_field_template=>wwv_flow_api.id(67710117637313643027)
+,p_item_template_options=>'#DEFAULT#'
+,p_lov_display_extra=>'YES'
+,p_encrypt_session_state_yn=>'Y'
+,p_attribute_01=>'NONE'
+,p_attribute_02=>'N'
 );
 wwv_flow_api.create_page_item(
  p_id=>wwv_flow_api.id(8259525174715196355)
@@ -23402,7 +23499,7 @@ wwv_flow_api.create_page_item(
 '    JOIN ataf_apex_page_items iv ON aa.item_type = iv.type',
 '   WHERE NVL (aa.project_id, :project_id) = :project_id',
 '         AND aa.item_type != ''Outcome''',
-'         AND iv.application_id = :application_id',
+'         AND iv.application_id = :p18_application_id',
 '         AND decode(iv.page_id,0,:P18_PAGE_ID,iv.page_id) = :P18_PAGE_ID',
 'ORDER BY aa.action'))
 ,p_lov_display_null=>'YES'
@@ -23477,11 +23574,10 @@ wwv_flow_api.create_page_item(
 ,p_source=>'OUTCOME_PAGE_ID'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_POPUP_LOV'
-,p_named_lov=>'PAGE ID'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '  SELECT page_id || '' '' || page_name d,  page_id r',
 '    FROM apex_application_pages',
-'   WHERE application_id = :application_id',
+'   WHERE application_id = nvl(:p18_application_id,:application_id)',
 'ORDER BY page_id'))
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'Null'
@@ -23510,7 +23606,7 @@ wwv_flow_api.create_page_item(
 '    FROM ataf_apex_page_items api, ataf_action act',
 '   WHERE     api.TYPE = act.item_type',
 '         AND action_id = :p18_action_id',
-'         AND NVL (application_id, :application_id) = :application_id',
+'         AND NVL (application_id, :p18_application_id) = :p18_application_id',
 '         AND (page_id = NVL ( :p18_page_id, 0) OR page_id = 0)',
 'ORDER BY region_name, api.display_sequence2, api.display_sequence1, api.display_sequence, api.label'))
 ,p_lov_display_null=>'YES'
@@ -23556,12 +23652,14 @@ wwv_flow_api.create_page_item(
 ,p_source=>'PAGE_ID'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_POPUP_LOV'
-,p_named_lov=>'PAGE ID'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '  SELECT page_id || '' '' || page_name d,  page_id r',
 '    FROM apex_application_pages',
-'   WHERE application_id = :application_id',
+'   WHERE application_id = nvl(:p18_application_id,:application_id)',
 'ORDER BY page_id'))
+,p_lov_cascade_parent_items=>'P18_APPLICATION_ID'
+,p_ajax_items_to_submit=>'P18_APPLICATION_ID'
+,p_ajax_optimize_refresh=>'Y'
 ,p_cSize=>20
 ,p_cMaxlength=>32
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
@@ -23905,6 +24003,9 @@ wwv_flow_api.create_page_da_action(
 ,p_attribute_01=>'N'
 ,p_stop_execution_on_error=>'Y'
 );
+end;
+/
+begin
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(67731408120534222489)
 ,p_name=>'Data Options = 2'
@@ -23941,9 +24042,6 @@ wwv_flow_api.create_page_da_action(
 ,p_attribute_01=>'N'
 ,p_stop_execution_on_error=>'Y'
 );
-end;
-/
-begin
 wwv_flow_api.create_page_da_event(
  p_id=>wwv_flow_api.id(67711000447381471925)
 ,p_name=>'Cancel Button'
@@ -30703,7 +30801,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20181126072022'
+,p_last_upd_yyyymmddhh24miss=>'20190121165556'
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(36951742377088701)
@@ -30711,6 +30809,256 @@ wwv_flow_api.create_page_process(
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Side'
+,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'DECLARE',
+'',
+'  lv_window_count NUMBER := 0;',
+'  lv_target ataf_selenium.target%type;',
+'',
+'BEGIN',
+'',
+'  IF apex_collection.collection_exists(''ATAF_DATA'') = TRUE THEN',
+'    apex_collection.delete_collection(''ATAF_DATA'');',
+'  END IF;',
+'  ',
+'  apex_collection.create_collection_from_query_b',
+'            ( p_collection_name  => ''ATAF_DATA''',
+'            , p_query => q''!select * from ATAF_FULL_TEST_DATA_CV',
+'                            where project_id = !''||to_number(:project_id));',
+'',
+'  apex_json.initialize_output (p_http_header => false );',
+' ',
+'  sys.owa_util.mime_header(''application/json'', false);',
+'  htp.p(''Content-Disposition:attachment;filename="''||:project_name||''.side"'');',
+'  sys.owa_util.http_header_close;',
+'',
+' --------------------------',
+' -- Loop through project --',
+' --------------------------',
+' FOR I IN (select * from ataf_project where project_id = :project_id) LOOP',
+'',
+'   apex_json.open_object;',
+'',
+'     apex_json.write(''id'',to_char(i.project_id),true);',
+'     apex_json.write(''version'',''1.1'',true);',
+'     apex_json.write(''name'',i.project_name,true);',
+'     apex_json.write(''url'',i.domain,true); ',
+'',
+'       apex_json.open_array(''tests''); ',
+'',
+'       ------------------------',
+'       -- Loop through tests --',
+'       ------------------------',
+'',
+'       FOR J IN (select distinct to_char(sp.test_spec_id) test_spec_id,  ',
+'                   sp.test_spec',
+'                 from ATAF_TEST_SPEC SP',
+'                 inner join ATAF_SPEC_CASE SC on SP.TEST_SPEC_ID = SC.TEST_SPEC_ID',
+'                 WHERE SP.PROJECT_ID = :project_id) LOOP',
+'       ',
+'         apex_json.open_object;',
+'',
+'          apex_json.write(''id'',j.test_spec_id);',
+'          apex_json.write(''name'',j.test_spec);',
+'          apex_json.open_array(''commands'');',
+'',
+'            -----------------------------',
+'            -- Loop through CONDITIONS --',
+'            -----------------------------',
+'            FOR K IN (',
+'',
+'----------------------------------------------',
+'WITH x AS',
+'    ',
+'(',
+'',
+'------------------------------------',
+'-- Called from Test Specification --',
+'------------------------------------',
+'select x.*, rownum sort_order from',
+'(SELECT ',
+'       sc.test_case_id,',
+'       decode(sc.data_id,0,ad.data_id,sc.data_id)  data_id,',
+'       ad.data_group_id data_group_id,',
+'       sc.data_group_id spec_group_id,',
+'       sc.spec_case_id,',
+'       sc.spec_case_ref_id',
+'  FROM ataf_spec_case sc',
+'  JOIN ataf_test_case tc ON sc.test_case_id = tc.test_case_id',
+'  LEFT OUTER JOIN ataf_data ad ON tc.test_data_id = ad.test_data_id',
+'                               AND (sc.data_group_id = ad.data_group_id or sc.data_group_id IS NULL)',
+'                               AND (sc.data_id = ad.data_id or sc.data_id = 0)',
+'  WHERE sc.test_spec_id = j.test_spec_id) x ',
+'  START WITH x.spec_case_ref_id is null',
+'  CONNECT BY PRIOR x.spec_case_id = x.spec_case_ref_id',
+'',
+')  ',
+'-----------------',
+'-- MAIN CURSOR --',
+'-----------------',
+'SELECT',
+'    x.spec_case_id||''-''||tcv.test_cond_id||''-''||rownum id,',
+'    -----------------',
+'    -- Data Groups --',
+'    -----------------',
+'    x.spec_group_id    spec_group_id,',
+'    x.data_group_id    case_group_id,',
+'    tcv.data_group_id  cond_group_id,',
+'    tdv.data_group_id  data_group_id,',
+'',
+'    -----------------',
+'    tcv.test_case,',
+'    -- Command --',
+'    sel.selenium_command command,',
+'    -------------',
+'    -- Target --',
+'    -------------',
+'    CASE',
+'        -- Custom',
+'        -- e.g.WHEN se.row_key = ''AACO'' THEN XYZ',
+'        -- Standard',
+'      WHEN sel.item_attribute = ''DOM ID''',
+'      THEN nvl2(sel.location,sel.location',
+'        ||''='',NULL)',
+'        ||tcv.dom_id',
+'      WHEN sel.item_attribute = ''Name''',
+'      THEN nvl2(sel.location,sel.location',
+'        ||''='',NULL)',
+'        ||tcv.name',
+'      WHEN sel.item_attribute = ''Label''',
+'      THEN nvl2(sel.location,sel.location',
+'        ||''='',NULL)',
+'        ||tcv.label',
+'      WHEN sel.item_attribute = ''Data''',
+'      THEN nvl2(sel.location,sel.location',
+'        ||''='',NULL)',
+'        ||nvl(tcv.data_item_value,tdv.data_item_value)',
+'      ELSE nvl2(sel.location,sel.location',
+'        ||''='',NULL)',
+'        ||ataf_pkg.test_func( p_id => tcv.id, p_target => sel.target, p_dom_id => tcv.dom_id, p_name => tcv.name, p_label => tcv.label, p_data => nvl(tcv.data_item_value,tdv.data_item_value), p_page_title => tcv.page_title, p_element => tcv.element_t'
+||'ype, p_application_id => tcv.application_id, p_page_id => tcv.page_id, p_row => tcv.row_number, p_region_id => tcv.region_id, p_region_name => tcv.region_name, p_domain => i.domain, p_outcome_page_id => tcv.outcome_page_id, p_outcome_page_title => tc'
+||'v.outcome_page_title)',
+'    END target,',
+'    -----------',
+'    -- Value --',
+'    -----------',
+'    CASE',
+'      WHEN sel.data_yn = ''X'' THEN tcv.name',
+'      WHEN sel.data_yn = ''Y'' THEN nvl(tcv.data_item_value,tdv.data_item_value) -- when selenium command is expecting data',
+'      WHEN sel.data_yn = ''L'' THEN ''label=''||nvl(tcv.data_item_value,tdv.data_item_value) -- Prefix data with Label=',
+'      WHEN sel.data_yn = ''A'' THEN ''label=''||tcv.label -- Prefix data with Label=',
+'      WHEN sel.data_yn = ''S'' THEN to_char(j.test_spec_id)',
+'      ELSE NULL',
+'    END value',
+'    ----------',
+'FROM',
+'  ataf_test_condition_full_v tcv',
+'  JOIN ataf_selenium sel ON tcv.action_id = sel.action_id',
+'                        AND tcv.theme_number = sel.theme_number',
+'                        AND sel.selenium_version = 3',
+'  JOIN x ON tcv.test_case_id = x.test_case_id',
+'  ----------------------------------------------------------------------    ',
+'  ---- If the test case (tcv.data_group_id) has no group then do nothing',
+'  ---- ELse Match to spec group first then data group',
+'  ----------------------------------------------------------------------',
+'  AND nvl(tcv.data_group_id,-1) = nvl2(tcv.data_group_id,nvl(x.spec_group_id,nvl(x.data_group_id,0)),-1)',
+'  ----------------------------------------------------------------------',
+'  LEFT OUTER JOIN ataf_full_test_data_cv tdv ON tcv.test_data_id   = tdv.test_data_id',
+'                                           AND tcv.data_attribute = tdv.attribute      ',
+'                                           AND nvl(tdv.data_id,0) = nvl(x.data_id,0)',
+'  ----------------------------------------------------------------------         ',
+'ORDER BY',
+'  x.sort_order,',
+'  x.data_id,',
+'  tcv.con_sort_order,',
+'  sel.sort_order',
+'',
+'----------------------------------------------',
+'',
+') loop',
+'              --------------------',
+'              -- Replace window --',
+'              --------------------',
+'              IF instr(k.target,''#WINDOW_COUNT#'') > 0 THEN',
+'                lv_window_count := lv_window_count + 1;',
+'                lv_target := replace(k.target,''#WINDOW_COUNT#'',lv_window_count);',
+'              ELSE',
+'                lv_target := k.target;',
+'              END IF;',
+'              ---------------------',
+'',
+'              apex_json.open_object;',
+'',
+'                apex_json.write(''id'',k.id,true);',
+'                apex_json.write(''comment'','''',true);',
+'                apex_json.write(''command'',k.command,true);',
+'                apex_json.write(''target'',lv_target,true);',
+'                apex_json.open_array(''targets'');',
+'                apex_json.close_array;',
+'                apex_json.write(''value'',k.value,true);',
+'',
+'              apex_json.close_object;',
+'',
+'            END LOOP;',
+'',
+'          apex_json.close_array;',
+'',
+'          apex_json.close_object;',
+'      ',
+'       END LOOP;',
+'',
+'       apex_json.close_array;',
+'',
+'  ----------------------------------',
+'  --  Assign Test Cases to Suites --',
+'  ----------------------------------',
+'',
+'  apex_json.open_array(''suites'');',
+'',
+'  FOR suites IN (',
+'     select distinct to_char(sp.test_spec_id) test_spec_id,  ',
+'            sp.test_spec,',
+'            sp.sort_order',
+'     from ATAF_TEST_SPEC SP',
+'          inner join ATAF_SPEC_CASE SC on SP.TEST_SPEC_ID = SC.TEST_SPEC_ID',
+'     where sp.project_id = :project_id',
+'     order by sp.sort_order) LOOP',
+'',
+'    apex_json.open_object;',
+'',
+'      apex_json.write(''id'',suites.test_spec_id,true);',
+'      apex_json.write(''name'',suites.test_spec,true);',
+'      apex_json.write(''persistSession'',false);',
+'      apex_json.write(''parallel'',true);',
+'      apex_json.write(''timeout'',300);',
+'      apex_json.open_array(''tests'');',
+'        apex_json.write(suites.test_spec_id);',
+'      apex_json.close_array;',
+'',
+'    apex_json.close_object;',
+'',
+'  END LOOP;',
+'   ',
+'  apex_json.close_array;',
+'',
+'  apex_json.open_array(''urls'');',
+'  apex_json.close_array;',
+'',
+'  apex_json.close_object;',
+'',
+'  END LOOP;',
+'',
+'  APEX_APPLICATION.STOP_APEX_ENGINE;',
+'',
+'END;'))
+,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+);
+wwv_flow_api.create_page_process(
+ p_id=>wwv_flow_api.id(36952599437088709)
+,p_process_sequence=>20
+,p_process_point=>'BEFORE_HEADER'
+,p_process_type=>'NATIVE_PLSQL'
+,p_process_name=>'Side_2'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'DECLARE',
 '',
@@ -30941,10 +31289,11 @@ wwv_flow_api.create_page_process(
 '',
 'END;'))
 ,p_error_display_location=>'INLINE_IN_NOTIFICATION'
+,p_process_when_type=>'NEVER'
 );
 wwv_flow_api.create_page_process(
  p_id=>wwv_flow_api.id(2201350668231401)
-,p_process_sequence=>20
+,p_process_sequence=>30
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Side_1'

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FORCE VIEW "ATAF_TEST_COND_FULL_V" ("DATA_ID", "TEST_COND_ID", "TEST_CASE_ID", "DATA_ITEM_ID", "ACTION_ID", "OUTCOME_PAGE_ID", "APEX_ITEM_ID", "SORT_ORDER", "PAGE_ID", "ROW_NUMBER", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ROW_KEY", "ROW_VERSION_NUMBER", "DATA_ATTRIBUTE", "DATA_GROUP_ID", "TYPE", "OUTCOME_ID", "NOT_IN_GROUP") AS 
+CREATE OR REPLACE FORCE VIEW "ATAF_TEST_COND_FULL_V" ("APPLICATION_ID", "DATA_ID", "TEST_COND_ID", "TEST_CASE_ID", "DATA_ITEM_ID", "ACTION_ID", "OUTCOME_PAGE_ID", "APEX_ITEM_ID", "SORT_ORDER", "PAGE_ID", "ROW_NUMBER", "LAST_UPDATED_DATE", "LAST_UPDATED_BY", "ROW_KEY", "ROW_VERSION_NUMBER", "DATA_ATTRIBUTE", "DATA_GROUP_ID", "TYPE", "OUTCOME_ID", "NOT_IN_GROUP") AS 
   select
 --
 --+============================================================================
@@ -20,7 +20,9 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_COND_FULL_V" ("DATA_ID", "TEST_COND_ID",
 --| --------------- --------- ------- ------------------------------------------
 --| S. Hunt         19-Jul-16 1       Initial Version                           |
 --| S. Hunt         13-May-17 2       Not In Group.                             |
+--| S. Hunt         18-Jan-19 3       Application ID in test condition          |
 --+=============================================================================+ 
+ APPLICATION_ID,
  DATA_ID,
  TEST_COND_ID,
  TEST_CASE_ID,
@@ -43,6 +45,7 @@ CREATE OR REPLACE FORCE VIEW "ATAF_TEST_COND_FULL_V" ("DATA_ID", "TEST_COND_ID",
  from ATAF_TEST_COND
 UNION ALL
 select
+ APPLICATION_ID,
  DATA_ID,
  TEST_COND_ID,
  TEST_CASE_ID,
