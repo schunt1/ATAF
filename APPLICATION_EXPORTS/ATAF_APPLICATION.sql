@@ -27,7 +27,7 @@ prompt APPLICATION 242 - ATAF
 -- Application Export:
 --   Application:     242
 --   Name:            ATAF
---   Date and Time:   15:24 Tuesday January 22, 2019
+--   Date and Time:   04:13 Wednesday January 23, 2019
 --   Exported By:     SHUNT
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -125,7 +125,7 @@ wwv_flow_api.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_auto_time_zone=>'N'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20190121165556'
+,p_last_upd_yyyymmddhh24miss=>'20190122181051'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -23046,7 +23046,7 @@ wwv_flow_api.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_last_updated_by=>'SHUNT'
-,p_last_upd_yyyymmddhh24miss=>'20190118170959'
+,p_last_upd_yyyymmddhh24miss=>'20190122181051'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(67744166152005772451)
@@ -23504,8 +23504,8 @@ wwv_flow_api.create_page_item(
 'ORDER BY aa.action'))
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'-- Select --'
-,p_lov_cascade_parent_items=>'P18_PAGE_ID'
-,p_ajax_items_to_submit=>'P18_PAGE_ID'
+,p_lov_cascade_parent_items=>'P18_APPLICATION_ID,P18_PAGE_ID'
+,p_ajax_items_to_submit=>'P18_APPLICATION_ID,P18_PAGE_ID'
 ,p_ajax_optimize_refresh=>'Y'
 ,p_cHeight=>1
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
@@ -23611,7 +23611,7 @@ wwv_flow_api.create_page_item(
 'ORDER BY region_name, api.display_sequence2, api.display_sequence1, api.display_sequence, api.label'))
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'-- Select --'
-,p_lov_cascade_parent_items=>'P18_ACTION_ID,P18_PAGE_ID'
+,p_lov_cascade_parent_items=>'P18_ACTION_ID,P18_PAGE_ID,P18_APPLICATION_ID'
 ,p_ajax_optimize_refresh=>'Y'
 ,p_cHeight=>1
 ,p_field_template=>wwv_flow_api.id(67710117637313643027)
